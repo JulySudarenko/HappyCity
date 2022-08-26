@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4568ddbf014249789292e9bed8219ccd, type: 3}
+  m_Name: PlayerConfig
+  m_EditorClassIdentifier: 
+  FemalePrefab: {fileID: 5964616791403009601, guid: b7654c8fca0c9cd4193610378f2d4702,
+    type: 3}
+  MalePrefab: {fileID: 7639915970969365354, guid: c7ae52041ffcb824c978d7c8a44eaaee,
+    type: 3}
+  SpawnPoints: {fileID: 2081121675885824800, guid: 7644e419ee894b64ead8f7f7cdf6ac62,
+    type: 3}
+  _happiness: 100
+  _speed: 100

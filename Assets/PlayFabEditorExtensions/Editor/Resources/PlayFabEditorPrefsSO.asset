@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d0199c11aa6f514784c5c69cd8378d8, type: 3}
+  m_Name: PlayFabEditorPrefsSO
+  m_EditorClassIdentifier: 
+  DevAccountEmail: july@sudarenko.ru
+  DevAccountToken: 1zhpcbrj9me5gy1urgzgdc47t5cps7imfdd7m9tykik4zcnb1m3kd6n3h4jos71fwus1o83g7onefiub13589gdttzhb8aw757gsqyxcnhc9recyoiba3irwt7s8jhr7rgg1so97aju6duaytjkigzpyjcxset38636ncsnd8bi8idpimcjzr98o5pihke4j8tmo5jun
+  SelectedStudio: SUDAR COMPANY
+  SdkPath: Assets/PlayFabSDK
+  EdExPath: D:/geekbrains.ru/Projects/Unity/HappyCity/Assets\CustomAssets\PlayFabEditorExtensions\Editor
+  LocalCloudScriptPath: 
+  PanelIsShown: 0
+  curMainMenuIdx: 1
+  curSubMenuIdx: 0
