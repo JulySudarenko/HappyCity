@@ -30,7 +30,7 @@
             <e p="CharacterMoveController.cs" t="Include" />
             <e p="CharacterView.cs" t="Include" />
             <e p="Controllers.cs" t="Include" />
-            <e p="GameController.cs" t="Include" />
+            <e p="GameStartController.cs" t="Include" />
             <e p="SystemController.cs" t="Include" />
             <e p="ViewController.cs" t="Include" />
           </e>
@@ -40,7 +40,9 @@
             <e p="CharacterSpawnHandler.cs" t="Include" />
             <e p="HitHandler.cs" t="Include" />
             <e p="ICharacterFactory.cs" t="Include" />
+            <e p="ResourceHandler.cs" t="Include" />
             <e p="ResourcesName.cs" t="Include" />
+            <e p="ResourcesSpawnHandler.cs" t="Include" />
             <e p="ResourcesSpawnPlacesGenerator.cs" t="Include" />
           </e>
           <e p="HappyCity.asmdef" t="Include" />

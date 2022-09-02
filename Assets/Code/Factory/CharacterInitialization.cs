@@ -12,6 +12,7 @@ namespace Code.Factory
         public Transform Transform { get; }
         public Rigidbody Rigidbody { get; }
         public HitHandler HitHandler { get; }
+        public int ColliderID { get; }
         
         public CharacterInitialization(ICharacterFactory playerFactory, InputInitialization input, PlayerConfig config)
         {
@@ -20,7 +21,10 @@ namespace Code.Factory
             Rigidbody = character.GetOrAddComponent<Rigidbody>();
             Rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
             HitHandler = character.GetOrAddComponent<HitHandler>();
-
+            var collider = character.GetOrAddComponent<Collider>();
+            ColliderID = collider.GetInstanceID();
+            Debug.Log($"character ID {ColliderID}");
+            
             InitMoveController(character, input, config);
             InitAnimatorController(character, input, config);
         }

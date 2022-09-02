@@ -2,7 +2,6 @@
 using Code.Configs;
 using Code.Interfaces;
 using Code.UserInput;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace Code.Factory
@@ -10,6 +9,7 @@ namespace Code.Factory
     internal class CharacterSpawnHandler : ICleanup
     {
         public Action<string> IsCharacterSelected;
+        public Action IsCharacterCreated;
         private readonly PlayerConfig _playerConfig;
         private readonly InputInitialization _input;
         private ICharacterFactory _factory;
@@ -40,6 +40,7 @@ namespace Code.Factory
 
             _factory = new CharacterFactory(_selectedCharacter, _playerConfig.SpawnPoints);
             Character = new CharacterInitialization(_factory, _input, _playerConfig);
+            IsCharacterCreated?.Invoke();
         }
 
         public void Cleanup()

@@ -15,6 +15,6 @@ MonoBehaviour:
   Wood: {fileID: 5956540513724312383, guid: 0c8dcc868b735cb4daf5d6c7f2226e26, type: 3}
   Stone: {fileID: 0}
   Food: {fileID: 0}
-  _woodCount: 10
-  _stoneCount: 5
-  _radius: 5
+  _woodCount: 5
+  _stoneCount: 3
+  _radius: 3
