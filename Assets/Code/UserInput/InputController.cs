@@ -6,6 +6,7 @@ namespace Code.UserInput
     {
         private readonly IUserInputProxy _inputHorizontal;
         private readonly IUserInputProxy _inputVertical;
+        private readonly IUserInputButtonProxy _inputMouseLeft;
         private readonly IUserInputButtonProxy _inputJump;
         private readonly IUserInputButtonProxy _inputWork;
         
@@ -13,6 +14,7 @@ namespace Code.UserInput
         {
             _inputHorizontal = input.InputHorizontal;
             _inputVertical = input.InputVertical;
+            _inputMouseLeft = input.InputMouseLeft;
             _inputJump = input.InputJump;
             _inputWork = input.InputWork;
         }
@@ -21,6 +23,9 @@ namespace Code.UserInput
         {
             _inputHorizontal.GetAxis();
             _inputVertical.GetAxis();
+            _inputMouseLeft.GetButtonDown();
+            _inputMouseLeft.GetButtonHold();
+            _inputMouseLeft.GetButtonUp();
             _inputWork.GetButtonDown();
             _inputWork.GetButtonHold();
             _inputWork.GetButtonUp();

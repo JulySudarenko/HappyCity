@@ -1,59 +1,38 @@
-﻿using Code.Configs;
-using Code.UserInput;
-using Photon.Pun;
+﻿using Code.Factory;
+using Code.Interfaces;
 using UnityEngine;
 
 namespace Code.Controllers
 {
-    internal class CharacterAnimatorController : MonoBehaviourPun
+    internal class CharacterAnimatorController : IExecute
     {
-        private Animator _animator;
-        private InputInitialization _input;
-        private PlayerConfig _config;
-        private static readonly int Speed = Animator.StringToHash("Speed");
-        private float _horizontal;
-        private float _vertical;
+        private readonly CharacterModel _character;
+        private readonly CharacterMoveController _moveController;
+        private static readonly int Walk = Animator.StringToHash("Walk");
+        private static readonly int Stay = Animator.StringToHash("Stay");
 
-        
-        public void Init(InputInitialization input, Animator animator, PlayerConfig config)
+
+        public CharacterAnimatorController(CharacterModel character, CharacterMoveController moveController)
         {
-            _input = input;
-            _animator = animator;
-            _config = config;
-            _input.InputHorizontal.AxisOnChange += HorizontalOnAxisOnChange;
-            _input.InputVertical.AxisOnChange += VerticalOnAxisOnChange;
+            _character = character;
+            _moveController = moveController;
         }
-        
-        private void HorizontalOnAxisOnChange(float value) => _horizontal = value;
-        private void VerticalOnAxisOnChange(float value) => _vertical = value;
-        
-        public void Update()
+
+        public void Execute(float deltaTime)
         {
-            if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
+            if(_character.PhotonView.photonView.IsMine)
             {
-                return;
+                AnimatorStateInfo stateInfo = _character.Animator.GetCurrentAnimatorStateInfo(0);
+
+                if (_moveController.IsWalk)
+                {
+                    _character.Animator.SetTrigger(Walk);
+                }
+                else
+                {
+                    _character.Animator.SetTrigger(Stay);
+                }
             }
-
-            if (!_animator)
-            {
-                return;
-            }
-
-            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-
-            // if (Input.GetButtonDown("Work"))
-            // {
-            //     _animator.SetTrigger("Work");
-            // }
-
-            _animator.SetFloat(Speed, _horizontal * _horizontal * _config.Speed + _vertical * _vertical * _config.Speed);
-
-        }
-        
-        public void OnDestroy()
-        {
-            _input.InputHorizontal.AxisOnChange -= HorizontalOnAxisOnChange;
-            _input.InputVertical.AxisOnChange -= VerticalOnAxisOnChange;
         }
     }
 }

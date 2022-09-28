@@ -65,7 +65,8 @@ namespace Code.View
 
         private void OnDestroy()
         {
-            StopIndicator();
+            if (_isWaiting != null)
+                StopIndicator();
         }
     }
 }

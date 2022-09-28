@@ -1,4 +1,5 @@
-﻿using Code.Login;
+﻿using Code.Configs;
+using Code.Login;
 using Code.View;
 using Photon.Pun;
 using Photon.Realtime;
@@ -17,7 +18,7 @@ namespace Code.PhotonLogin
         private void Awake()
         {
             PhotonNetwork.AutomaticallySyncScene = true;
-            _loadingIndicator.ShowLoadingStatusInformation(ConnectionState.Default, "Enter your name");
+            _loadingIndicator.ShowLoadingStatusInformation(ConnectionState.Default, "Enter your name and choose character.");
             _gameRoomView.PlayButton.onClick.AddListener(Connect);
             _nameInputManager = new PlayerNameInputManager(_gameRoomView.PlayerName, _loadingIndicator);
         }

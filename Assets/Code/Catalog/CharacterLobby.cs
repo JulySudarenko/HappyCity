@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Code.Configs;
 using Code.View;
 using PlayFab;
 using PlayFab.ClientModels;
@@ -19,7 +20,7 @@ namespace Code.Catalog
         private readonly Dictionary<string, CatalogItem> _catalog;
         private readonly PlayerNamePanelView _enterNamePanel;
         private readonly Transform _charactersPanel;
-        private readonly Transform _otherPanel;
+        private readonly Transform _panel;
         private readonly LineElementView _lineElement;
         private readonly LineElementView _characterAllInfo;
         private readonly InventoryLobby _inventoryLobby;
@@ -30,12 +31,12 @@ namespace Code.Catalog
 
         public CharacterLobby(PlayerNamePanelView enterNamePanel, Transform charactersPanel,
             LineElementView lineElement, Dictionary<string, CatalogItem> catalog, InventoryLobby inventoryLobby,
-            Transform otherPanel, LineElementView characterAllInfo)
+            Transform panel, LineElementView characterAllInfo)
         {
             _enterNamePanel = enterNamePanel;
             _charactersPanel = charactersPanel;
             _lineElement = lineElement;
-            _otherPanel = otherPanel;
+            _panel = panel;
             _characterAllInfo = characterAllInfo;
             _catalog = catalog;
             _inventoryLobby = inventoryLobby;
@@ -94,6 +95,12 @@ namespace Code.Catalog
                             OnCharacterButtonClick(characterLine.GetInstanceID());
                             _isInfo = true;
                         }
+
+                        if (!PlayerPrefs.HasKey(PreferenceKeys.AUTH_KEY_CHARACTER_ID))
+                        {
+                            PlayerPrefs.SetString(PreferenceKeys.AUTH_KEY_CHARACTER_ID, character.CharacterId);
+                            PlayerPrefs.SetString(PreferenceKeys.AUTH_KEY_CHARACTER_TYPE, character.CharacterType);
+                        }
                     }
                 }, Error);
         }
@@ -102,7 +109,7 @@ namespace Code.Catalog
         {
             foreach (var storeItem in _characterCatalog)
             {
-                var newAddButton = Object.Instantiate(_lineElement, _otherPanel);
+                var newAddButton = Object.Instantiate(_lineElement, _panel);
                 newAddButton.gameObject.SetActive(true);
                 newAddButton.Button.image.color = _color;
                 newAddButton.TextUp.text = $"{_catalog[storeItem.Key].DisplayName} {_catalog[storeItem.Key].ItemId}";
@@ -219,9 +226,11 @@ namespace Code.Catalog
                         {
                             _characterAllInfo.TextUp.text = character.CharacterName;
                             _characterAllInfo.TextDown.text =
-                                $"<b>ID</b>\n{character.CharacterId}\n<b>Type</b>\n{character.CharacterType}";
+                                $"<b>ID</b> {character.CharacterId}\n<b>Type</b> {character.CharacterType}";
 
                             UpdateCharacterStatisticsInCharacterInfo(characterId);
+                            PlayerPrefs.SetString(PreferenceKeys.AUTH_KEY_CHARACTER_ID, character.CharacterId);
+                            PlayerPrefs.SetString(PreferenceKeys.AUTH_KEY_CHARACTER_TYPE, character.CharacterType);
                         }
                     }
                 }, Error);
@@ -236,7 +245,7 @@ namespace Code.Catalog
                 result =>
                 {
                     _characterAllInfo.TextDown.text +=
-                        $"\n<b>Level</b>\n{result.CharacterStatistics["Level"]}\n<b>Experience</b>\n{result.CharacterStatistics["Experience"]}";
+                        $"\n<b>Level</b> {result.CharacterStatistics["Level"]}\n<b>Experience</b> {result.CharacterStatistics["Experience"]}";
                 },
                 Debug.LogError);
         }

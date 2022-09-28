@@ -19,4 +19,4 @@ MonoBehaviour:
   SpawnPoints: {fileID: 2081121675885824800, guid: 7644e419ee894b64ead8f7f7cdf6ac62,
     type: 3}
   _happiness: 100
-  _speed: 100
+  _speed: 200

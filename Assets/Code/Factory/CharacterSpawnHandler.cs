@@ -1,29 +1,54 @@
-﻿using System;
-using Code.Configs;
-using Code.Interfaces;
+﻿using Code.Configs;
+using Code.Controllers;
 using Code.UserInput;
+using PlayFab;
+using PlayFab.ClientModels;
 using UnityEngine;
 
 namespace Code.Factory
 {
-    internal class CharacterSpawnHandler : ICleanup
+    internal class CharacterSpawnHandler
     {
-        public Action<string> IsCharacterSelected;
-        public Action IsCharacterCreated;
+        private readonly string _characterPlayFabID;
         private readonly PlayerConfig _playerConfig;
+        private readonly CameraConfig _cameraConfig;
         private readonly InputInitialization _input;
         private ICharacterFactory _factory;
         private Transform _selectedCharacter;
         public CharacterInitialization Character { get; private set; }
 
-        public CharacterSpawnHandler(PlayerConfig playerConfig, InputInitialization input)
+        public CharacterSpawnHandler(PlayerConfig playerConfig, InputInitialization input, CameraConfig cameraConfig, NetworkSynchronizationController networkSynchronizationController)
         {
             _playerConfig = playerConfig;
             _input = input;
-            IsCharacterSelected += OnSelectedCharacter;
+            _cameraConfig = cameraConfig;
+            _characterPlayFabID = PlayerPrefs.GetString(PreferenceKeys.AUTH_KEY_CHARACTER_ID);
+            OnSelectedCharacter(PlayerPrefs.GetString(PreferenceKeys.AUTH_KEY_CHARACTER_TYPE), networkSynchronizationController);
+            //GetCurrentCharacter();
         }
 
-        private void OnSelectedCharacter(string type)
+        private void GetCurrentCharacter()
+        {
+            PlayFabClientAPI.GetAllUsersCharacters(new ListUsersCharactersRequest(),
+                result =>
+                {
+                    foreach (var character in result.Characters)
+                    {
+                        if (character.CharacterId == _characterPlayFabID)
+                        {
+                            //OnSelectedCharacter(character.CharacterType);
+                        }
+                        // var characterLine = Object.Instantiate(_lineElement, _characterSelectedPanel);
+                        // characterLine.gameObject.SetActive(true);
+                        // characterLine.TextUp.text = $"{character.CharacterName}";
+                        // characterLine.Button.onClick.AddListener(() => SelectCharacter(character.CharacterType));
+                        // UpdateCharacterView(character.CharacterId, characterLine.TextDown);
+                        // _lineElements.Add(characterLine);
+                    }
+                }, Debug.LogError);
+        }
+
+        private void OnSelectedCharacter(string type, NetworkSynchronizationController networkSynchronizationController)
         {
             switch (type)
             {
@@ -39,13 +64,7 @@ namespace Code.Factory
             }
 
             _factory = new CharacterFactory(_selectedCharacter, _playerConfig.SpawnPoints);
-            Character = new CharacterInitialization(_factory, _input, _playerConfig);
-            IsCharacterCreated?.Invoke();
-        }
-
-        public void Cleanup()
-        {
-            IsCharacterSelected -= OnSelectedCharacter;
+            Character = new CharacterInitialization(_factory, _input, _playerConfig, _cameraConfig, networkSynchronizationController);
         }
     }
 }

@@ -9,6 +9,8 @@
         <e p="Code" t="Include">
           <e p="Assistance" t="Include">
             <e p="Assistant.cs" t="Include" />
+            <e p="SerialiseAssistance.cs" t="Include" />
+            <e p="Tags.cs" t="Include" />
           </e>
           <e p="Catalog" t="Include">
             <e p="CatalogManager.cs" t="Include" />
@@ -18,11 +20,11 @@
           </e>
           <e p="Configs" t="Include">
             <e p="CameraConfig.cs" t="Include" />
-            <e p="PlayerActionsNameConfig.cs" t="Include" />
             <e p="PlayerConfig.cs" t="Include" />
-            <e p="PreferenceKeysConfig.cs" t="Include" />
+            <e p="PreferenceKeys.cs" t="Include" />
             <e p="ResourcesConfig.cs" t="Include" />
             <e p="TextFeedbackMessages.cs" t="Include" />
+            <e p="UnionResourcesConfig.cs" t="Include" />
           </e>
           <e p="Controllers" t="Include">
             <e p="CameraController.cs" t="Include" />
@@ -31,19 +33,21 @@
             <e p="CharacterView.cs" t="Include" />
             <e p="Controllers.cs" t="Include" />
             <e p="GameStartController.cs" t="Include" />
+            <e p="NetworkSynchronizationController.cs" t="Include" />
+            <e p="PhotonConnectionController.cs" t="Include" />
+            <e p="StartingDataSender.cs" t="Include" />
             <e p="SystemController.cs" t="Include" />
             <e p="ViewController.cs" t="Include" />
           </e>
           <e p="Factory" t="Include">
             <e p="CharacterFactory.cs" t="Include" />
             <e p="CharacterInitialization.cs" t="Include" />
+            <e p="CharacterModel.cs" t="Include" />
+            <e p="CharacterPhotonView.cs" t="Include" />
             <e p="CharacterSpawnHandler.cs" t="Include" />
             <e p="HitHandler.cs" t="Include" />
             <e p="ICharacterFactory.cs" t="Include" />
-            <e p="ResourceHandler.cs" t="Include" />
-            <e p="ResourcesName.cs" t="Include" />
-            <e p="ResourcesSpawnHandler.cs" t="Include" />
-            <e p="ResourcesSpawnPlacesGenerator.cs" t="Include" />
+            <e p="PlayersList.cs" t="Include" />
           </e>
           <e p="HappyCity.asmdef" t="Include" />
           <e p="Interfaces" t="Include">
@@ -52,6 +56,7 @@
             <e p="IExecute.cs" t="Include" />
             <e p="IFixedExecute.cs" t="Include" />
             <e p="IInitialization.cs" t="Include" />
+            <e p="ILateExecute.cs" t="Include" />
           </e>
           <e p="PhotonLogin" t="Include">
             <e p="PhotonLogin.cs" t="Include" />
@@ -62,6 +67,20 @@
             <e p="ConnectionState.cs" t="Include" />
             <e p="LoginManager.cs" t="Include" />
             <e p="PlayFabLogin.cs" t="Include" />
+          </e>
+          <e p="ResourcesSpawn" t="Include">
+            <e p="ResourceHandler.cs" t="Include" />
+            <e p="ResourcesPlaceGeneratorLists.cs" t="Include" />
+            <e p="ResourcesSpawner.cs" t="Include" />
+            <e p="ResourcesSpawnPlacesGenerator.cs" t="Include" />
+            <e p="ResourcesType.cs" t="Include" />
+            <e p="UnionResourcesConfigParser.cs" t="Include" />
+          </e>
+          <e p="Timer" t="Include">
+            <e p="ITimeRemaining.cs" t="Include" />
+            <e p="TimeRemaining.cs" t="Include" />
+            <e p="TimeRemainingController.cs" t="Include" />
+            <e p="TimeRemainingExtensions.cs" t="Include" />
           </e>
           <e p="UserInput" t="Include">
             <e p="AxisInput.cs" t="Include" />
@@ -75,6 +94,7 @@
           <e p="View" t="Include">
             <e p="AuthorizationMenuView.cs" t="Include" />
             <e p="GameRoomView.cs" t="Include" />
+            <e p="ImageLineElement.cs" t="Include" />
             <e p="LineElementView.cs" t="Include" />
             <e p="LoadingIndicatorView.cs" t="Include" />
             <e p="PlayerNamePanelView.cs" t="Include" />
@@ -82,7 +102,8 @@
             <e p="TextElementView.cs" t="Include" />
           </e>
           <e p="ViewHandlers" t="Include">
-            <e p="CharacterSelectedPanelViewHandler.cs" t="Include" />
+            <e p="ResourcesPanelViewHandler.cs" t="Include" />
+            <e p="TasksPanelViewHandler.cs" t="Include" />
           </e>
         </e>
         <e p="CustomAssets" t="Include">

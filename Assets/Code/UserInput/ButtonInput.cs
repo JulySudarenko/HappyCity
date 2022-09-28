@@ -24,6 +24,10 @@ namespace Code.UserInput
         public void GetButtonHold()
         {
             OnButtonHold?.Invoke(Input.GetButton(_button));
+            if (_button == KeyCode.Mouse0.ToString())
+            {
+                Debug.Log("Mouse input");
+            }
         }
 
         public void GetButtonUp()

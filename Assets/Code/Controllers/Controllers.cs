@@ -8,6 +8,7 @@ namespace Code.Controllers
         private readonly List<IInitialization> _initializeControllers;
         private readonly List<IFixedExecute> _fixedControllers;
         private readonly List<IExecute> _executeControllers;
+        private readonly List<ILateExecute> _lateExecuteControllers;
         private readonly List<ICleanup> _cleanupControllers;
 
         internal Controllers()
@@ -15,6 +16,7 @@ namespace Code.Controllers
             _initializeControllers = new List<IInitialization>();
             _fixedControllers = new List<IFixedExecute>();
             _executeControllers = new List<IExecute>();
+            _lateExecuteControllers = new List<ILateExecute>();
             _cleanupControllers = new List<ICleanup>();
         }
 
@@ -35,11 +37,16 @@ namespace Code.Controllers
                 _executeControllers.Add(executeController);
             }
 
+            if (controller is ILateExecute lateController)
+            {
+                _lateExecuteControllers.Add(lateController);
+            }
+
             if (controller is ICleanup cleanupController)
             {
                 _cleanupControllers.Add(cleanupController);
             }
-
+            
             return this;
         }
 
@@ -64,6 +71,14 @@ namespace Code.Controllers
             for (var index = 0; index < _executeControllers.Count; ++index)
             {
                 _executeControllers[index].Execute(deltaTime);
+            }
+        }
+        
+        public void LateExecute(float deltaTime)
+        {
+            for (var index = 0; index < _lateExecuteControllers.Count; ++index)
+            {
+                _lateExecuteControllers[index].LateExecute(deltaTime);
             }
         }
 

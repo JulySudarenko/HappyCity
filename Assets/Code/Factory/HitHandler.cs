@@ -3,14 +3,13 @@ using UnityEngine;
 
 namespace Code.Factory
 {
-    internal class HitHandler : MonoBehaviour
+    public class HitHandler : MonoBehaviour
     {
-        public Action<int, int> IsHit;
+        public Action<int, string> IsHit;
 
         private void OnCollisionEnter(Collision other)
         {
-            IsHit?.Invoke(other.gameObject.GetInstanceID(), gameObject.GetInstanceID());
-            Debug.Log($"Hit {other.gameObject.GetInstanceID()}");
+                IsHit?.Invoke(other.gameObject.GetInstanceID(), other.gameObject.tag);
         }
     }
 }

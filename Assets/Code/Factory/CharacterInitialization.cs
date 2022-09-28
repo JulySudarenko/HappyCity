@@ -1,45 +1,52 @@
-﻿using Code.Assistance;
-using Code.Configs;
+﻿using Code.Configs;
 using Code.Controllers;
+using Code.Interfaces;
 using Code.UserInput;
 using UnityEngine;
 
 
 namespace Code.Factory
 {
-    internal class CharacterInitialization
+    internal class CharacterInitialization : IInitialization, IExecute, IFixedExecute, ILateExecute, ICleanup
     {
-        public Transform Transform { get; }
-        public Rigidbody Rigidbody { get; }
-        public HitHandler HitHandler { get; }
-        public int ColliderID { get; }
-        
-        public CharacterInitialization(ICharacterFactory playerFactory, InputInitialization input, PlayerConfig config)
+        public CharacterModel CharacterModel { get; }
+        private readonly CharacterMoveController _moveController;
+        private readonly CharacterAnimatorController _animatorController;
+        private readonly CameraController _cameraController;
+
+        public CharacterInitialization(ICharacterFactory playerFactory, InputInitialization input, PlayerConfig config,
+            CameraConfig cameraConfig, NetworkSynchronizationController networkSynchronizationController)
         {
-            var character = playerFactory.SpawnCharacter();
-            Transform = character.transform;
-            Rigidbody = character.GetOrAddComponent<Rigidbody>();
-            Rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
-            HitHandler = character.GetOrAddComponent<HitHandler>();
-            var collider = character.GetOrAddComponent<Collider>();
-            ColliderID = collider.GetInstanceID();
-            Debug.Log($"character ID {ColliderID}");
-            
-            InitMoveController(character, input, config);
-            InitAnimatorController(character, input, config);
+            CharacterModel = new CharacterModel(playerFactory, networkSynchronizationController);
+            var camera = Camera.main;
+            _moveController = new CharacterMoveController(CharacterModel, input, config, camera);
+            _animatorController = new CharacterAnimatorController(CharacterModel, _moveController);
+            _cameraController = new CameraController(camera.transform, cameraConfig, CharacterModel.Transform);
         }
 
-        private void InitMoveController(GameObject character, InputInitialization input, PlayerConfig config)
+        public void Initialize()
         {
-            var characterMoveController = character.GetOrAddComponent<CharacterMoveController>();
-            characterMoveController.Init(input, config, Rigidbody);
+            _moveController.Initialize();
         }
 
-        private void InitAnimatorController(GameObject character, InputInitialization input, PlayerConfig config)
+        public void FixedExecute(float deltaTime)
         {
-            var animator = character.GetOrAddComponent<Animator>();
-            var animatorController = character.GetOrAddComponent<CharacterAnimatorController>();
-            animatorController.Init(input, animator, config);
+            _moveController.FixedExecute(deltaTime);
+        }
+
+        public void Execute(float deltaTime)
+        {
+            _animatorController.Execute(deltaTime);
+        }
+
+        public void LateExecute(float deltaTime)
+        {
+            _cameraController.LateExecute(deltaTime);
+        }
+
+        public void Cleanup()
+        {
+            _moveController.Cleanup();
         }
     }
 }

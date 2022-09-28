@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.IO;
+using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Code.Assistance
 {
@@ -20,5 +22,11 @@ namespace Code.Assistance
             return new Vector3(x == null ? org.x : (float) x, y == null ? org.y : (float) y,
                 z == null ? org.z : (float) z);
         }
+        
+        public static T Load<T>(string resourcesPath) where T : Object =>
+            Resources.Load<T>(Path.ChangeExtension(resourcesPath, null));
+        
+        public static T[] LoadAll<T>(string resourcesPath) where T : Object =>
+            Resources.LoadAll<T>(Path.ChangeExtension(resourcesPath, null));
     }
 }

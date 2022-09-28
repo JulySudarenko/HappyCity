@@ -1,4 +1,4 @@
-﻿using Code.Factory;
+﻿using Code.Configs;
 using Code.Interfaces;
 using Code.View;
 using Code.ViewHandlers;
@@ -8,22 +8,26 @@ namespace Code.Controllers
 {
     internal class ViewController : IInitialization, ICleanup
     {
-        
-        private readonly CharacterSelectedPanelViewHandler _characterSelectedPanel;
+        private readonly ResourcesPanelViewHandler _resourcesPanelViewHandler;
+        private readonly TasksPanelViewHandler _tasksPanelViewHandler;
 
-        public ViewController(Transform characterSelectedPanel, LineElementView lineElement, CharacterSpawnHandler spawnHandler)
+        public ViewController(UnionResourcesConfig unionResourcesConfig, Transform resourcesPanelView,
+            ImageLineElement resourceLineElement, Transform tasksPanelView, LineElementView tasksLineElement)
         {
-            _characterSelectedPanel = new CharacterSelectedPanelViewHandler(characterSelectedPanel, lineElement, spawnHandler);
+            _resourcesPanelViewHandler =
+                new ResourcesPanelViewHandler(unionResourcesConfig, resourcesPanelView, resourceLineElement);
+
+            _tasksPanelViewHandler = new TasksPanelViewHandler(tasksPanelView, tasksLineElement);
         }
 
         public void Initialize()
         {
-            _characterSelectedPanel.Init();
+            _resourcesPanelViewHandler.Initialize();
+            _tasksPanelViewHandler.Initialize();
         }
 
         public void Cleanup()
         {
-            _characterSelectedPanel.Cleanup();
         }
     }
 }
