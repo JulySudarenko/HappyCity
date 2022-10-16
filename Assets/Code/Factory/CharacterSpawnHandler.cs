@@ -1,6 +1,5 @@
 ﻿using Code.Configs;
 using Code.Controllers;
-using Code.UserInput;
 using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine;
@@ -11,19 +10,17 @@ namespace Code.Factory
     {
         private readonly string _characterPlayFabID;
         private readonly PlayerConfig _playerConfig;
-        private readonly CameraConfig _cameraConfig;
-        private readonly InputInitialization _input;
         private ICharacterFactory _factory;
         private Transform _selectedCharacter;
-        public CharacterInitialization Character { get; private set; }
+        public CharacterModel Character { get; private set; }
 
-        public CharacterSpawnHandler(PlayerConfig playerConfig, InputInitialization input, CameraConfig cameraConfig, NetworkSynchronizationController networkSynchronizationController)
+        public CharacterSpawnHandler(PlayerConfig playerConfig,
+            NetworkSynchronizationController networkSynchronizationController)
         {
             _playerConfig = playerConfig;
-            _input = input;
-            _cameraConfig = cameraConfig;
             _characterPlayFabID = PlayerPrefs.GetString(PreferenceKeys.AUTH_KEY_CHARACTER_ID);
-            OnSelectedCharacter(PlayerPrefs.GetString(PreferenceKeys.AUTH_KEY_CHARACTER_TYPE), networkSynchronizationController);
+            OnSelectedCharacter(PlayerPrefs.GetString(PreferenceKeys.AUTH_KEY_CHARACTER_TYPE),
+                networkSynchronizationController);
             //GetCurrentCharacter();
         }
 
@@ -38,6 +35,7 @@ namespace Code.Factory
                         {
                             //OnSelectedCharacter(character.CharacterType);
                         }
+
                         // var characterLine = Object.Instantiate(_lineElement, _characterSelectedPanel);
                         // characterLine.gameObject.SetActive(true);
                         // characterLine.TextUp.text = $"{character.CharacterName}";
@@ -64,7 +62,7 @@ namespace Code.Factory
             }
 
             _factory = new CharacterFactory(_selectedCharacter, _playerConfig.SpawnPoints);
-            Character = new CharacterInitialization(_factory, _input, _playerConfig, _cameraConfig, networkSynchronizationController);
+            Character = new CharacterModel(_factory, networkSynchronizationController);
         }
     }
 }

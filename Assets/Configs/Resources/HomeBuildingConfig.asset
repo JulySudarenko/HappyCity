@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df919dc09e00409e9ffbc76a1a008fcc, type: 3}
+  m_Name: HomeBuildingConfig
+  m_EditorClassIdentifier: 
+  Prefab:
+  - {fileID: 4799329993547771347, guid: c363b6c83f8e41740b9a8f2d72c2ae37, type: 3}
+  - {fileID: 3752783734696736729, guid: 279d7de70503c974aa03c8bb73883399, type: 3}
+  - {fileID: 16106842363607404, guid: 0356e720b0a58dc45891a7cebc581533, type: 3}
+  - {fileID: 5419587439883899256, guid: b417a187c5126e548b6e9809678fbbc7, type: 3}
+  - {fileID: 9159765010968695908, guid: a35d4428a5a71df46a8e52221359a6eb, type: 3}
+  - {fileID: 8339221448221957945, guid: 62e0cbaf6e535f648b3ff4a63e6ccd66, type: 3}
+  Places:
+  - {fileID: 4465641708211859824, guid: 3f4d3d2d3bab5d742a5263bf4535e71a, type: 3}
+  - {fileID: 1578459264880487080, guid: d8084ffbb73ddfc4fad28f782f0c33e6, type: 3}
+  - {fileID: 5669600090013350759, guid: 22531ff3741f8d34b98d34a9567d7cc4, type: 3}
+  - {fileID: 7990084278587814871, guid: 4abe1186d01a35244b4f06b95e66bd5d, type: 3}
+  - {fileID: 8098402293460369174, guid: a6609bdc255dbdf4ca36090f19316029, type: 3}
+  - {fileID: 5626407851799978700, guid: 18160ab5b9c5d184e984033cdee83e65, type: 3}
+  - {fileID: 4088888806907927662, guid: ee9e7362cb6e44f4bbd69f011637387e, type: 3}
+  - {fileID: 4391136617259775806, guid: 3cf0cb653f5113e41b47a2831ca21b92, type: 3}
+  - {fileID: 7702357306173379086, guid: 8c8429f8f42699442a7cfbf928ad0307, type: 3}
+  - {fileID: 3575757536871001104, guid: 028b2addd53ff6a4f880b1726900252a, type: 3}
+  - {fileID: 6443993129042733087, guid: c39eac73cab36594ca0f408cb619c73d, type: 3}
+  - {fileID: 628511568407162104, guid: fbfb40813c06c224fa5a3739b6963973, type: 3}
+  _woodCost: 10
+  _foodCost: 10
+  _stoneCost: 10
+  _goldCost: 0
+  _population: 3
+  _goldReward: 50

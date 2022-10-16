@@ -25,12 +25,12 @@ namespace Code.Controllers
 
         private void SendResourcePlaces()
         {
-            // for (int i = 0; i < _placeGeneratorLists.AllFoodPlaces.Length; i++)
-            // {
-            //     PhotonNetwork.RaiseEvent(111, _placeGeneratorLists.AllFoodPlaces[i],
-            //         new RaiseEventOptions() {Receivers = ReceiverGroup.Others},
-            //         new SendOptions() {Reliability = true});
-            // }
+            for (int i = 0; i < _placeGeneratorLists.AllFoodPlaces.Length; i++)
+            {
+                PhotonNetwork.RaiseEvent(111, _placeGeneratorLists.AllFoodPlaces[i],
+                    new RaiseEventOptions() {Receivers = ReceiverGroup.Others},
+                    new SendOptions() {Reliability = true});
+            }
 
             for (int i = 0; i < _placeGeneratorLists.AllWoodPlaces.Length; i++)
             {
@@ -39,14 +39,14 @@ namespace Code.Controllers
                     new RaiseEventOptions() {Receivers = ReceiverGroup.Others},
                     new SendOptions() {Reliability = true});
             }
-            //
-            // for (int i = 0; i < _placeGeneratorLists.AllStonePlaces.Length; i++)
-            // {
-            //     PhotonNetwork.RaiseEvent(113,
-            //         _placeGeneratorLists.AllStonePlaces[i],
-            //         new RaiseEventOptions() {Receivers = ReceiverGroup.Others},
-            //         new SendOptions() {Reliability = true});
-            // }
+            
+            for (int i = 0; i < _placeGeneratorLists.AllStonePlaces.Length; i++)
+            {
+                PhotonNetwork.RaiseEvent(113,
+                    _placeGeneratorLists.AllStonePlaces[i],
+                    new RaiseEventOptions() {Receivers = ReceiverGroup.Others},
+                    new SendOptions() {Reliability = true});
+            }
         }
 
         public void Cleanup()

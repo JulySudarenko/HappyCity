@@ -15,6 +15,8 @@ namespace Code.Controllers
     public class NetworkSynchronizationController : MonoBehaviourPun, IOnEventCallback
     {
         public Action<int> AllPointsReceived;
+        public Action<Vector3> RemoveResource;
+        public Action<Vector3> InstallResource;
         private PlayersList _playersList;
         private LoadingIndicatorView _loadingIndicator;
         public List<Vector3> AllWoodPlaces { get; } = new List<Vector3>();
@@ -25,7 +27,8 @@ namespace Code.Controllers
         private int _foodCount;
         private int _stoneCount;
 
-        public void Init(LoadingIndicatorView loadingIndicatorView, UnionResourcesConfigParser unionResourcesConfigParser)
+        public void Init(LoadingIndicatorView loadingIndicatorView,
+            UnionResourcesConfigParser unionResourcesConfigParser)
         {
             _playersList = new PlayersList(loadingIndicatorView);
             _loadingIndicator = loadingIndicatorView;
@@ -48,9 +51,6 @@ namespace Code.Controllers
         {
             switch (photonEvent.Code)
             {
-                case 101:
-                    //_playersList.AddPlayer(photonEvent.CustomData);
-                    break;
                 case 111:
                     var vector = photonEvent.CustomData;
                     AllFoodPlaces.Add((Vector3) vector);
@@ -58,13 +58,11 @@ namespace Code.Controllers
                     if (AllFoodPlaces.Count == _foodCount)
                     {
                         AllPointsReceived?.Invoke(photonEvent.Code);
-
                     }
 
                     break;
                 case 112:
                     AllWoodPlaces.Add((Vector3) photonEvent.CustomData);
-                    //_loadingIndicator.UpdateFeedbackText(photonEvent.CustomData.ToString());
                     if (AllWoodPlaces.Count == _woodCount)
                     {
                         AllPointsReceived?.Invoke(photonEvent.Code);
@@ -79,6 +77,12 @@ namespace Code.Controllers
                         AllPointsReceived?.Invoke(photonEvent.Code);
                     }
 
+                    break;
+                case 114:
+                    RemoveResource?.Invoke((Vector3) photonEvent.CustomData);
+                    break;
+                case 115:
+                    InstallResource?.Invoke((Vector3) photonEvent.CustomData);
                     break;
                 default:
                     //_loadingIndicator.UpdateFeedbackText(photonEvent.Code.ToString());

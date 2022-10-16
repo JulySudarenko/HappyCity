@@ -32,15 +32,15 @@ namespace Code.ResourcesSpawn
                 {
                     case ResourcesType.Wood:
                         WoodConfig = config;
-                        WoodTotalCount = forestPlaceArrayCount * WoodConfig.Count;
+                        WoodTotalCount = forestPlaceArrayCount * WoodConfig.SpawnCount;
                         break;
                     case ResourcesType.Stone:
                         StoneConfig = config;
-                        StoneTotalCount = rockPlaceArrayCount * StoneConfig.Count;
+                        StoneTotalCount = rockPlaceArrayCount * StoneConfig.SpawnCount;
                         break;
                     case ResourcesType.Food:
                         FoodConfig = config;
-                        FoodTotalCount = forestPlaceArrayCount * FoodConfig.Count;
+                        FoodTotalCount = forestPlaceArrayCount * FoodConfig.SpawnCount;
                         break;
                     case ResourcesType.Gold:
                         GoldConfig = config;

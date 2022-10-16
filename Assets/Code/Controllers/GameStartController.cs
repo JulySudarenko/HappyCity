@@ -1,4 +1,4 @@
-﻿ using Code.Assistance;
+﻿using Code.Assistance;
 using Code.Configs;
 using Code.Factory;
 using Code.ResourcesSpawn;
@@ -18,6 +18,10 @@ namespace Code.Controllers
         [Header("Configs")] [SerializeField] private InputConfig _inputConfig;
         [SerializeField] private PlayerConfig _playerConfig;
         [SerializeField] private CameraConfig _cameraConfig;
+        [SerializeField] private NonPlayerCharacterConfig _npcConfig;
+
+        [Header("Buildings")] [SerializeField] private BuildingConfig _houseConfig;
+        [SerializeField] private BuildingConfig _farmConfig;
 
         [Header("Resources")] [SerializeField] private SpawnPlacesView _resourcesSpawnPlaces;
         [SerializeField] private UnionResourcesConfig _unionResourcesConfig;
@@ -26,99 +30,102 @@ namespace Code.Controllers
 
         [Header("Tasks")] [SerializeField] private Transform _tasksPanelView;
         [SerializeField] private LineElementView _tasksLineElement;
+        [SerializeField] private LineElementView _messagePanelView;
 
         private Controllers _controllers;
-        private ResourcesPlaceGeneratorLists _placeGeneratorLists;
-        private NetworkSynchronizationController _networkSynchronizer;
-        private UnionResourcesConfigParser _unionResourcesParser;
-        private CharacterSpawnHandler _characterSpawner;
 
         private void Awake()
         {
-            _unionResourcesParser = new UnionResourcesConfigParser(_unionResourcesConfig,
+            _controllers = new Controllers();
+            var camera = Camera.main;
+
+            var unionResourcesParser = new UnionResourcesConfigParser(_unionResourcesConfig,
                 _resourcesSpawnPlaces.ForestPlaces.Length, _resourcesSpawnPlaces.StonePlaces.Length);
 
-            PhotonConnectionController photonConnectionController =
+            var photonConnectionController =
                 gameObject.GetOrAddComponent<PhotonConnectionController>();
             photonConnectionController.Init(_loadingIndicator);
 
-            _networkSynchronizer =
+            var networkSynchronizer =
                 gameObject.GetOrAddComponent<NetworkSynchronizationController>();
-            _networkSynchronizer.Init(_loadingIndicator, _unionResourcesParser);
+            networkSynchronizer.Init(_loadingIndicator, unionResourcesParser);
 
             var input = new InputInitialization(_inputConfig);
             var inputController = new InputController(input);
 
-            _characterSpawner = new CharacterSpawnHandler(_playerConfig, input, _cameraConfig, _networkSynchronizer);
+            var characterSpawner = new CharacterSpawnHandler(_playerConfig, networkSynchronizer);
 
-            _controllers = new Controllers();
+            var playerController =
+                new PlayerController(input, _playerConfig, characterSpawner.Character, camera);
 
+            var cameraController = new CameraController(camera.transform, _cameraConfig,
+                characterSpawner.Character.Transform);
+
+            var woodCounter = new ResourceCounterController(unionResourcesParser.WoodConfig, characterSpawner.Character,
+                ResourcesType.Wood);
+            var foodCounter = new ResourceCounterController(unionResourcesParser.FoodConfig, characterSpawner.Character,
+                ResourcesType.Food);
+            var stoneCounter = new ResourceCounterController(unionResourcesParser.StoneConfig,
+                characterSpawner.Character, ResourcesType.Stone);
+            var goldCounter = new ResourceCounterController(unionResourcesParser.GoldConfig, characterSpawner.Character,
+                ResourcesType.Gold);
+
+            var resourceChecker = new QuestResourcesChecker(woodCounter, foodCounter, stoneCounter, goldCounter);
+
+            var npc = new NpcSpawnHandler(_npcConfig);
+            var quest = new QuestController(npc, characterSpawner.Character.ColliderID, _messagePanelView,
+                _houseConfig, resourceChecker);
+            var houseSpawner = new BuildingSpawnHandler(_houseConfig, quest);
+            var npcController = new NpcController(_npcConfig, npc);
 
             if (PhotonNetwork.IsMasterClient)
             {
                 _loadingIndicator.UpdateFeedbackText("MASTER");
-                _placeGeneratorLists = new ResourcesPlaceGeneratorLists(_resourcesSpawnPlaces, _unionResourcesParser);
-                var dataSender = new StartingDataSender(_placeGeneratorLists, photonConnectionController);
+                var placeGeneratorLists = new ResourcesPlaceGeneratorLists(_resourcesSpawnPlaces, unionResourcesParser);
+                var dataSender = new StartingDataSender(placeGeneratorLists, photonConnectionController);
                 _controllers.Add(dataSender);
 
-                // for (int i = 0; i < _placeGeneratorLists.AllFoodPlaces.Length; i++)
-                // {
-                //     PhotonNetwork.RaiseEvent(111, _placeGeneratorLists.AllFoodPlaces[i],
-                //         new RaiseEventOptions() {Receivers = ReceiverGroup.All},
-                //         new SendOptions() {Reliability = true});
-                // }
-                //
-                // for (int i = 0; i < _placeGeneratorLists.AllWoodPlaces.Length; i++)
-                // {
-                //     PhotonNetwork.RaiseEvent(112,
-                //         _placeGeneratorLists.AllWoodPlaces[i],
-                //         new RaiseEventOptions() {Receivers = ReceiverGroup.All},
-                //         new SendOptions() {Reliability = true});
-                // }
-                //
-                // for (int i = 0; i < _placeGeneratorLists.AllStonePlaces.Length; i++)
-                // {
-                //     PhotonNetwork.RaiseEvent(113,
-                //         _placeGeneratorLists.AllStonePlaces[i],
-                //         new RaiseEventOptions() {Receivers = ReceiverGroup.All},
-                //         new SendOptions() {Reliability = true});
-                // }
-                //
-                var woodSpawner = new ResourcesSpawner(_placeGeneratorLists.AllWoodPlaces,
-                    _unionResourcesParser.WoodConfig, _characterSpawner.Character.CharacterModel.CharacterID);
-                var stoneSpawner = new ResourcesSpawner(_placeGeneratorLists.AllStonePlaces,
-                    _unionResourcesParser.StoneConfig, _characterSpawner.Character.CharacterModel.CharacterID);
-                var foodSpawner = new ResourcesSpawner(_placeGeneratorLists.AllFoodPlaces,
-                    _unionResourcesParser.FoodConfig, _characterSpawner.Character.CharacterModel.CharacterID);
+                var woodSpawner = new ResourcesSpawner(placeGeneratorLists.AllWoodPlaces,
+                    unionResourcesParser.WoodConfig, characterSpawner.Character.CharacterID,
+                    networkSynchronizer);
+                var stoneSpawner = new ResourcesSpawner(placeGeneratorLists.AllStonePlaces,
+                    unionResourcesParser.StoneConfig, characterSpawner.Character.CharacterID,
+                    networkSynchronizer);
+                var foodSpawner = new ResourcesSpawner(placeGeneratorLists.AllFoodPlaces,
+                    unionResourcesParser.FoodConfig, characterSpawner.Character.CharacterID,
+                    networkSynchronizer);
 
-                // _controllers.Add(woodSpawner);
-                // _controllers.Add(stoneSpawner);
-                // _controllers.Add(foodSpawner);
+                woodCounter.Init(woodSpawner);
+                foodCounter.Init(foodSpawner);
+                stoneCounter.Init(stoneSpawner);
             }
             else
             {
                 _loadingIndicator.UpdateFeedbackText($"NOT MASTER");
-                var resourcesSpawner = new ResourcesSpawnController(_placeGeneratorLists, _unionResourcesParser,
-                    _characterSpawner, _loadingIndicator, _networkSynchronizer);
+                var resourcesSpawner =
+                    new ResourcesSpawnController(unionResourcesParser, characterSpawner, networkSynchronizer);
 
-                // _controllers.Add(resourcesSpawner.WoodSpawner);
-                // _controllers.Add(resourcesSpawner.FoodSpawner);
-                // _controllers.Add(resourcesSpawner.StoneSpawner);
+                woodCounter.Init(resourcesSpawner.WoodSpawner);
+                foodCounter.Init(resourcesSpawner.FoodSpawner);
+                stoneCounter.Init(resourcesSpawner.StoneSpawner);
             }
-            //
-            // var resourcesSpawner = new ResourcesSpawnController(photonConnectionController, _placeGeneratorLists,
-            //     _unionResourcesParser, _characterSpawner, _loadingIndicator, _networkSynchronizer);
-            //     
-            // _controllers.Add(resourcesSpawner.WoodSpawner);
-            // _controllers.Add(resourcesSpawner.FoodSpawner);
-            // _controllers.Add(resourcesSpawner.StoneSpawner);
 
             var viewController = new ViewController(_unionResourcesConfig, _resourcesPanelView, _resourceLineElement,
-                _tasksPanelView, _tasksLineElement);
+                _tasksPanelView, _tasksLineElement, woodCounter, foodCounter, stoneCounter, quest);
+
+            _controllers.Add(playerController);
+            _controllers.Add(cameraController);
+            
+            _controllers.Add(npcController);
+            _controllers.Add(quest);
+            _controllers.Add(houseSpawner);
+
+            _controllers.Add(woodCounter);
+            _controllers.Add(foodCounter);
+            _controllers.Add(stoneCounter);
 
             _controllers.Add(new TimeRemainingController());
             _controllers.Add(inputController);
-            _controllers.Add(_characterSpawner.Character);
 
             _controllers.Add(viewController);
         }
@@ -146,65 +153,6 @@ namespace Code.Controllers
         private void OnDestroy()
         {
             _controllers.Cleanup();
-        }
-    }
-
-    internal class ResourcesSpawnController
-    {
-        private ResourcesSpawner _woodSpawner;
-        private ResourcesSpawner _foodSpawner;
-        private ResourcesSpawner _stoneSpawner;
-        private readonly ResourcesPlaceGeneratorLists _placeGeneratorLists;
-        private readonly NetworkSynchronizationController _networkSynchronizer;
-        private readonly UnionResourcesConfigParser _unionResourcesParser;
-        private readonly CharacterSpawnHandler _characterSpawner;
-        private readonly LoadingIndicatorView _loadingIndicator;
-        public ResourcesSpawner WoodSpawner => _woodSpawner;
-        public ResourcesSpawner FoodSpawner => _foodSpawner;
-        public ResourcesSpawner StoneSpawner => _stoneSpawner;
-
-        private int flagCounter = 0;
-        private int flagmaxcount = 3;
-
-        public ResourcesSpawnController(ResourcesPlaceGeneratorLists placeGeneratorLists,
-            UnionResourcesConfigParser unionResourcesParser,
-            CharacterSpawnHandler characterSpawner, LoadingIndicatorView loadingIndicator,
-            NetworkSynchronizationController networkSynchronizer)
-        {
-            _placeGeneratorLists = placeGeneratorLists;
-            _unionResourcesParser = unionResourcesParser;
-            _characterSpawner = characterSpawner;
-            _loadingIndicator = loadingIndicator;
-            _networkSynchronizer = networkSynchronizer;
-            _networkSynchronizer.AllPointsReceived += CreateResources;
-        }
-
-        private void CreateResources(int code)
-        {
-            switch (code)
-            {
-                // поставить не счетчик, а ограничитель. Чтобы контроллировать по отдельности.
-                case 111:
-                    //_placeGeneratorLists.SetPlaces(ResourcesType.Food, _networkSynchronizer.AllFoodPlaces.ToArray());
-                    flagCounter++;
-                    break;
-                case 112:
-                    _woodSpawner = new ResourcesSpawner(_networkSynchronizer.AllWoodPlaces.ToArray(),
-                        _unionResourcesParser.WoodConfig, _characterSpawner.Character.CharacterModel.CharacterID);
-                    flagCounter++;
-                    break;
-                case 113:
-                    //_placeGeneratorLists.SetPlaces(ResourcesType.Stone, _networkSynchronizer.AllStonePlaces.ToArray());
-                    flagCounter++;
-                    break;
-                default:
-                    break;
-            }
-
-            if (flagCounter == flagmaxcount)
-            {
-                _networkSynchronizer.AllPointsReceived -= CreateResources;
-            }
         }
     }
 }

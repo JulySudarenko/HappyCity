@@ -27,24 +27,6 @@ namespace Code.ResourcesSpawn
         public Vector3[] AllWoodPlaces => _allWoodPlaces.ToArray();
         public Vector3[] AllStonePlaces => _allStonePlaces.ToArray();
 
-        // public void SetPlaces(ResourcesType type, Vector3[] reslist)
-        // {
-        //     switch (type)
-        //     {
-        //         case ResourcesType.Wood:
-        //             _allWoodPlaces = reslist.ToList();
-        //             break;
-        //         case ResourcesType.Stone:
-        //             _allStonePlaces = reslist.ToList();
-        //             break;
-        //         case ResourcesType.Food:
-        //             _allFoodPlaces = reslist.ToList();
-        //             break;
-        //         default:
-        //             throw new ArgumentOutOfRangeException(nameof(type), type, null);
-        //     }
-        // }
-        
         private void ConfigParse(SpawnPlacesView resourcesSpawnPlaces, UnionResourcesConfigParser unionResourcesConfigParser)
         {
             GeneratePlaces(resourcesSpawnPlaces.ForestPlaces, unionResourcesConfigParser.WoodConfig, _allWoodPlaces);

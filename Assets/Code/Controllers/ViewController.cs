@@ -10,12 +10,17 @@ namespace Code.Controllers
     {
         private readonly ResourcesPanelViewHandler _resourcesPanelViewHandler;
         private readonly TasksPanelViewHandler _tasksPanelViewHandler;
+        private readonly QuestController _questController;
 
         public ViewController(UnionResourcesConfig unionResourcesConfig, Transform resourcesPanelView,
-            ImageLineElement resourceLineElement, Transform tasksPanelView, LineElementView tasksLineElement)
+            ImageLineElement resourceLineElement, Transform tasksPanelView, LineElementView tasksLineElement,
+            ResourceCounterController woodCounter, ResourceCounterController foodCounter,
+            ResourceCounterController stoneCounter, QuestController questController)
         {
+            _questController = questController;
             _resourcesPanelViewHandler =
-                new ResourcesPanelViewHandler(unionResourcesConfig, resourcesPanelView, resourceLineElement);
+                new ResourcesPanelViewHandler(unionResourcesConfig, resourcesPanelView, resourceLineElement,
+                    woodCounter, foodCounter, stoneCounter);
 
             _tasksPanelViewHandler = new TasksPanelViewHandler(tasksPanelView, tasksLineElement);
         }
@@ -24,10 +29,14 @@ namespace Code.Controllers
         {
             _resourcesPanelViewHandler.Initialize();
             _tasksPanelViewHandler.Initialize();
+            _questController.QuestStart += _tasksPanelViewHandler.OnTaskAdd;
+            _questController.QuestDone += _tasksPanelViewHandler.OnTaskRemove;
         }
 
         public void Cleanup()
         {
+            _questController.QuestStart -= _tasksPanelViewHandler.OnTaskAdd;
+            _questController.QuestDone -= _tasksPanelViewHandler.OnTaskRemove;
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Code.ResourcesSpawn
         {
             bool flag = false;
             int actionsCounter = 0;
-            while (_places.Count < config.Count)
+            while (_places.Count < config.SpawnCount)
             {
                 var newVector = GenerateVector(center, config.Radius);
                 foreach (var place in _places)

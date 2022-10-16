@@ -16,7 +16,7 @@ MonoBehaviour:
     type: 3}
   MalePrefab: {fileID: 7639915970969365354, guid: c7ae52041ffcb824c978d7c8a44eaaee,
     type: 3}
-  SpawnPoints: {fileID: 2081121675885824800, guid: 7644e419ee894b64ead8f7f7cdf6ac62,
+  SpawnPoints: {fileID: 8514978886282465963, guid: 905d40ab74b5a724bab64509b522f695,
     type: 3}
   _happiness: 100
   _speed: 200

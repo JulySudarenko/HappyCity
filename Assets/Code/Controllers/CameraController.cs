@@ -1,10 +1,11 @@
 ﻿using Code.Configs;
+using Code.Interfaces;
 using UnityEngine;
 
 
 namespace Code.Controllers
 {
-    public class CameraController
+    public class CameraController : ILateExecute
     {
         private readonly CameraConfig _config;
         private readonly Transform _target;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Code.Configs;
+using Code.Controllers;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -8,38 +9,43 @@ namespace Code.ResourcesSpawn
 {
     internal class ResourcesSpawner : IDisposable
     {
-        private readonly List<ResourceHandler> _resources;
+        private readonly List<ResourceHandler> _resourcesList;
+        private readonly List<int> _resourcesIDList = new List<int>();
 
         public ResourcesSpawner(Vector3[] placeGenerator, ResourcesConfig resourcesConfig,
-            int characterID)
+            int characterID, NetworkSynchronizationController networkSynchronizer)
         {
             var resources = new List<Transform>();
-            _resources = new List<ResourceHandler>();
+            _resourcesList = new List<ResourceHandler>();
 
             for (int j = 0; j < placeGenerator.Length; j++)
             {
                 var res = Object.Instantiate(resourcesConfig.Resource, placeGenerator[j],
                     resourcesConfig.Resource.rotation);
                 resources.Add(res.transform);
-                var resource = new ResourceHandler(res.transform, characterID);
-                _resources.Add(resource);
+                var resource = new ResourceHandler(res.transform, characterID, placeGenerator[j], networkSynchronizer);
+                _resourcesList.Add(resource);
+                _resourcesIDList.Add(res.gameObject.GetInstanceID());
             }
+
             Init();
         }
 
+        public int[] ResourcesList => _resourcesIDList.ToArray();
+
         private void Init()
         {
-            for (int i = 0; i < _resources.Count; i++)
+            for (int i = 0; i < _resourcesList.Count; i++)
             {
-                _resources[i].Initialize();
+                _resourcesList[i].Initialize();
             }
         }
 
         public void Dispose()
         {
-            for (int i = 0; i < _resources.Count; i++)
+            for (int i = 0; i < _resourcesList.Count; i++)
             {
-                _resources[i].Cleanup();
+                _resourcesList[i].Cleanup();
             }
         }
     }

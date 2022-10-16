@@ -2,6 +2,7 @@
 using UnityEngine;
 using Object = UnityEngine.Object;
 
+
 namespace Code.Assistance
 {
     public static class Assistant

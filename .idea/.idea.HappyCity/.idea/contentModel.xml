@@ -19,9 +19,14 @@
             <e p="ProfileLoader.cs" t="Include" />
           </e>
           <e p="Configs" t="Include">
+            <e p="BuildingConfig.cs" t="Include" />
             <e p="CameraConfig.cs" t="Include" />
+            <e p="NonPlayerCharacterConfig.cs" t="Include" />
             <e p="PlayerConfig.cs" t="Include" />
             <e p="PreferenceKeys.cs" t="Include" />
+            <e p="QuestBuildingConfig.cs" t="Include" />
+            <e p="QuestConfig.cs" t="Include" />
+            <e p="QuestNpcConfig.cs" t="Include" />
             <e p="ResourcesConfig.cs" t="Include" />
             <e p="TextFeedbackMessages.cs" t="Include" />
             <e p="UnionResourcesConfig.cs" t="Include" />
@@ -34,22 +39,32 @@
             <e p="Controllers.cs" t="Include" />
             <e p="GameStartController.cs" t="Include" />
             <e p="NetworkSynchronizationController.cs" t="Include" />
+            <e p="NpcController.cs" t="Include" />
             <e p="PhotonConnectionController.cs" t="Include" />
+            <e p="PlayerController.cs" t="Include" />
+            <e p="QuestController.cs" t="Include" />
+            <e p="QuestResourcesChecker.cs" t="Include" />
+            <e p="ResourceCounterController.cs" t="Include" />
+            <e p="ResourcesSpawnController.cs" t="Include" />
             <e p="StartingDataSender.cs" t="Include" />
             <e p="SystemController.cs" t="Include" />
             <e p="ViewController.cs" t="Include" />
           </e>
           <e p="Factory" t="Include">
+            <e p="BuildingSpawnHandler.cs" t="Include" />
             <e p="CharacterFactory.cs" t="Include" />
-            <e p="CharacterInitialization.cs" t="Include" />
             <e p="CharacterModel.cs" t="Include" />
             <e p="CharacterPhotonView.cs" t="Include" />
             <e p="CharacterSpawnHandler.cs" t="Include" />
-            <e p="HitHandler.cs" t="Include" />
             <e p="ICharacterFactory.cs" t="Include" />
             <e p="PlayersList.cs" t="Include" />
           </e>
           <e p="HappyCity.asmdef" t="Include" />
+          <e p="Hit" t="Include">
+            <e p="HitHandler.cs" t="Include" />
+            <e p="IHit.cs" t="Include" />
+            <e p="TriggerHandler.cs" t="Include" />
+          </e>
           <e p="Interfaces" t="Include">
             <e p="ICleanup.cs" t="Include" />
             <e p="IController.cs" t="Include" />
@@ -67,6 +82,10 @@
             <e p="ConnectionState.cs" t="Include" />
             <e p="LoginManager.cs" t="Include" />
             <e p="PlayFabLogin.cs" t="Include" />
+          </e>
+          <e p="Quest" t="Include">
+            <e p="IQuestState.cs" t="Include" />
+            <e p="QuestState.cs" t="Include" />
           </e>
           <e p="ResourcesSpawn" t="Include">
             <e p="ResourceHandler.cs" t="Include" />
@@ -102,6 +121,8 @@
             <e p="TextElementView.cs" t="Include" />
           </e>
           <e p="ViewHandlers" t="Include">
+            <e p="MessagePanelViewHandler.cs" t="Include" />
+            <e p="ResourceCounterViewHandler.cs" t="Include" />
             <e p="ResourcesPanelViewHandler.cs" t="Include" />
             <e p="TasksPanelViewHandler.cs" t="Include" />
           </e>

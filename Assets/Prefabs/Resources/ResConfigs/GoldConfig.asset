@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Resource: {fileID: 0}
   Icon: {fileID: 21300000, guid: 8fdc43758baa11742b010d051feab66a, type: 3}
-  Name: 3
+  Type: 3
+  _miningTime: 3
   _count: 10
   _radius: 25
   _distance: 3
   _startValue: 100
+  _miningCount: 5

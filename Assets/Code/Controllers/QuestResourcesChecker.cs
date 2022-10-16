@@ -1,0 +1,99 @@
+﻿using System;
+using Code.Factory;
+
+namespace Code.Controllers
+{
+    internal class QuestResourcesChecker
+    {
+        private readonly ResourceCounterController _woodCounter;
+        private readonly ResourceCounterController _foodCounter;
+        private readonly ResourceCounterController _stoneCounter;
+        private readonly ResourceCounterController _goldCounter;
+
+        public QuestResourcesChecker(ResourceCounterController woodCounter, ResourceCounterController foodCounter,
+            ResourceCounterController stoneCounter, ResourceCounterController goldCounter)
+        {
+            _woodCounter = woodCounter;
+            _foodCounter = foodCounter;
+            _stoneCounter = stoneCounter;
+            _goldCounter = goldCounter;
+        }
+
+        public bool CheckResources(ResourcesType type, int count)
+        {
+            bool flag;
+
+            switch (type)
+            {
+                case ResourcesType.Wood:
+                    flag = Check(_woodCounter, count);
+                    break;
+                case ResourcesType.Stone:
+                    flag = Check(_stoneCounter, count);
+                    break;
+                case ResourcesType.Food:
+                    flag = Check(_foodCounter, count);
+                    break;
+                case ResourcesType.Gold:
+                    flag = Check(_woodCounter, count);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
+
+            return flag;
+        }
+
+        private bool Check(ResourceCounterController counterController, int count)
+        {
+            if (count <= counterController.Count)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public void GrandResources(ResourcesType type, int count)
+        {
+            switch (type)
+            {
+                case ResourcesType.Wood:
+                    _woodCounter.OnGrandResource(count);
+                    break;
+                case ResourcesType.Stone:
+                    _stoneCounter.OnGrandResource(count);
+                    break;
+                case ResourcesType.Food:
+                    _foodCounter.OnGrandResource(count);
+                    break;
+                case ResourcesType.Gold:
+                    _goldCounter.OnGrandResource(count);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
+        }
+
+        public void SpendResources(ResourcesType type, int count)
+        {
+            switch (type)
+            {
+                case ResourcesType.Wood:
+                    _woodCounter.OnSpendResource(count);
+                    break;
+                case ResourcesType.Stone:
+                    _stoneCounter.OnSpendResource(count);
+                    break;
+                case ResourcesType.Food:
+                    _foodCounter.OnSpendResource(count);
+                    break;
+                case ResourcesType.Gold:
+                    _goldCounter.OnSpendResource(count);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
+        }
+    }
+}

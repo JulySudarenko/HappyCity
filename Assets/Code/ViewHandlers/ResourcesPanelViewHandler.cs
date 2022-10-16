@@ -1,5 +1,6 @@
 ﻿using System;
 using Code.Configs;
+using Code.Controllers;
 using Code.Factory;
 using Code.Interfaces;
 using Code.View;
@@ -7,20 +8,31 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 
 
-namespace Code.Controllers
+namespace Code.ViewHandlers
 {
     internal class ResourcesPanelViewHandler : IInitialization
     {
         private readonly UnionResourcesConfig _unionResourcesConfig;
         private readonly Transform _resourcesPanelView;
         private readonly ImageLineElement _resourceLineElement;
+        private ResourceCounterViewHandler _woodHandler;
+        private ResourceCounterViewHandler _foodHandler;
+        private ResourceCounterViewHandler _stoneHandler;
+        private ResourceCounterViewHandler _goldHandler;
+        private readonly ResourceCounterController _woodCounter;
+        private readonly ResourceCounterController _foodCounter;
+        private readonly ResourceCounterController _stoneCounter;
 
         public ResourcesPanelViewHandler(UnionResourcesConfig unionResourcesConfig, Transform resourcesPanelView,
-            ImageLineElement resourceLineElement)
+            ImageLineElement resourceLineElement,ResourceCounterController woodCounter, ResourceCounterController foodCounter,
+            ResourceCounterController stoneCounter)
         {
             _unionResourcesConfig = unionResourcesConfig;
             _resourcesPanelView = resourcesPanelView;
             _resourceLineElement = resourceLineElement;
+            _woodCounter = woodCounter;
+            _foodCounter = foodCounter;
+            _stoneCounter = stoneCounter;
         }
 
         public void Initialize()
@@ -32,16 +44,19 @@ namespace Code.Controllers
                 switch (config.Type)
                 {
                     case ResourcesType.Wood:
-                        CreateNewlineElement(config);
+                        _woodHandler = CreateNewlineElement(config);
+                        _woodCounter.ChangeCount += _woodHandler.ChangeCount;
                         break;
                     case ResourcesType.Stone:
-                        CreateNewlineElement(config);
+                        _stoneHandler = CreateNewlineElement(config);
+                        _stoneCounter.ChangeCount += _stoneHandler.ChangeCount;
                         break;
                     case ResourcesType.Food:
-                        CreateNewlineElement(config);
+                        _foodHandler = CreateNewlineElement(config);
+                        _foodCounter.ChangeCount += _foodHandler.ChangeCount;
                         break;
                     case ResourcesType.Gold:
-                        CreateNewlineElement(config);
+                        _goldHandler = CreateNewlineElement(config);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -49,18 +64,11 @@ namespace Code.Controllers
             }
         }
 
-        private ImageLineElement CreateNewlineElement(ResourcesConfig config)
+        private ResourceCounterViewHandler CreateNewlineElement(ResourcesConfig config)
         {
             ImageLineElement resLineElement = Object.Instantiate(_resourceLineElement, _resourcesPanelView);
-            resLineElement.gameObject.SetActive(true);
-            resLineElement.Icon.sprite = config.Icon;
-            resLineElement.Description.text = config.StartValue.ToString();
-            return resLineElement;
+            ResourceCounterViewHandler resourceCounter = new ResourceCounterViewHandler(resLineElement, config);
+            return resourceCounter;
         }
-    }
-    
-    
-    internal class ResourceCounterViewHandler
-    {
     }
 }
