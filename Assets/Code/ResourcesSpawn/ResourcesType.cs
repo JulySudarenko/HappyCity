@@ -1,4 +1,4 @@
-﻿namespace Code.Factory
+﻿namespace Code.ResourcesSpawn
 {
     public enum ResourcesType
     {

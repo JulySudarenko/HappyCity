@@ -1,7 +1,9 @@
 ﻿using Code.Factory;
+using Code.Network;
 using Code.ResourcesSpawn;
+using UnityEngine;
 
-namespace Code.Controllers
+namespace Code.ResourcesC
 {
     internal class ResourcesSpawnController
     {
@@ -11,16 +13,22 @@ namespace Code.Controllers
         private readonly NetworkSynchronizationController _networkSynchronizer;
         private readonly UnionResourcesConfigParser _unionResourcesParser;
         private readonly CharacterSpawnHandler _characterSpawner;
-        public ResourcesSpawner WoodSpawner => _woodSpawner;
-        public ResourcesSpawner FoodSpawner => _foodSpawner;
-        public ResourcesSpawner StoneSpawner => _stoneSpawner;
+        public ResourceCounterController WoodController { get; private set; }
+        public ResourceCounterController FoodController { get; private set; }
+        public ResourceCounterController StoneController { get; private set; }
+
+        // public ResourcesSpawner WoodSpawner => _woodSpawner;
+        // public ResourcesSpawner FoodSpawner => _foodSpawner;
+        // public ResourcesSpawner StoneSpawner => _stoneSpawner;
 
         private bool _isWood;
         private bool _isFood;
         private bool _isStone;
 
         public ResourcesSpawnController(UnionResourcesConfigParser unionResourcesParser,
-            CharacterSpawnHandler characterSpawner, NetworkSynchronizationController networkSynchronizer)
+            CharacterSpawnHandler characterSpawner, NetworkSynchronizationController networkSynchronizer,
+            ResourceCounterController woodController, ResourceCounterController foodController,
+            ResourceCounterController stoneController)
         {
             _unionResourcesParser = unionResourcesParser;
             _characterSpawner = characterSpawner;
@@ -39,6 +47,8 @@ namespace Code.Controllers
                             _unionResourcesParser.FoodConfig, _characterSpawner.Character.CharacterID,
                             _networkSynchronizer);
                         _isFood = true;
+                        Debug.Log($"Food {_isFood}");
+                        WoodController.Init(_foodSpawner);
                     }
 
                     break;
@@ -49,6 +59,8 @@ namespace Code.Controllers
                             _unionResourcesParser.WoodConfig, _characterSpawner.Character.CharacterID,
                             _networkSynchronizer);
                         _isWood = true;
+                        Debug.Log($"Wood {_isWood}");
+                        WoodController.Init(_woodSpawner);
                     }
 
                     break;
@@ -59,6 +71,8 @@ namespace Code.Controllers
                             _unionResourcesParser.StoneConfig, _characterSpawner.Character.CharacterID,
                             _networkSynchronizer);
                         _isStone = true;
+                        Debug.Log($"Stone {_isStone}");
+                        WoodController.Init(_stoneSpawner);
                     }
 
                     break;

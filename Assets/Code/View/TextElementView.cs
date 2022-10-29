@@ -1,5 +1,4 @@
-﻿using Photon.Realtime;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
 namespace Code.View

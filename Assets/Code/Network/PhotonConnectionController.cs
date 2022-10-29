@@ -4,11 +4,11 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
 
-namespace Code.Controllers
+namespace Code.Network
 {
     internal class PhotonConnectionController : MonoBehaviourPunCallbacks
     {
-        public Action OnNewPlayerConnection;
+        public Action NewPlayerConnection;
         private LoadingIndicatorView _loadingIndicator;
 
         public void Init(LoadingIndicatorView loadingIndicatorView)
@@ -19,7 +19,7 @@ namespace Code.Controllers
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
             _loadingIndicator.UpdateFeedbackText($"Player {newPlayer.NickName} says hello");
-            OnNewPlayerConnection?.Invoke();
+            NewPlayerConnection?.Invoke();
         }
 
         public override void OnLeftRoom()

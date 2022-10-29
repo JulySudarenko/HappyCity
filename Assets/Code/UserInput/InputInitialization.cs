@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-
+﻿
 namespace Code.UserInput
 {
     public sealed class InputInitialization

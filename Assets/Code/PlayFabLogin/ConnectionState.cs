@@ -1,4 +1,4 @@
-﻿namespace Code.Login
+﻿namespace Code.PlayFabLogin
 {
     public enum ConnectionState
     {

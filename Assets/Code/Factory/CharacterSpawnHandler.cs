@@ -1,5 +1,5 @@
 ﻿using Code.Configs;
-using Code.Controllers;
+using Code.Network;
 using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine;

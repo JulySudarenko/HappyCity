@@ -1,8 +1,8 @@
 ﻿using System;
 using Code.Configs;
-using Code.Controllers;
-using Code.Factory;
 using Code.Interfaces;
+using Code.ResourcesC;
+using Code.ResourcesSpawn;
 using Code.View;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -22,10 +22,11 @@ namespace Code.ViewHandlers
         private readonly ResourceCounterController _woodCounter;
         private readonly ResourceCounterController _foodCounter;
         private readonly ResourceCounterController _stoneCounter;
+        private readonly ResourceCounterController _goldCounter;
 
         public ResourcesPanelViewHandler(UnionResourcesConfig unionResourcesConfig, Transform resourcesPanelView,
             ImageLineElement resourceLineElement,ResourceCounterController woodCounter, ResourceCounterController foodCounter,
-            ResourceCounterController stoneCounter)
+            ResourceCounterController stoneCounter, ResourceCounterController goldCounter)
         {
             _unionResourcesConfig = unionResourcesConfig;
             _resourcesPanelView = resourcesPanelView;
@@ -33,6 +34,7 @@ namespace Code.ViewHandlers
             _woodCounter = woodCounter;
             _foodCounter = foodCounter;
             _stoneCounter = stoneCounter;
+            _goldCounter = goldCounter;
         }
 
         public void Initialize()
@@ -57,6 +59,7 @@ namespace Code.ViewHandlers
                         break;
                     case ResourcesType.Gold:
                         _goldHandler = CreateNewlineElement(config);
+                        _goldCounter.ChangeCount += _goldHandler.ChangeCount;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

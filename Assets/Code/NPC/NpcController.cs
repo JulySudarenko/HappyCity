@@ -1,11 +1,9 @@
-﻿using Code.Assistance;
-using Code.Configs;
-using Code.Hit;
+﻿using Code.Configs;
 using Code.Interfaces;
 using Code.Timer;
 using UnityEngine;
 
-namespace Code.Controllers
+namespace Code.NPC
 {
     internal class NpcController : IInitialization, IExecute, IFixedExecute, ICleanup
     {
@@ -101,26 +99,6 @@ namespace Code.Controllers
 
         public void Cleanup()
         {
-        }
-    }
-
-    internal class NpcSpawnHandler
-    {
-        public Transform NpcTransform { get; }
-        public IHit HitHandler { get; }
-        public Rigidbody NpcRigidbody { get; }
-        public Animator NpcAnimator { get; }
-        public int NPCID { get; }
-
-        public NpcSpawnHandler(NonPlayerCharacterConfig config)
-        {
-            var startPosition = config.SpawnPoints.GetChild(Random.Range(0, config.SpawnPoints.childCount))
-                .position;
-            NpcTransform = Object.Instantiate(config.Prefab, startPosition, Quaternion.identity);
-            NpcRigidbody = NpcTransform.gameObject.GetOrAddComponent<Rigidbody>();
-            NpcAnimator = NpcTransform.gameObject.GetOrAddComponent<Animator>();
-            HitHandler = NpcTransform.gameObject.GetOrAddComponent<TriggerHandler>();
-            NPCID = NpcTransform.gameObject.GetInstanceID();
         }
     }
 }

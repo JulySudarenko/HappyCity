@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Code.Configs;
-using Code.Controllers;
+using Code.Network;
 using UnityEngine;
 using Object = UnityEngine.Object;
 

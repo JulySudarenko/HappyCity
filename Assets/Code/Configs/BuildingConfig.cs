@@ -21,15 +21,10 @@ namespace Code.Configs
         [SerializeField] private int _goldReward = 3;
 
         public int WoodCost => _woodCost;
-
         public int FoodCost => _foodCost;
-
         public int StoneCost => _stoneCost;
-
         public int GoldCost => _goldCost;
-
         public int Population => _population;
-
         public int GoldReward => _goldReward;
     }
 }

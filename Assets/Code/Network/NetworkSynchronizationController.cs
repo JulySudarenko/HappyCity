@@ -9,8 +9,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 
-
-namespace Code.Controllers
+namespace Code.Network
 {
     public class NetworkSynchronizationController : MonoBehaviourPun, IOnEventCallback
     {
@@ -66,6 +65,7 @@ namespace Code.Controllers
                     if (AllWoodPlaces.Count == _woodCount)
                     {
                         AllPointsReceived?.Invoke(photonEvent.Code);
+                        _loadingIndicator.UpdateFeedbackText($"WOOD POINTS RECEIVED");
                     }
 
                     break;

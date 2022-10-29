@@ -4,7 +4,7 @@ using Code.Interfaces;
 using Code.UserInput;
 using UnityEngine;
 
-namespace Code.Controllers
+namespace Code.Character
 {
     public class CharacterMoveController : IInitialization, IFixedExecute, ICleanup
     {

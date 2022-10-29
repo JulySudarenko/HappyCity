@@ -15,5 +15,7 @@ MonoBehaviour:
   Prefab: {fileID: 3646314970643125653, guid: b7669cf45d624094e8a96a808e5307bb, type: 3}
   SpawnPoints: {fileID: 8514978886282465963, guid: 905d40ab74b5a724bab64509b522f695,
     type: 3}
+  NpcView: {fileID: 6017853097939473588, guid: a14464416558e5b4ba4019a946af7f8b, type: 3}
   _happiness: 100
   _speed: 50
+  _height: 1.7

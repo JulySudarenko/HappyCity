@@ -9,13 +9,7 @@ namespace Code.ViewHandlers
     {
         private readonly Dictionary<int, LineElementView> _tasksList = new Dictionary<int, LineElementView>();
         private readonly Transform _tasksPanelView;
-        // private readonly Vector2 _openPanelSize = new Vector2(100.0f, 0.0f);
-        // private readonly Vector2 _openPanelPosition = new Vector2(-50.0f, -225.0f);
-        // private readonly Vector2 _closePanelSize = new Vector2(40.0f, 450.0f);
-        // private readonly Vector2 _closePanelPosition = new Vector2(-20.0f, -225.0f);
-
         private readonly LineElementView _tasksLineElement;
-        // private Vector2 _sizeDeltaOpenClose = new Vector2(60.0f, 0.0f);
         private bool _isOpen;
 
         public TasksPanelViewHandler(Transform tasksPanelView, LineElementView tasksLineElement)
@@ -50,7 +44,7 @@ namespace Code.ViewHandlers
         }
 
         private void ClosePanel(int id)
-        {
+        {   
             _tasksList[id].TextDown.gameObject.SetActive(false);
         }
 
@@ -67,8 +61,8 @@ namespace Code.ViewHandlers
         public void OnTaskRemove(int id)
         {
             _tasksList[id].Button.onClick.RemoveAllListeners();
-            //_tasksList[id].gameObject.SetActive(false);
-            Object.Destroy(_tasksList[id]);
+            _tasksList[id].gameObject.SetActive(false);
+            Object.Destroy(_tasksList[id].gameObject);
             _tasksList.Remove(id);
         }
     }

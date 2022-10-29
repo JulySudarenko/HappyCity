@@ -1,10 +1,11 @@
-﻿namespace Code.Controllers
+﻿namespace Code.Quest
 {
     internal enum QuestState
     {
         None = 0,
         Start = 1,
-        Waiting = 2,
-        Done = 3
+        Wait = 2,
+        Check = 3,
+        Done = 4
     }
 }

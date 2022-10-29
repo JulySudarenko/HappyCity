@@ -1,8 +1,9 @@
-﻿using Code.Factory;
+﻿using Code.Controllers;
+using Code.Factory;
 using Code.Interfaces;
 using UnityEngine;
 
-namespace Code.Controllers
+namespace Code.Character
 {
     internal class CharacterAnimatorController : IExecute
     {

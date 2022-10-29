@@ -7,12 +7,15 @@ namespace Code.Configs
     {
         public Transform Prefab;
         public Transform SpawnPoints;
+        public Transform NpcView;
 
         [SerializeField] private int _happiness = 100;
         [SerializeField] private float _speed = 10.0f;
+        [SerializeField] private float _height = 1.7f;
 
-        public int Happiness => _happiness;
 
         public float Speed => _speed;
+        public float Height => _height;
+        public int Happiness => _happiness;
     }
 }

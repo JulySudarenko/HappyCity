@@ -4,7 +4,7 @@ using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
 
-namespace Code.Controllers
+namespace Code.Network
 {
     internal class StartingDataSender : IInitialization, ICleanup
     {
@@ -20,7 +20,7 @@ namespace Code.Controllers
 
         public void Initialize()
         {
-            _connectionController.OnNewPlayerConnection += SendResourcePlaces;
+            _connectionController.NewPlayerConnection += SendResourcePlaces;
         }
 
         private void SendResourcePlaces()
@@ -51,7 +51,7 @@ namespace Code.Controllers
 
         public void Cleanup()
         {
-            _connectionController.OnNewPlayerConnection -= SendResourcePlaces;
+            _connectionController.NewPlayerConnection -= SendResourcePlaces;
         }
     }
 }

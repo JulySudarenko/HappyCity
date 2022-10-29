@@ -1,13 +1,14 @@
 ﻿using Code.Configs;
 using Code.Controllers;
 using Code.Interfaces;
+using Code.Quest;
 using UnityEngine;
 
-namespace Code.Factory
+namespace Code.Buildings
 {
     internal class BuildingSpawnHandler : IInitialization, ICleanup
     {
-        private IQuestState _questState;
+        private readonly IQuestState _questState;
         private readonly BuildingConfig _buildingConfig;
 
         public BuildingSpawnHandler(BuildingConfig config, IQuestState questState)

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-using Code.Login;
+using Code.PlayFabLogin;
 using TMPro;
 using UnityEngine;
 

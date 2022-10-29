@@ -4,16 +4,16 @@ using Code.Factory;
 using Code.Interfaces;
 using Code.ResourcesSpawn;
 
-
-namespace Code.Controllers
+namespace Code.ResourcesC
 {
-    internal class ResourceCounterController : IInitialization, ICleanup
+    internal class ResourceCounterController : ICleanup
     {
         public Action<int> ChangeCount;
         private readonly ResourcesKeeper _resourcesKeeper;
         private readonly ResourcesConfig _config;
         private ResourcesSpawner _resourcesSpawner;
         private readonly CharacterModel _character;
+        private int[] _resList;
 
         public ResourceCounterController(ResourcesConfig config, CharacterModel character, ResourcesType type)
         {
@@ -28,17 +28,21 @@ namespace Code.Controllers
         public void Init(ResourcesSpawner resourcesSpawner)
         {
             _resourcesSpawner = resourcesSpawner;
+            _resList = _resourcesSpawner.ResourcesList;
+            _character.HitHandler.OnHitEnter += OnPickUpResource;
         }
 
         private void OnPickUpResource(int resID, int characterID)
         {
-            var resList = _resourcesSpawner.ResourcesList;
-            for (int i = 0; i < resList.Length; i++)
+            if(_resList.Length > 0)
             {
-                if (resList[i] == resID)
+                for (int i = 0; i < _resList.Length; i++)
                 {
-                    _resourcesKeeper.Add(_config.MiningCount);
-                    ChangeCount?.Invoke(_resourcesKeeper.ResourceCount);
+                    if (_resList[i] == resID)
+                    {
+                        _resourcesKeeper.Add(_config.MiningCount);
+                        ChangeCount?.Invoke(_resourcesKeeper.ResourceCount);
+                    }
                 }
             }
         }
@@ -55,40 +59,9 @@ namespace Code.Controllers
             ChangeCount?.Invoke(_resourcesKeeper.ResourceCount);
         }
 
-        public void Initialize()
-        {
-            _character.HitHandler.OnHitEnter += OnPickUpResource;
-        }
-
         public void Cleanup()
         {
             _character.HitHandler.OnHitEnter -= OnPickUpResource;
-        }
-    }
-
-    internal class ResourcesKeeper
-    {
-        private int _resourceCount;
-        private readonly ResourcesType _type;
-
-        public ResourcesKeeper(int resourceCount, ResourcesType type)
-        {
-            _resourceCount = resourceCount;
-            _type = type;
-        }
-
-        public int ResourceCount => _resourceCount;
-
-        public ResourcesType Type => _type;
-
-        public void Add(int count)
-        {
-            _resourceCount += count;
-        }
-
-        public void Remove(int count)
-        {
-            _resourceCount -= count;
         }
     }
 }

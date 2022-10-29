@@ -1,6 +1,5 @@
 ﻿using System;
 using Code.Configs;
-using Code.Factory;
 
 
 namespace Code.ResourcesSpawn

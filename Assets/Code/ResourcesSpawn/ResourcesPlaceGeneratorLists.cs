@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Code.Configs;
-using Code.Factory;
 using Code.View;
 using UnityEngine;
 

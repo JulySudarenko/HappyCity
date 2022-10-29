@@ -17,8 +17,8 @@ MonoBehaviour:
   Icon: {fileID: 21300000, guid: ed10625262cd4734fa0708017ddb2149, type: 3}
   Type: 0
   _miningTime: 3
-  _angle: 45
-  _count: 10
+  _spawnCount: 10
   _radius: 20
   _distance: 3
-  _startValue: 10
+  _startValue: 150
+  _miningCount: 5

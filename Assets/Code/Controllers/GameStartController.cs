@@ -1,10 +1,13 @@
 ﻿using Code.Assistance;
 using Code.Configs;
 using Code.Factory;
+using Code.Network;
+using Code.ResourcesC;
 using Code.ResourcesSpawn;
 using Code.Timer;
 using Code.UserInput;
 using Code.View;
+using Code.ViewHandlers;
 using Photon.Pun;
 using UnityEngine;
 
@@ -14,14 +17,14 @@ namespace Code.Controllers
     public class GameStartController : MonoBehaviour
     {
         [SerializeField] private LoadingIndicatorView _loadingIndicator;
+        [SerializeField] private Canvas _canvas;
 
         [Header("Configs")] [SerializeField] private InputConfig _inputConfig;
         [SerializeField] private PlayerConfig _playerConfig;
         [SerializeField] private CameraConfig _cameraConfig;
-        [SerializeField] private NonPlayerCharacterConfig _npcConfig;
 
-        [Header("Buildings")] [SerializeField] private BuildingConfig _houseConfig;
-        [SerializeField] private BuildingConfig _farmConfig;
+        [Header("Quests")] [SerializeField] private QuestNpcConfig _houseQuest;
+        [SerializeField] private QuestNpcConfig _farmQuest;
 
         [Header("Resources")] [SerializeField] private SpawnPlacesView _resourcesSpawnPlaces;
         [SerializeField] private UnionResourcesConfig _unionResourcesConfig;
@@ -57,10 +60,12 @@ namespace Code.Controllers
 
             var playerController =
                 new PlayerController(input, _playerConfig, characterSpawner.Character, camera);
-
+            
             var cameraController = new CameraController(camera.transform, _cameraConfig,
                 characterSpawner.Character.Transform);
 
+            var playerView = new PlayerViewHandler(characterSpawner.Character, _playerConfig, _canvas, camera);
+            
             var woodCounter = new ResourceCounterController(unionResourcesParser.WoodConfig, characterSpawner.Character,
                 ResourcesType.Wood);
             var foodCounter = new ResourceCounterController(unionResourcesParser.FoodConfig, characterSpawner.Character,
@@ -70,13 +75,11 @@ namespace Code.Controllers
             var goldCounter = new ResourceCounterController(unionResourcesParser.GoldConfig, characterSpawner.Character,
                 ResourcesType.Gold);
 
-            var resourceChecker = new QuestResourcesChecker(woodCounter, foodCounter, stoneCounter, goldCounter);
+            var resourceUnionController = new ResourcesCheckUnionController(woodCounter, foodCounter,
+                stoneCounter, goldCounter);
 
-            var npc = new NpcSpawnHandler(_npcConfig);
-            var quest = new QuestController(npc, characterSpawner.Character.ColliderID, _messagePanelView,
-                _houseConfig, resourceChecker);
-            var houseSpawner = new BuildingSpawnHandler(_houseConfig, quest);
-            var npcController = new NpcController(_npcConfig, npc);
+            var questSystemController = new QuestSystemController(_houseQuest, _farmQuest,
+                characterSpawner.Character.ColliderID, resourceUnionController, _messagePanelView, _canvas, camera);
 
             if (PhotonNetwork.IsMasterClient)
             {
@@ -94,35 +97,44 @@ namespace Code.Controllers
                 var foodSpawner = new ResourcesSpawner(placeGeneratorLists.AllFoodPlaces,
                     unionResourcesParser.FoodConfig, characterSpawner.Character.CharacterID,
                     networkSynchronizer);
-
+                
                 woodCounter.Init(woodSpawner);
                 foodCounter.Init(foodSpawner);
                 stoneCounter.Init(stoneSpawner);
+                
+                _controllers.Add(woodCounter);
+                _controllers.Add(foodCounter);
+                _controllers.Add(stoneCounter);
             }
             else
             {
                 _loadingIndicator.UpdateFeedbackText($"NOT MASTER");
                 var resourcesSpawner =
-                    new ResourcesSpawnController(unionResourcesParser, characterSpawner, networkSynchronizer);
+                    new ResourcesSpawnController(unionResourcesParser, characterSpawner, networkSynchronizer, woodCounter, foodCounter, stoneCounter);
 
-                woodCounter.Init(resourcesSpawner.WoodSpawner);
-                foodCounter.Init(resourcesSpawner.FoodSpawner);
-                stoneCounter.Init(resourcesSpawner.StoneSpawner);
+                // woodCounter.Init(resourcesSpawner.WoodSpawner);
+                // foodCounter.Init(resourcesSpawner.FoodSpawner);
+                // stoneCounter.Init(resourcesSpawner.StoneSpawner);
+                _controllers.Add(resourcesSpawner.WoodController);
+                // _controllers.Add(foodCounter);
+                // _controllers.Add(stoneCounter);
             }
 
+            
             var viewController = new ViewController(_unionResourcesConfig, _resourcesPanelView, _resourceLineElement,
-                _tasksPanelView, _tasksLineElement, woodCounter, foodCounter, stoneCounter, quest);
+                _tasksPanelView, _tasksLineElement, woodCounter, foodCounter, stoneCounter, goldCounter,
+                questSystemController);
 
             _controllers.Add(playerController);
             _controllers.Add(cameraController);
-            
-            _controllers.Add(npcController);
-            _controllers.Add(quest);
-            _controllers.Add(houseSpawner);
+            _controllers.Add(playerView);
 
-            _controllers.Add(woodCounter);
-            _controllers.Add(foodCounter);
-            _controllers.Add(stoneCounter);
+            _controllers.Add(questSystemController);
+
+            // _controllers.Add(woodCounter);
+            // _controllers.Add(foodCounter);
+            // _controllers.Add(stoneCounter);
+            _controllers.Add(goldCounter);
 
             _controllers.Add(new TimeRemainingController());
             _controllers.Add(inputController);

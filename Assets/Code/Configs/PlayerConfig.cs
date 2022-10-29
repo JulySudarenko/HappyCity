@@ -8,9 +8,14 @@ namespace Code.Configs
         public Transform FemalePrefab;
         public Transform MalePrefab;
         public Transform SpawnPoints;
+        public Transform PlayerView;
 
         [SerializeField] private float _speed = 10.0f;
+        [SerializeField] private float _height = 1.7f;
+
 
         public float Speed => _speed;
+
+        public float Height => _height;
     }
 }

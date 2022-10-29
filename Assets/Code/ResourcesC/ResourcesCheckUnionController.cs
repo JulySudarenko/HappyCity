@@ -1,16 +1,16 @@
 ﻿using System;
-using Code.Factory;
+using Code.ResourcesSpawn;
 
-namespace Code.Controllers
+namespace Code.ResourcesC
 {
-    internal class QuestResourcesChecker
+    internal class ResourcesCheckUnionController
     {
         private readonly ResourceCounterController _woodCounter;
         private readonly ResourceCounterController _foodCounter;
         private readonly ResourceCounterController _stoneCounter;
         private readonly ResourceCounterController _goldCounter;
 
-        public QuestResourcesChecker(ResourceCounterController woodCounter, ResourceCounterController foodCounter,
+        public ResourcesCheckUnionController(ResourceCounterController woodCounter, ResourceCounterController foodCounter,
             ResourceCounterController stoneCounter, ResourceCounterController goldCounter)
         {
             _woodCounter = woodCounter;
@@ -19,6 +19,12 @@ namespace Code.Controllers
             _goldCounter = goldCounter;
         }
 
+        public ResourceCounterController WoodCounter => _woodCounter;
+        public ResourceCounterController FoodCounter => _foodCounter;
+        public ResourceCounterController StoneCounter => _stoneCounter;
+        public ResourceCounterController GoldCounter => _goldCounter;
+        
+        
         public bool CheckResources(ResourcesType type, int count)
         {
             bool flag;

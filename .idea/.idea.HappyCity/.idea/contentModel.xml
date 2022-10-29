@@ -12,11 +12,18 @@
             <e p="SerialiseAssistance.cs" t="Include" />
             <e p="Tags.cs" t="Include" />
           </e>
+          <e p="Buildings" t="Include">
+            <e p="BuildingSpawnHandler.cs" t="Include" />
+          </e>
           <e p="Catalog" t="Include">
             <e p="CatalogManager.cs" t="Include" />
             <e p="CharacterLobby.cs" t="Include" />
             <e p="InventoryLobby.cs" t="Include" />
             <e p="ProfileLoader.cs" t="Include" />
+          </e>
+          <e p="Character" t="Include">
+            <e p="CharacterAnimatorController.cs" t="Include" />
+            <e p="CharacterMoveController.cs" t="Include" />
           </e>
           <e p="Configs" t="Include">
             <e p="BuildingConfig.cs" t="Include" />
@@ -33,25 +40,14 @@
           </e>
           <e p="Controllers" t="Include">
             <e p="CameraController.cs" t="Include" />
-            <e p="CharacterAnimatorController.cs" t="Include" />
-            <e p="CharacterMoveController.cs" t="Include" />
-            <e p="CharacterView.cs" t="Include" />
             <e p="Controllers.cs" t="Include" />
             <e p="GameStartController.cs" t="Include" />
-            <e p="NetworkSynchronizationController.cs" t="Include" />
-            <e p="NpcController.cs" t="Include" />
-            <e p="PhotonConnectionController.cs" t="Include" />
             <e p="PlayerController.cs" t="Include" />
-            <e p="QuestController.cs" t="Include" />
-            <e p="QuestResourcesChecker.cs" t="Include" />
-            <e p="ResourceCounterController.cs" t="Include" />
-            <e p="ResourcesSpawnController.cs" t="Include" />
-            <e p="StartingDataSender.cs" t="Include" />
+            <e p="QuestSystemController.cs" t="Include" />
             <e p="SystemController.cs" t="Include" />
             <e p="ViewController.cs" t="Include" />
           </e>
           <e p="Factory" t="Include">
-            <e p="BuildingSpawnHandler.cs" t="Include" />
             <e p="CharacterFactory.cs" t="Include" />
             <e p="CharacterModel.cs" t="Include" />
             <e p="CharacterPhotonView.cs" t="Include" />
@@ -73,6 +69,15 @@
             <e p="IInitialization.cs" t="Include" />
             <e p="ILateExecute.cs" t="Include" />
           </e>
+          <e p="Network" t="Include">
+            <e p="NetworkSynchronizationController.cs" t="Include" />
+            <e p="PhotonConnectionController.cs" t="Include" />
+            <e p="StartingDataSender.cs" t="Include" />
+          </e>
+          <e p="NPC" t="Include">
+            <e p="NpcController.cs" t="Include" />
+            <e p="NpcSpawnHandler.cs" t="Include" />
+          </e>
           <e p="PhotonLogin" t="Include">
             <e p="PhotonLogin.cs" t="Include" />
             <e p="PlayerNameInputManager.cs" t="Include" />
@@ -85,7 +90,14 @@
           </e>
           <e p="Quest" t="Include">
             <e p="IQuestState.cs" t="Include" />
+            <e p="QuestController.cs" t="Include" />
             <e p="QuestState.cs" t="Include" />
+          </e>
+          <e p="ResourcesC" t="Include">
+            <e p="ResourceCounterController.cs" t="Include" />
+            <e p="ResourcesCheckUnionController.cs" t="Include" />
+            <e p="ResourcesKeeper.cs" t="Include" />
+            <e p="ResourcesSpawnController.cs" t="Include" />
           </e>
           <e p="ResourcesSpawn" t="Include">
             <e p="ResourceHandler.cs" t="Include" />
@@ -112,6 +124,7 @@
           </e>
           <e p="View" t="Include">
             <e p="AuthorizationMenuView.cs" t="Include" />
+            <e p="CharacterView.cs" t="Include" />
             <e p="GameRoomView.cs" t="Include" />
             <e p="ImageLineElement.cs" t="Include" />
             <e p="LineElementView.cs" t="Include" />
@@ -122,6 +135,8 @@
           </e>
           <e p="ViewHandlers" t="Include">
             <e p="MessagePanelViewHandler.cs" t="Include" />
+            <e p="NpcViewHandler.cs" t="Include" />
+            <e p="PlayerViewHandler.cs" t="Include" />
             <e p="ResourceCounterViewHandler.cs" t="Include" />
             <e p="ResourcesPanelViewHandler.cs" t="Include" />
             <e p="TasksPanelViewHandler.cs" t="Include" />

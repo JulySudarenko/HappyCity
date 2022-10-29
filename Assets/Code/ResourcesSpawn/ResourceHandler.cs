@@ -1,8 +1,7 @@
 ﻿using Code.Assistance;
-using Code.Controllers;
-using Code.Factory;
 using Code.Hit;
 using Code.Interfaces;
+using Code.Network;
 using Code.Timer;
 using ExitGames.Client.Photon;
 using Photon.Pun;

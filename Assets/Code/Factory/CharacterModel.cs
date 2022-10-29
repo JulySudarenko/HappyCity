@@ -1,6 +1,6 @@
 ﻿using Code.Assistance;
-using Code.Controllers;
 using Code.Hit;
+using Code.Network;
 using UnityEngine;
 
 namespace Code.Factory
@@ -13,6 +13,7 @@ namespace Code.Factory
         public Rigidbody Rigidbody { get; }
         public HitHandler HitHandler { get; }
         public Animator Animator { get; }
+        public Renderer Renderer { get; }
         public int CharacterID { get; }
         public int ColliderID { get; }
 
@@ -24,6 +25,7 @@ namespace Code.Factory
             Transform = character.transform;
             Rigidbody = character.GetOrAddComponent<Rigidbody>();
             Animator = character.GetOrAddComponent<Animator>();
+            Renderer = character.GetComponent<Renderer>();
             HitHandler = character.GetOrAddComponent<HitHandler>();
             var collider = character.GetOrAddComponent<Collider>();
             ColliderID = collider.GetInstanceID();
