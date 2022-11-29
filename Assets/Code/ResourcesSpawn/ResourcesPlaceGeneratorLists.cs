@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Code.Configs;
 using Code.View;
 using UnityEngine;
@@ -24,7 +25,8 @@ namespace Code.ResourcesSpawn
         public Vector3[] AllWoodPlaces => _allWoodPlaces.ToArray();
         public Vector3[] AllStonePlaces => _allStonePlaces.ToArray();
 
-        private void ConfigParse(SpawnPlacesView resourcesSpawnPlaces, UnionResourcesConfigParser unionResourcesConfigParser)
+        private void ConfigParse(SpawnPlacesView resourcesSpawnPlaces,
+            UnionResourcesConfigParser unionResourcesConfigParser)
         {
             GeneratePlaces(resourcesSpawnPlaces.ForestPlaces, unionResourcesConfigParser.WoodConfig, _allWoodPlaces);
             GeneratePlaces(resourcesSpawnPlaces.StonePlaces, unionResourcesConfigParser.StoneConfig, _allStonePlaces);
@@ -43,5 +45,30 @@ namespace Code.ResourcesSpawn
                 }
             }
         }
+    }
+
+    internal class QuestQueueGeneratorList
+    {
+        private readonly List<QuestNpcConfig> _questConfigs;
+        private QuestJsonLine _questJsonLine;
+        private readonly List<Vector3> _buildingPlaces = new List<Vector3>();
+
+        public QuestQueueGeneratorList(UnionConfig unionConfig)
+        {
+            _questConfigs = unionConfig.AllQuestNpcConfigs.ToList();
+        }
+    }
+
+    internal class QuestJsonLine
+    {
+        public Vector3 Position;
+        public string ConfigName;
+        public int Queue;
+    }
+
+    internal class HappyPointsJsonLine
+    {
+        public int PlayerID;
+        public int Points;
     }
 }

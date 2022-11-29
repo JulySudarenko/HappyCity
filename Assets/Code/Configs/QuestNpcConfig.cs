@@ -8,8 +8,11 @@ namespace Code.Configs
         [SerializeField] private string _npcConfigPath = "NonPlayerCharacterConfig";
         [SerializeField] private string _buildingConfigPath = "HomeBuildingConfig";
 
+
         private NonPlayerCharacterConfig _npcConfig;
         private BuildingConfig _buildingConfig;
+
+
 
         public BuildingConfig BuildingConfig
         {

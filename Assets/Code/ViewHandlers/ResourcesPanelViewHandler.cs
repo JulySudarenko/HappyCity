@@ -12,7 +12,7 @@ namespace Code.ViewHandlers
 {
     internal class ResourcesPanelViewHandler : IInitialization
     {
-        private readonly UnionResourcesConfig _unionResourcesConfig;
+        private readonly UnionConfig _unionConfig;
         private readonly Transform _resourcesPanelView;
         private readonly ImageLineElement _resourceLineElement;
         private ResourceCounterViewHandler _woodHandler;
@@ -24,11 +24,11 @@ namespace Code.ViewHandlers
         private readonly ResourceCounterController _stoneCounter;
         private readonly ResourceCounterController _goldCounter;
 
-        public ResourcesPanelViewHandler(UnionResourcesConfig unionResourcesConfig, Transform resourcesPanelView,
+        public ResourcesPanelViewHandler(UnionConfig unionConfig, Transform resourcesPanelView,
             ImageLineElement resourceLineElement,ResourceCounterController woodCounter, ResourceCounterController foodCounter,
             ResourceCounterController stoneCounter, ResourceCounterController goldCounter)
         {
-            _unionResourcesConfig = unionResourcesConfig;
+            _unionConfig = unionConfig;
             _resourcesPanelView = resourcesPanelView;
             _resourceLineElement = resourceLineElement;
             _woodCounter = woodCounter;
@@ -40,9 +40,9 @@ namespace Code.ViewHandlers
         public void Initialize()
         {
             _resourcesPanelView.gameObject.SetActive(true);
-            for (int i = 0; i < _unionResourcesConfig.AllResourcesConfigs.Length; i++)
+            for (int i = 0; i < _unionConfig.AllResourcesConfigs.Length; i++)
             {
-                var config = _unionResourcesConfig.AllResourcesConfigs[i];
+                var config = _unionConfig.AllResourcesConfigs[i];
                 switch (config.Type)
                 {
                     case ResourcesType.Wood:

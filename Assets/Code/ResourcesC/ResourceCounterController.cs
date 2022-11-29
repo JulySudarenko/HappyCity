@@ -9,7 +9,7 @@ namespace Code.ResourcesC
     internal class ResourceCounterController : ICleanup
     {
         public Action<int> ChangeCount;
-        private readonly ResourcesKeeper _resourcesKeeper;
+        private readonly IKeeper _resourcesKeeper;
         private readonly ResourcesConfig _config;
         private ResourcesSpawner _resourcesSpawner;
         private readonly CharacterModel _character;
@@ -22,8 +22,8 @@ namespace Code.ResourcesC
             _resourcesKeeper = new ResourcesKeeper(_config.StartValue, type);
         }
 
-        public int Count => _resourcesKeeper.ResourceCount;
-        public ResourcesType Type => _resourcesKeeper.Type;
+        public int Count => _resourcesKeeper.ResourceCount();
+        public ResourcesType Type => _resourcesKeeper.Type();
 
         public void Init(ResourcesSpawner resourcesSpawner)
         {
@@ -41,7 +41,7 @@ namespace Code.ResourcesC
                     if (_resList[i] == resID)
                     {
                         _resourcesKeeper.Add(_config.MiningCount);
-                        ChangeCount?.Invoke(_resourcesKeeper.ResourceCount);
+                        ChangeCount?.Invoke(_resourcesKeeper.ResourceCount());
                     }
                 }
             }
@@ -50,13 +50,13 @@ namespace Code.ResourcesC
         public void OnGrandResource(int count)
         {
             _resourcesKeeper.Add(count);
-            ChangeCount?.Invoke(_resourcesKeeper.ResourceCount);
+            ChangeCount?.Invoke(_resourcesKeeper.ResourceCount());
         }
 
         public void OnSpendResource(int count)
         {
             _resourcesKeeper.Remove(count);
-            ChangeCount?.Invoke(_resourcesKeeper.ResourceCount);
+            ChangeCount?.Invoke(_resourcesKeeper.ResourceCount());
         }
 
         public void Cleanup()

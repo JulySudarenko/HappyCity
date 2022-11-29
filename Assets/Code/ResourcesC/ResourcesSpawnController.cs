@@ -13,9 +13,9 @@ namespace Code.ResourcesC
         private readonly NetworkSynchronizationController _networkSynchronizer;
         private readonly UnionResourcesConfigParser _unionResourcesParser;
         private readonly CharacterSpawnHandler _characterSpawner;
-        public ResourceCounterController WoodController { get; private set; }
-        public ResourceCounterController FoodController { get; private set; }
-        public ResourceCounterController StoneController { get; private set; }
+        public ResourceCounterController WoodController { get; }
+        public ResourceCounterController FoodController { get; }
+        public ResourceCounterController StoneController { get; }
 
         // public ResourcesSpawner WoodSpawner => _woodSpawner;
         // public ResourcesSpawner FoodSpawner => _foodSpawner;
@@ -33,6 +33,9 @@ namespace Code.ResourcesC
             _unionResourcesParser = unionResourcesParser;
             _characterSpawner = characterSpawner;
             _networkSynchronizer = networkSynchronizer;
+            WoodController = woodController;
+            FoodController = foodController;
+            StoneController = stoneController;
             _networkSynchronizer.AllPointsReceived += CreateResources;
         }
 
@@ -48,7 +51,7 @@ namespace Code.ResourcesC
                             _networkSynchronizer);
                         _isFood = true;
                         Debug.Log($"Food {_isFood}");
-                        WoodController.Init(_foodSpawner);
+                        FoodController.Init(_foodSpawner);
                     }
 
                     break;
@@ -72,7 +75,7 @@ namespace Code.ResourcesC
                             _networkSynchronizer);
                         _isStone = true;
                         Debug.Log($"Stone {_isStone}");
-                        WoodController.Init(_stoneSpawner);
+                        StoneController.Init(_stoneSpawner);
                     }
 
                     break;

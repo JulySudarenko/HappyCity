@@ -9,6 +9,8 @@ namespace Code.Configs
         [Header("Building")] 
         public Transform[] Prefab;
         public Transform[] Places;
+        public BuildingType BuildingType;
+        [SerializeField] private int _numberOfBuildings;
 
         [Header("Required resources")] 
         [SerializeField] private int _woodCost = 10;
@@ -26,5 +28,17 @@ namespace Code.Configs
         public int GoldCost => _goldCost;
         public int Population => _population;
         public int GoldReward => _goldReward;
+
+        public int NumberOfBuildings => _numberOfBuildings;
+    }
+
+    public enum BuildingType
+    {
+        House = 0,
+        Farm = 1,
+        Store = 2,
+        Road = 3,
+        Hospital = 4,
+        CityHall = 5
     }
 }

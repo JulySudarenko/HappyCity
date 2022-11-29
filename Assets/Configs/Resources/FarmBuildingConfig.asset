@@ -16,12 +16,14 @@ MonoBehaviour:
   - {fileID: 4143608504196157382, guid: 34cdca95ab1eb254389152d5654a22ca, type: 3}
   Places:
   - {fileID: 3007007245270133844, guid: 7dcb7634dd77f484687e5f70d9e237d2, type: 3}
-  - {fileID: 223012959074776249, guid: acff49521baf4864aa79bb507906c2be, type: 3}
   - {fileID: 4477630486242845833, guid: 7f021f9ba27fb3b4793ca7cbae225269, type: 3}
   - {fileID: 9005103750927481180, guid: 5f072e01feffd6f4981984eed06c8174, type: 3}
+  - {fileID: 223012959074776249, guid: acff49521baf4864aa79bb507906c2be, type: 3}
+  BuildingType: 1
+  _numberOfBuildings: 3
   _woodCost: 100
   _foodCost: 25
   _stoneCost: 20
   _goldCost: 0
   _population: 10
-  _goldReward: 200
+  _goldReward: 100

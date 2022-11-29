@@ -15,6 +15,7 @@ namespace Code.ResourcesSpawn
         public ResourcesSpawner(Vector3[] placeGenerator, ResourcesConfig resourcesConfig,
             int characterID, NetworkSynchronizationController networkSynchronizer)
         {
+            var folder = new GameObject($"{resourcesConfig.Type}");
             var resources = new List<Transform>();
             _resourcesList = new List<ResourceHandler>();
 
@@ -22,6 +23,7 @@ namespace Code.ResourcesSpawn
             {
                 var res = Object.Instantiate(resourcesConfig.Resource, placeGenerator[j],
                     resourcesConfig.Resource.rotation);
+                res.SetParent(folder.transform);
                 resources.Add(res.transform);
                 var resource = new ResourceHandler(res.transform, characterID, placeGenerator[j], networkSynchronizer);
                 _resourcesList.Add(resource);

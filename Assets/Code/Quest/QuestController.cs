@@ -11,63 +11,67 @@ using UnityEngine;
 
 namespace Code.Quest
 {
-    internal class QuestController : IInitialization, IQuestState, ICleanup
+    internal class QuestController : IQuestState, ICleanup
     {
         public event Action<QuestState> OnStateChange;
         public event Action<string, string, int> OnQuestStart;
         public event Action<int> OnQuestDone;
         public event Action<bool> OnDialog;
 
+        private readonly IKeeper _npcHappiness;
         private readonly NpcSpawnHandler _npc;
         private readonly QuestNpcConfig _questConfig;
         private readonly BuildingConfig _buildingConfig;
         private readonly MessagePanelViewHandler _messagePanelViewHandler;
         private readonly ResourcesCheckUnionController _resourcesCheckUnionController;
+        private readonly HappyLineController _happyLineController;
         private readonly int _characterID;
         private readonly int _npcID;
-        
+
         private QuestState _state;
         private string _message;
         private bool _isAccepted;
+        private bool _isBuild;
 
         public QuestController(NpcSpawnHandler npcController, int characterID,
             ResourcesCheckUnionController resourcesCheckUnionController, QuestNpcConfig questConfig,
-            LineElementView messagePanelView, Canvas canvas)
+            LineElementView messagePanelView, Canvas canvas, IKeeper npcHappiness,
+            HappyLineController happyLineController)
         {
             _npc = npcController;
             _npcID = _npc.NpcId;
             _characterID = characterID;
             _resourcesCheckUnionController = resourcesCheckUnionController;
             _questConfig = questConfig;
+            _npcHappiness = npcHappiness;
+            _happyLineController = happyLineController;
             _messagePanelViewHandler = new MessagePanelViewHandler(messagePanelView, canvas);
             _buildingConfig = _questConfig.BuildingConfig;
 
             _state = QuestState.None;
             _state = QuestState.Start;
-        }
-
-        public void Initialize()
-        {
             _npc.HitHandler.OnHitEnter += StartDialog;
             _npc.HitHandler.OnHitExit += EndDialog;
         }
 
         private void EndDialog(int ID, int selfID)
         {
-            if (ID == _characterID)
+            if (ID == _characterID && _npc.IsTalking)
             {
                 _messagePanelViewHandler.ActivationPanel(false);
+                _npc.OnDialog(false);
                 OnDialog?.Invoke(false);
             }
         }
 
         private void StartDialog(int ID, int selfID)
         {
-            if (ID == _characterID)
+            if (ID == _characterID && !_npc.IsTalking)
             {
                 _messagePanelViewHandler.ActivationPanel(true);
                 OnDialog?.Invoke(true);
-                
+                _npc.OnDialog(true);
+
                 switch (_state)
                 {
                     case QuestState.None:
@@ -126,13 +130,14 @@ namespace Code.Quest
             _resourcesCheckUnionController.SpendResources(ResourcesType.Food, _buildingConfig.FoodCost);
             _resourcesCheckUnionController.SpendResources(ResourcesType.Stone, _buildingConfig.StoneCost);
             _resourcesCheckUnionController.GrandResources(ResourcesType.Gold, _buildingConfig.GoldReward);
-            
+
+
             _messagePanelViewHandler.AcceptButton.interactable = false;
             _messagePanelViewHandler.AcceptButton.gameObject.SetActive(false);
-            _messagePanelViewHandler.AcceptButton.onClick.RemoveListener(()=>Build(ID, selfID));
-            
+            _messagePanelViewHandler.AcceptButton.onClick.RemoveListener(() => Build(ID, selfID));
+            _npcHappiness.Add(_questConfig.BonusHappiness);
+            _happyLineController.ChangeHappiness(_questConfig.StartHappiness, _questConfig.BonusHappiness);
             _state = QuestState.Done;
-
             OnStateChange?.Invoke(_state);
             OnQuestDone?.Invoke(_npcID);
             StartDialog(ID, selfID);
@@ -140,12 +145,11 @@ namespace Code.Quest
 
         private void AcceptTask(int ID, int selfID)
         {
-
             if (!_isAccepted)
             {
                 _messagePanelViewHandler.AcceptButton.interactable = false;
                 _messagePanelViewHandler.AcceptButton.onClick.RemoveListener(() => AcceptTask(ID, selfID));
-                
+
                 _messagePanelViewHandler.AcceptButton.gameObject.SetActive(false);
                 _messagePanelViewHandler.ActivationPanel(false);
                 var questMessage =
@@ -155,13 +159,14 @@ namespace Code.Quest
                 _state = QuestState.Check;
                 _isAccepted = true;
 
-                _messagePanelViewHandler.AcceptButton.onClick.AddListener(()=>Build(ID, selfID));
+                _messagePanelViewHandler.AcceptButton.onClick.AddListener(() => Build(ID, selfID));
                 _messagePanelViewHandler.ChangeTextOnButton(_questConfig.BuildButtonText);
                 _message =
                     $"{_questConfig.WaitingMessage}\nwood {_buildingConfig.WoodCost}\nstone {_buildingConfig.FoodCost}\nfood {_buildingConfig.FoodCost}";
                 _messagePanelViewHandler.AcceptButton.gameObject.SetActive(false);
-                
+
                 OnStateChange?.Invoke(_state);
+                _npc.OnDialog(false);
                 StartDialog(ID, selfID);
             }
         }

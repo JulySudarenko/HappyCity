@@ -1,16 +1,22 @@
-﻿using Code.Configs;
+﻿using Code.Buildings;
+using Code.Configs;
 using Code.Interfaces;
+using Code.Quest;
 using Code.Timer;
 using UnityEngine;
 
 namespace Code.NPC
 {
-    internal class NpcController : IInitialization, IExecute, IFixedExecute, ICleanup
+    internal class NpcController : IExecute, IFixedExecute, ICleanup
     {
         private static readonly int Walk = Animator.StringToHash("Walk");
         private static readonly int Stay = Animator.StringToHash("Stay");
         private readonly NpcSpawnHandler _npc;
         private readonly NonPlayerCharacterConfig _config;
+        private readonly Transform _player;
+        private readonly IQuestState _state;
+        private readonly BuildingSpawnHandler _buildingSpawnHandler;
+        private readonly int _playerID;
         private ITimeRemaining _timeRemaining;
         private Vector3 _target;
         private Vector3 _newVelocity;
@@ -18,15 +24,42 @@ namespace Code.NPC
         private float _vertical;
         private bool _hasTarget;
 
-        public NpcController(NonPlayerCharacterConfig npcConfig, NpcSpawnHandler npc)
+        public NpcController(NonPlayerCharacterConfig npcConfig, NpcSpawnHandler npc, Transform player, int playerID)
         {
             _config = npcConfig;
             _npc = npc;
-            // _target = new Vector3(-30.0f, 0.0f, -30.0f);
-            // OnGetTarget(NpcTransform.position, _target);
+            _player = player;
+            _playerID = playerID;
+
+            _npc.HitHandler.OnHitEnter += LookAtPlayer;
         }
 
-        private void OnGetTarget(Vector3 start, Vector3 target)
+        public NpcController(NonPlayerCharacterConfig npcConfig, NpcSpawnHandler npc, Transform player, int playerID,
+            IQuestState state, BuildingSpawnHandler buildingSpawnHandler)
+        {
+            _config = npcConfig;
+            _npc = npc;
+            _player = player;
+            _playerID = playerID;
+            _state = state;
+            _buildingSpawnHandler = buildingSpawnHandler;
+
+            //_buildingSpawnHandler.BuildingEnter.OnHitEnter += EnterInBuilding;
+            _npc.HitHandler.OnHitEnter += LookAtPlayer;
+            _state.OnStateChange += OnQuestDone;
+        }
+
+        private void OnQuestDone(QuestState state)
+        {
+            if (state == QuestState.Done)
+            {
+                var target = new Vector3(-30.0f + Random.Range(1, 3), 0.0f, -30.0f);
+                //var target = _buildingSpawnHandler.BuildingEnterPosition;
+                OnGetTarget(_npc.NpcTransform.position, target);
+            }
+        }
+
+        public void OnGetTarget(Vector3 start, Vector3 target)
         {
             _target = target;
             _npc.NpcTransform.position = start;
@@ -41,8 +74,12 @@ namespace Code.NPC
             _timeRemaining.RemoveTimeRemaining();
         }
 
-        public void Initialize()
+        private void EnterInBuilding(int characterID, int otherID)
         {
+            if (characterID == _npc.NpcId)
+            {
+                _npc.NpcTransform.gameObject.SetActive(false);
+            }
         }
 
         public void Execute(float deltaTime)
@@ -91,6 +128,17 @@ namespace Code.NPC
             }
         }
 
+        private void LookAtPlayer(int ID, int selfID)
+        {
+            if (ID == _playerID)
+            {
+                if (!_npc.IsTalking)
+                {
+                    _npc.NpcTransform.LookAt(_player);
+                }
+            }
+        }
+
         private void Deactivate()
         {
             _npc.NpcTransform.gameObject.SetActive(false);
@@ -99,6 +147,7 @@ namespace Code.NPC
 
         public void Cleanup()
         {
+            _npc.HitHandler.OnHitEnter -= LookAtPlayer;
         }
     }
 }

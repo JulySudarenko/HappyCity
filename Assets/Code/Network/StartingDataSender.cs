@@ -39,7 +39,7 @@ namespace Code.Network
                     new RaiseEventOptions() {Receivers = ReceiverGroup.Others},
                     new SendOptions() {Reliability = true});
             }
-            
+
             for (int i = 0; i < _placeGeneratorLists.AllStonePlaces.Length; i++)
             {
                 PhotonNetwork.RaiseEvent(113,

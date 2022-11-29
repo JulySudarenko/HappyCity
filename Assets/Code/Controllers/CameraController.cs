@@ -18,11 +18,11 @@ namespace Code.Controllers
             _cameraTransform = camera.transform;
             _config = config;
             _target = target;
-
+            
             _isFollowing = true;
             Cut();
         }
-        
+
         public void LateExecute(float deltaTime)
         {
             if (_isFollowing)
@@ -33,11 +33,15 @@ namespace Code.Controllers
 
         private void Follow()
         {
-            _cameraOffset.z = -_config.Distance;
-            _cameraOffset.y = _config.Height;
-            _cameraTransform.position = Vector3.Lerp(_cameraTransform.position,
-                _target.position + _target.TransformVector(_cameraOffset), _config.SmoothSpeed * Time.deltaTime);
-            _cameraTransform.LookAt(_target.position + _config.CenterOffset);
+            float currentAngle = _cameraTransform.eulerAngles.y;
+            float desiredAngle = _target.eulerAngles.y;
+            float angle = Mathf.LerpAngle(currentAngle, desiredAngle, Time.deltaTime * _config.SmoothSpeed);
+
+            Quaternion rotation = Quaternion.Euler(0, angle, 0);
+            var newPosition = _target.position + (rotation * _cameraOffset);
+            _cameraTransform.position = newPosition;
+
+            _cameraTransform.LookAt(_target.transform);
         }
 
         private void Cut()
@@ -45,7 +49,6 @@ namespace Code.Controllers
             _cameraOffset.z = -_config.Distance;
             _cameraOffset.y = _config.Height;
             _cameraTransform.position = _target.position + _target.TransformVector(_cameraOffset);
-            _cameraTransform.LookAt(_target.position + _config.CenterOffset);
         }
     }
 }

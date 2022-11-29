@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df919dc09e00409e9ffbc76a1a008fcc, type: 3}
+  m_Name: MediouStoreBuildingConfig
+  m_EditorClassIdentifier: 
+  Prefab:
+  - {fileID: 7777211199468435875, guid: 3999e64c66268bb4da4b05287d19f864, type: 3}
+  Places:
+  - {fileID: 3529349757008712064, guid: f531a68f051409d45a536f2cd70a0c4d, type: 3}
+  - {fileID: 6093956796339856992, guid: 415aae407e7ac66449a96cf7fad47cab, type: 3}
+  - {fileID: 6147513366365586276, guid: 4b06df9e809cb3c42b80a9ae6de96ba8, type: 3}
+  BuildingType: 2
+  _numberOfBuildings: 1
+  _woodCost: 15
+  _foodCost: 35
+  _stoneCost: 20
+  _goldCost: 0
+  _population: 3
+  _goldReward: 50

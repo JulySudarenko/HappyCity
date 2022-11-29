@@ -14,16 +14,22 @@ namespace Code.NPC
         public Renderer Renderer { get; }
         public int NpcId { get; }
 
-        public NpcSpawnHandler(NonPlayerCharacterConfig config)
+        public bool IsTalking { get; private set; }
+
+        public NpcSpawnHandler(NonPlayerCharacterConfig config, Vector3 startPosition)
         {
-            var startPosition = config.SpawnPoints.GetChild(Random.Range(0, config.SpawnPoints.childCount))
-                .position;
             NpcTransform = Object.Instantiate(config.Prefab, startPosition, Quaternion.identity);
             NpcRigidbody = NpcTransform.gameObject.GetOrAddComponent<Rigidbody>();
             NpcAnimator = NpcTransform.gameObject.GetOrAddComponent<Animator>();
             HitHandler = NpcTransform.gameObject.GetOrAddComponent<TriggerHandler>();
             Renderer = NpcTransform.GetComponent<Renderer>();
             NpcId = NpcTransform.gameObject.GetInstanceID();
+            IsTalking = false;
+        }
+
+        public void OnDialog(bool value)
+        {
+            IsTalking = value;
         }
     }
 }

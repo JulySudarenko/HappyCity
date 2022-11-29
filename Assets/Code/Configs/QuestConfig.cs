@@ -17,7 +17,10 @@ namespace Code.Configs
 
         [SerializeField] private string _acceptTaskButtonText = "Accept task";
         [SerializeField] private string _buildButtonText = "Build";
-
+        [SerializeField] private int _startHappiness = 30;
+        [SerializeField] private int _bonusHappiness = 50;
+        
+        
         public string StartMessage => _startMessage;
 
         public string WaitingMessage => _waitingMessage;
@@ -33,5 +36,8 @@ namespace Code.Configs
         public string AcceptTaskButtonText => _acceptTaskButtonText;
 
         public string BuildButtonText => _buildButtonText;
+        public int StartHappiness => _startHappiness;
+
+        public int BonusHappiness => _bonusHappiness;
     }
 }

@@ -3,7 +3,7 @@ using Code.ResourcesSpawn;
 
 namespace Code.ResourcesC
 {
-    internal class ResourcesKeeper
+    internal class ResourcesKeeper : IKeeper
     {
         private int _resourceCount;
         private readonly ResourcesType _type;
@@ -14,9 +14,15 @@ namespace Code.ResourcesC
             _type = type;
         }
 
-        public int ResourceCount => _resourceCount;
+        public int ResourceCount()
+        {
+            return _resourceCount;
+        }
 
-        public ResourcesType Type => _type;
+        public ResourcesType Type()
+        {
+            return _type;
+        }
 
         public void Add(int count)
         {

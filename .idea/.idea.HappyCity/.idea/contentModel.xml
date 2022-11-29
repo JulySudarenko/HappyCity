@@ -36,7 +36,7 @@
             <e p="QuestNpcConfig.cs" t="Include" />
             <e p="ResourcesConfig.cs" t="Include" />
             <e p="TextFeedbackMessages.cs" t="Include" />
-            <e p="UnionResourcesConfig.cs" t="Include" />
+            <e p="UnionConfig.cs" t="Include" />
           </e>
           <e p="Controllers" t="Include">
             <e p="CameraController.cs" t="Include" />
@@ -89,11 +89,13 @@
             <e p="PlayFabLogin.cs" t="Include" />
           </e>
           <e p="Quest" t="Include">
+            <e p="HappyLineController.cs" t="Include" />
             <e p="IQuestState.cs" t="Include" />
             <e p="QuestController.cs" t="Include" />
             <e p="QuestState.cs" t="Include" />
           </e>
           <e p="ResourcesC" t="Include">
+            <e p="IKeeper.cs" t="Include" />
             <e p="ResourceCounterController.cs" t="Include" />
             <e p="ResourcesCheckUnionController.cs" t="Include" />
             <e p="ResourcesKeeper.cs" t="Include" />

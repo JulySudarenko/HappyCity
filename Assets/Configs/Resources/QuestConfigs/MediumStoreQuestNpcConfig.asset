@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08cc8410233c40e799dfc524d211f660, type: 3}
+  m_Name: MediumStoreQuestNpcConfig
+  m_EditorClassIdentifier: 
+  _questName: Store
+  _questInfo: We need the store
+  _startMessage: There is no place to live. Can you help to build a house for me?
+  _waitingMessage: That is not enough. When you get wood, stone and food? You can
+    get it in the forest not far from here. I'm waiting...
+  _getResMessage: Now you can build a store!
+  _doneMessage: I'm so happy! Thank you!
+  _acceptTaskButtonText: Accept task
+  _buildButtonText: Build
+  _startHappiness: 30
+  _bonusHappiness: 50
+  _npcConfigPath: NonPlayerCharacterConfig
+  _buildingConfigPath: MediumStoreBuildingConfig

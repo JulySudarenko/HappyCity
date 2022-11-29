@@ -15,19 +15,19 @@ namespace Code.ResourcesSpawn
         public int StoneTotalCount { get; private set; }
 
 
-        public UnionResourcesConfigParser(UnionResourcesConfig unionResourcesConfig, int forestPlaceArrayCount,
+        public UnionResourcesConfigParser(UnionConfig unionConfig, int forestPlaceArrayCount,
             int rockPlaceArrayCount)
         {
-            ConfigParse(unionResourcesConfig, forestPlaceArrayCount, rockPlaceArrayCount);
+            ConfigParse(unionConfig, forestPlaceArrayCount, rockPlaceArrayCount);
         }
 
-        private void ConfigParse(UnionResourcesConfig unionResourcesConfig, int forestPlaceArrayCount,
+        private void ConfigParse(UnionConfig unionConfig, int forestPlaceArrayCount,
             int rockPlaceArrayCount)
         {
-            for (int i = 0; i < unionResourcesConfig.AllResourcesConfigs.Length; i++)
+            for (int i = 0; i < unionConfig.AllResourcesConfigs.Length; i++)
             {
-                var config = unionResourcesConfig.AllResourcesConfigs[i];
-                switch (unionResourcesConfig.AllResourcesConfigs[i].Type)
+                var config = unionConfig.AllResourcesConfigs[i];
+                switch (unionConfig.AllResourcesConfigs[i].Type)
                 {
                     case ResourcesType.Wood:
                         WoodConfig = config;

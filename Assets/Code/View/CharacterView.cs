@@ -39,7 +39,7 @@ namespace Code.View
         {
             if (_slider != null)
             {
-                _slider.value = value;
+                _slider.value = value/100;
             }
         }
 

@@ -32,6 +32,8 @@ MonoBehaviour:
   - {fileID: 3575757536871001104, guid: 028b2addd53ff6a4f880b1726900252a, type: 3}
   - {fileID: 6443993129042733087, guid: c39eac73cab36594ca0f408cb619c73d, type: 3}
   - {fileID: 628511568407162104, guid: fbfb40813c06c224fa5a3739b6963973, type: 3}
+  BuildingType: 0
+  _numberOfBuildings: 10
   _woodCost: 10
   _foodCost: 10
   _stoneCost: 10

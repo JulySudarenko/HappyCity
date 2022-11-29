@@ -4,15 +4,17 @@ using Code.Configs;
 using Code.Interfaces;
 using Code.NPC;
 using Code.Quest;
+using Code.ResourcesC;
 using Code.View;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Code.ViewHandlers
 {
-    internal class NpcViewHandler : IInitialization, IExecute, ILateExecute, ICleanup
+    internal class NpcViewHandler : IExecute, ILateExecute, ICleanup
     {
         private readonly IQuestState _questState;
+        private readonly IKeeper _happiness;
         private readonly Camera _camera;
         private readonly CharacterView _characterView;
         private readonly Renderer _targetRenderer;
@@ -20,16 +22,17 @@ namespace Code.ViewHandlers
 
         private Vector3 _targetPosition;
         private readonly float _characterHeight;
-        private bool _isDialog;
 
 
-        public NpcViewHandler(NpcSpawnHandler npc, NonPlayerCharacterConfig config, Canvas canvas, IQuestState state, Camera camera)
+        public NpcViewHandler(NpcSpawnHandler npc, NonPlayerCharacterConfig config, Canvas canvas, IQuestState state, Camera camera, IKeeper happiness)
         {
             _questState = state;
             _camera = camera;
+            _happiness = happiness;
             var view = Object.Instantiate(config.NpcView, canvas.transform);
             _characterView = view.gameObject.GetOrAddComponent<CharacterView>();
             _characterView.Init(canvas);
+            _characterView.SetSliderAreaValue(happiness.ResourceCount());
 
             _targetTransform = npc.NpcTransform;
             _targetRenderer = npc.Renderer;
@@ -39,10 +42,6 @@ namespace Code.ViewHandlers
             _characterView.ActivateQuestion(false);
             _characterView.ActivateSlider(false);
             OnChangeQuestState(QuestState.Start);
-        }
-
-        public void Initialize()
-        {
             _questState.OnDialog += StartFinishDialog;
             _questState.OnStateChange += OnChangeQuestState;
         }
@@ -52,12 +51,6 @@ namespace Code.ViewHandlers
             if (_targetTransform == null)
             {
                 Object.Destroy(_characterView.gameObject);
-                return;
-            }
-
-            if (_isDialog)
-            {
-                _characterView.SetSliderAreaValue(50);
             }
         }
 
@@ -72,7 +65,6 @@ namespace Code.ViewHandlers
 
         private void StartFinishDialog(bool value)
         {
-            _isDialog = value;
             _characterView.ActivateSlider(value);
         }
 
@@ -94,6 +86,7 @@ namespace Code.ViewHandlers
                     break;
                 case QuestState.Done:
                     _characterView.ActivateQuestion(false);
+                    _characterView.SetSliderAreaValue(_happiness.ResourceCount());
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(state), state, null);

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df919dc09e00409e9ffbc76a1a008fcc, type: 3}
+  m_Name: CityHallBuildingConfig
+  m_EditorClassIdentifier: 
+  Prefab:
+  - {fileID: 8744195195169872193, guid: f30558e4064389543b6b4bd879846c8e, type: 3}
+  Places:
+  - {fileID: 8744195195169872193, guid: f30558e4064389543b6b4bd879846c8e, type: 3}
+  BuildingType: 5
+  _numberOfBuildings: 1
+  _woodCost: 10
+  _foodCost: 10
+  _stoneCost: 10
+  _goldCost: 10
+  _population: 3
+  _goldReward: 3

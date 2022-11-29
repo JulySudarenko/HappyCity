@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df919dc09e00409e9ffbc76a1a008fcc, type: 3}
+  m_Name: SmallStoreBuildingConfig
+  m_EditorClassIdentifier: 
+  Prefab:
+  - {fileID: 4403596138038113583, guid: fac2824a533d6414ebb764d02509dae8, type: 3}
+  Places:
+  - {fileID: 492618443100021458, guid: 9afe12e73a885d345a71b956c262f1ec, type: 3}
+  - {fileID: 8023643366394110362, guid: 1b9f65080f1edc149b92379d3b1aa90c, type: 3}
+  - {fileID: 5395038438906801941, guid: 8af1f5b03241cc641b84d323d9ca03dd, type: 3}
+  BuildingType: 2
+  _numberOfBuildings: 1
+  _woodCost: 10
+  _foodCost: 25
+  _stoneCost: 15
+  _goldCost: 10
+  _population: 3
+  _goldReward: 3

@@ -23,7 +23,6 @@ namespace Code.ViewHandlers
         {
             _camera = camera;
             var view = Object.Instantiate(config.PlayerView, canvas.transform);
-            Debug.Log(view);
             //view.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
             _characterView = view.gameObject.GetOrAddComponent<CharacterView>();
             _characterView.Init(canvas);
@@ -45,8 +44,6 @@ namespace Code.ViewHandlers
                 Object.Destroy(_characterView.gameObject);
                 return;
             }
-
-            _characterView.SetSliderAreaValue(50);
         }
 
         public void LateExecute(float deltaTime)
