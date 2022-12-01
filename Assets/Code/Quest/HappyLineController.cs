@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using Code.Interfaces;
 using Code.Timer;
-using UnityEngine;
 
 namespace Code.Quest
 {
-    internal class HappyLineController : IExecute, ICleanup
+    internal class HappyLineController : IExecute
     {
         public Action<int> StartNewQuest;
         private ITimeRemaining _questTimer;
@@ -22,7 +21,7 @@ namespace Code.Quest
             _happinessList.Add(75);
             _happinessList.Add(75);
             _happinessList.Add(75);
-            GetGeneralHappy();
+            //GetGeneralHappy();
         }
 
         public int Population => _happinessList.Count;
@@ -34,7 +33,6 @@ namespace Code.Quest
 
         public void ChangeHappiness(int start, int delta)
         {
-            Debug.Log("Change");
             for (int i = 0; i < _happinessList.Count; i++)
             {
                 if (_happinessList[i] == start)
@@ -56,7 +54,6 @@ namespace Code.Quest
             }
 
             _generalHappyLine = sumHappy / _happinessList.Count;
-            //Debug.Log(_generalHappyLine);
             CheckTimer();
         }
 
@@ -145,7 +142,6 @@ namespace Code.Quest
         private void StartQuest()
         {
             StartNewQuest?.Invoke(_happinessList.Count);
-            //Debug.Log(_happinessList.Count);
             _questTimer.RemoveTimeRemaining();
             GetGeneralHappy();
             _isWaiting = false;
@@ -156,13 +152,8 @@ namespace Code.Quest
             _happinessList.Remove(_happinessList[0]);
 
             _removeTimer.RemoveTimeRemaining();
-            Debug.Log("REMOVE ONE MAN");
             GetGeneralHappy();
             _isWaiting = false;
-        }
-
-        public void Cleanup()
-        {
         }
     }
 }

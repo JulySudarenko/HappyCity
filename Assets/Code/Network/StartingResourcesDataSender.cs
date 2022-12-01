@@ -6,12 +6,12 @@ using Photon.Realtime;
 
 namespace Code.Network
 {
-    internal class StartingDataSender : IInitialization, ICleanup
+    internal class StartingResourcesDataSender : IInitialization, ICleanup
     {
         private readonly ResourcesPlaceGeneratorLists _placeGeneratorLists;
         private readonly PhotonConnectionController _connectionController;
 
-        public StartingDataSender(ResourcesPlaceGeneratorLists placeGeneratorLists,
+        public StartingResourcesDataSender(ResourcesPlaceGeneratorLists placeGeneratorLists,
             PhotonConnectionController connectionController)
         {
             _placeGeneratorLists = placeGeneratorLists;

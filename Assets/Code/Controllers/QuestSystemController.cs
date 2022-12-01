@@ -4,6 +4,7 @@ using System.Linq;
 using Code.Buildings;
 using Code.Configs;
 using Code.Interfaces;
+using Code.Network;
 using Code.NPC;
 using Code.Quest;
 using Code.ResourcesC;
@@ -18,101 +19,117 @@ namespace Code.Controllers
     internal class QuestSystemController : IFixedExecute, IExecute, ILateExecute, ICleanup
     {
         public Action<IQuestState> QuestAdd;
-        private readonly List<Vector3> _startPointsList = new List<Vector3>();
+
+
         private readonly Controllers _controllers = new Controllers();
         private readonly ResourcesCheckUnionController _resourceCheckUnionController;
+        private readonly NetworkSynchronizationController _networkSynchronization;
         private readonly HappyLineController _happyLineController = new HappyLineController();
-        private readonly List<Vector3> _buildingPlaces = new List<Vector3>();
         private readonly List<QuestNpcConfig> _questConfigs;
+        private readonly List<QuestController> _questList = new List<QuestController>();
+        private readonly BuildingPlacesConfig _placesConfigs;
+        private readonly List<Vector3> _buildingPlaces = new List<Vector3>();
+        private readonly List<Vector3> _startPointsList = new List<Vector3>();
         private readonly LineElementView _messagePanelView;
         private readonly Canvas _canvas;
         private readonly Camera _camera;
         private readonly Transform _player;
         private readonly Transform _characterFolder;
         private readonly Transform _buildingFolder;
-        private readonly int _characterID;
+         private readonly int _characterID;
 
-        public QuestSystemController(QuestNpcConfig[] questConfigs, int characterID,
+        private Vector3[] _questFirstQueue;
+        private QuestState[] _questStateList;
+        private int _questCounter = 0;
+        private bool _isGamePlay;
+
+        public QuestSystemController(UnionConfig configs, int characterID,
             ResourcesCheckUnionController resourceCheckUnionController, LineElementView messagePanelView, Canvas canvas,
-            Camera camera, Transform player)
+            Camera camera, Transform player, NetworkSynchronizationController networkSynchronization)
         {
             _characterFolder = new GameObject("Characters").transform;
             _buildingFolder = new GameObject("Buildings").transform;
-            _questConfigs = questConfigs.ToList();
+            _questConfigs = configs.AllQuestNpcConfigs.ToList();
+            _placesConfigs = configs.AllBuildingPlacesConfigs[0];
             _resourceCheckUnionController = resourceCheckUnionController;
             _messagePanelView = messagePanelView;
             _canvas = canvas;
             _camera = camera;
             _player = player;
+            _networkSynchronization = networkSynchronization;
             _characterID = characterID;
             _buildingPlaces.Add(new Vector3(0.0f, 0.0f, -85.0f));
             _buildingPlaces.Add(new Vector3(20.0f, 0.0f, -85.0f));
             _buildingPlaces.Add(new Vector3(40.0f, 0.0f, -85.0f));
-
+            
             _controllers.Add(_happyLineController);
             _happyLineController.StartNewQuest += StartQuest;
+            _networkSynchronization.AllPointsReceived += GetQuestQueue;
+            _networkSynchronization.ChangeParameter += OnQuestChanges;
         }
 
-        private void StartQuest(int count)
+        private void GetQuestQueue(int code)
         {
-            if (_buildingPlaces.Count > _happyLineController.Population)
+            if (code == 121)
             {
-                var npc = new NpcSpawnHandler(_questConfigs[0].NpcConfig,
-                    GenerateStartPoint(_questConfigs[0].NpcConfig));
-                var npcController = new NpcController(_questConfigs[0].NpcConfig, npc, _player, _characterID);
-                npc.NpcTransform.SetParent(_characterFolder);
-                //var target = new Vector3(-30.0f, 0.0f, -30.0f);
-                var target = _buildingPlaces[Random.Range(0, _buildingPlaces.Count)];
-                npcController.OnGetTarget(npc.NpcTransform.position, target);
-            }
-
-            if (_questConfigs.Count > 0)
-            {
-                Debug.Log("Has quests");
-                var quest = ChooseQuest();
-                InitQuest(quest.Item1, quest.Item2);
-            }
-            else
-            {
-                Debug.Log("All quests is done");
-            }
-        }
-
-        private (QuestNpcConfig, Transform) ChooseQuest()
-        {
-            var i = Random.Range(0, _questConfigs.Count);
-            QuestNpcConfig quest = _questConfigs[i];
-
-            var newQuestSearch = (quest, _questConfigs[i].BuildingConfig.Places[0]);
-
-            Transform[] places = _questConfigs[i].BuildingConfig.Places;
-            List<Transform> freePlaces = new List<Transform>();
-
-            for (int j = 0; j < places.Length; j++)
-            {
-                if (!_buildingPlaces.Contains(places[j].position))
+                _questStateList = new QuestState[_networkSynchronization.QuestFirstQueue.Count];
+                _questFirstQueue = new Vector3[_networkSynchronization.QuestFirstQueue.Count];
+                for (int i = 0; i < _networkSynchronization.QuestFirstQueue.Count; i++)
                 {
-                    freePlaces.Add(places[j]);
+                    _questFirstQueue[(int)_networkSynchronization.QuestFirstQueue[i].x] = _networkSynchronization.QuestFirstQueue[i];
+                     _questStateList[i] = QuestState.None;
+                }
+
+                _isGamePlay = true;
+                StartQuest(_questFirstQueue.Length);
+            }
+        }
+
+        private void OnQuestChanges(Vector3 questParameters, int code)
+        {
+            if (code == 122)
+            {
+                for (int i = 0; i < _questList.Count; i++)
+                {
+                    if (_questList[i].QuestNumber.x == questParameters.x)
+                    {
+                        _questList[i].OnSomebodyChangeQuest(QuestState.Busy);
+                    }
                 }
             }
-
-            if (freePlaces.Count > 0)
+            if (code == 123)
             {
-                Transform place = freePlaces[Random.Range(0, _questConfigs[i].BuildingConfig.Places.Length)];
-                _buildingPlaces.Add(place.position);
-                newQuestSearch = (quest, place);
-                //Debug.Log(place.position);
+                for (int i = 0; i < _questList.Count; i++)
+                {
+                    if (_questList[i].QuestNumber.x == questParameters.x)
+                    {
+                        _questList[i].OnSomebodyChangeQuest(QuestState.Done);
+                    }
+                }
             }
-            else
+        }
+        
+        private void StartQuest(int count)
+        {
+            if(_isGamePlay)
             {
-                _questConfigs.Remove(_questConfigs[i]);
-                newQuestSearch = ChooseQuest();
+                if (_questCounter < _questFirstQueue.Length)
+                {
+                    var quest = _questConfigs[(int) _questFirstQueue[_questCounter].y];
+                    var place = _placesConfigs.Places[(int) _questFirstQueue[_questCounter].z];
+                    InitQuest(quest, place, _questFirstQueue[_questCounter]);
+                    _questCounter++;
+                }
+                else
+                {
+                    Debug.Log("All of first stream quests in work");
+                    _isGamePlay = false;
+                    _happyLineController.StartNewQuest -= StartQuest;
+                }
             }
-
-            return newQuestSearch;
         }
 
-        private void InitQuest(QuestNpcConfig questConfig, Transform buildingPlace)
+        private void InitQuest(QuestNpcConfig questConfig, Transform buildingPlace, Vector3 number)
         {
             var startPosition = GenerateStartPoint(questConfig.NpcConfig);
             
@@ -121,7 +138,10 @@ namespace Code.Controllers
             var npcHappiness = new ResourcesKeeper(questConfig.StartHappiness, ResourcesType.Happiness);
             _happyLineController.ChangeCurrentPopulation(questConfig.StartHappiness);
             var quest = new QuestController(npc, _characterID, _resourceCheckUnionController,
-                questConfig, _messagePanelView, _canvas, npcHappiness, _happyLineController);
+                questConfig, _messagePanelView, _canvas, npcHappiness, _happyLineController, number);
+            
+            _questList.Add(quest);
+            
             var buildingSpawnHandler =
                 new BuildingSpawnHandler(questConfig.BuildingConfig, quest, buildingPlace, _buildingFolder);
 
@@ -196,7 +216,9 @@ namespace Code.Controllers
         public void Cleanup()
         {
             _controllers.Cleanup();
-            _happyLineController.StartNewQuest -= StartQuest;
+            if (_happyLineController != null) _happyLineController.StartNewQuest -= StartQuest;
+            _networkSynchronization.AllPointsReceived -= GetQuestQueue;
         }
     }
+
 }

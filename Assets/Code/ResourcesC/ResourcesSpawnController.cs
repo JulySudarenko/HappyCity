@@ -1,7 +1,6 @@
 ﻿using Code.Factory;
 using Code.Network;
 using Code.ResourcesSpawn;
-using UnityEngine;
 
 namespace Code.ResourcesC
 {
@@ -16,10 +15,6 @@ namespace Code.ResourcesC
         public ResourceCounterController WoodController { get; }
         public ResourceCounterController FoodController { get; }
         public ResourceCounterController StoneController { get; }
-
-        // public ResourcesSpawner WoodSpawner => _woodSpawner;
-        // public ResourcesSpawner FoodSpawner => _foodSpawner;
-        // public ResourcesSpawner StoneSpawner => _stoneSpawner;
 
         private bool _isWood;
         private bool _isFood;
@@ -50,7 +45,6 @@ namespace Code.ResourcesC
                             _unionResourcesParser.FoodConfig, _characterSpawner.Character.CharacterID,
                             _networkSynchronizer);
                         _isFood = true;
-                        Debug.Log($"Food {_isFood}");
                         FoodController.Init(_foodSpawner);
                     }
 
@@ -62,7 +56,6 @@ namespace Code.ResourcesC
                             _unionResourcesParser.WoodConfig, _characterSpawner.Character.CharacterID,
                             _networkSynchronizer);
                         _isWood = true;
-                        Debug.Log($"Wood {_isWood}");
                         WoodController.Init(_woodSpawner);
                     }
 
@@ -74,7 +67,6 @@ namespace Code.ResourcesC
                             _unionResourcesParser.StoneConfig, _characterSpawner.Character.CharacterID,
                             _networkSynchronizer);
                         _isStone = true;
-                        Debug.Log($"Stone {_isStone}");
                         StoneController.Init(_stoneSpawner);
                     }
 

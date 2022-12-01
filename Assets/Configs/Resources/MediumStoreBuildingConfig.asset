@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df919dc09e00409e9ffbc76a1a008fcc, type: 3}
-  m_Name: MediouStoreBuildingConfig
+  m_Name: MediumStoreBuildingConfig
   m_EditorClassIdentifier: 
   Prefab:
   - {fileID: 7777211199468435875, guid: 3999e64c66268bb4da4b05287d19f864, type: 3}

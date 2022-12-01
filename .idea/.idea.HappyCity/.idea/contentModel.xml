@@ -27,6 +27,7 @@
           </e>
           <e p="Configs" t="Include">
             <e p="BuildingConfig.cs" t="Include" />
+            <e p="BuildingPlacesConfig.cs" t="Include" />
             <e p="CameraConfig.cs" t="Include" />
             <e p="NonPlayerCharacterConfig.cs" t="Include" />
             <e p="PlayerConfig.cs" t="Include" />
@@ -72,7 +73,8 @@
           <e p="Network" t="Include">
             <e p="NetworkSynchronizationController.cs" t="Include" />
             <e p="PhotonConnectionController.cs" t="Include" />
-            <e p="StartingDataSender.cs" t="Include" />
+            <e p="StartingQuestQueueDataSender.cs" t="Include" />
+            <e p="StartingResourcesDataSender.cs" t="Include" />
           </e>
           <e p="NPC" t="Include">
             <e p="NpcController.cs" t="Include" />
@@ -92,6 +94,7 @@
             <e p="HappyLineController.cs" t="Include" />
             <e p="IQuestState.cs" t="Include" />
             <e p="QuestController.cs" t="Include" />
+            <e p="QuestQueueGeneratorList.cs" t="Include" />
             <e p="QuestState.cs" t="Include" />
           </e>
           <e p="ResourcesC" t="Include">

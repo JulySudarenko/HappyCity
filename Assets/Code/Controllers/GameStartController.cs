@@ -2,6 +2,7 @@
 using Code.Configs;
 using Code.Factory;
 using Code.Network;
+using Code.Quest;
 using Code.ResourcesC;
 using Code.ResourcesSpawn;
 using Code.Timer;
@@ -75,17 +76,19 @@ namespace Code.Controllers
             var resourceUnionController = new ResourcesCheckUnionController(woodCounter, foodCounter,
                 stoneCounter, goldCounter);
 
-            var questSystemController = new QuestSystemController(_unionConfig.AllQuestNpcConfigs, 
-                characterSpawner.Character.ColliderID, resourceUnionController, _messagePanelView, _canvas, camera,
-                characterSpawner.Character.Transform);
+            var questSystemController = new QuestSystemController(_unionConfig, characterSpawner.Character.ColliderID, 
+                resourceUnionController, _messagePanelView, _canvas, camera, characterSpawner.Character.Transform, networkSynchronizer);
 
             if (PhotonNetwork.IsMasterClient)
             {
                 _loadingIndicator.UpdateFeedbackText("MASTER");
                 var placeGeneratorLists = new ResourcesPlaceGeneratorLists(_resourcesSpawnPlaces, unionResourcesParser);
-                var questQueueGeneratorLists = new ResourcesPlaceGeneratorLists(_resourcesSpawnPlaces, unionResourcesParser);
-                var dataSender = new StartingDataSender(placeGeneratorLists, photonConnectionController);
-                _controllers.Add(dataSender);
+                var questQueueGeneratorList = new QuestQueueGeneratorList(_unionConfig);
+                
+                var resourcesDataSender = new StartingResourcesDataSender(placeGeneratorLists, photonConnectionController);
+                var questDataSender =  new StartingQuestQueueDataSender(questQueueGeneratorList.QuestQueueList, photonConnectionController);
+                _controllers.Add(resourcesDataSender);
+                _controllers.Add(questDataSender);
 
                 var woodSpawner = new ResourcesSpawner(placeGeneratorLists.AllWoodPlaces,
                     unionResourcesParser.WoodConfig, characterSpawner.Character.CharacterID,

@@ -35,23 +35,17 @@ namespace Code.ResourcesSpawn
         public void Initialize()
         {
             _resHit.OnHitEnter += OnSelfGetResources;
-            _networkSynchronizer.RemoveResource += OnOtherGetResources;
-            _networkSynchronizer.InstallResource += OnOtherSpawnResources;
+            _networkSynchronizer.ChangeParameter += OnOtherGetResources;
         }
 
-        private void OnOtherGetResources(Vector3 startPosition)
+        private void OnOtherGetResources(Vector3 startPosition, int code)
         {
             if (startPosition == _startPlace)
             {
-                _resTransform.gameObject.SetActive(false);
-            }
-        }
-
-        private void OnOtherSpawnResources(Vector3 startPosition)
-        {
-            if (startPosition == _startPlace)
-            {
-                _resTransform.gameObject.SetActive(true);
+                if (code == 114)
+                    _resTransform.gameObject.SetActive(false);
+                if (code == 115)
+                    _resTransform.gameObject.SetActive(true);
             }
         }
 
@@ -82,8 +76,7 @@ namespace Code.ResourcesSpawn
         public void Cleanup()
         {
             _resHit.OnHitEnter -= OnSelfGetResources;
-            _networkSynchronizer.RemoveResource -= OnOtherGetResources;
-            _networkSynchronizer.InstallResource -= OnOtherSpawnResources;
+            _networkSynchronizer.ChangeParameter -= OnOtherGetResources;
         }
     }
 }

@@ -8,9 +8,11 @@ namespace Code.Configs
     {
         [SerializeField] private string _resourcesFolder = "ResConfigs";
         [SerializeField] private string _questFolder = "QuestConfigs";
+        [SerializeField] private string _placeFolder = "PlacesConfigs";
         
         private ResourcesConfig[] _resourcesConfigs;
         private QuestNpcConfig[] _questNpcConfigs;
+        private BuildingPlacesConfig[] _buildingPlacesConfigs;
 
         public ResourcesConfig[] AllResourcesConfigs
         {
@@ -27,6 +29,15 @@ namespace Code.Configs
             {
                 _questNpcConfigs = Assistant.LoadAll<QuestNpcConfig>(_questFolder);
                 return _questNpcConfigs;
+            }
+        }
+        
+        public BuildingPlacesConfig[] AllBuildingPlacesConfigs
+        {
+            get
+            {
+                _buildingPlacesConfigs = Assistant.LoadAll<BuildingPlacesConfig>(_placeFolder);
+                return _buildingPlacesConfigs;
             }
         }
     }

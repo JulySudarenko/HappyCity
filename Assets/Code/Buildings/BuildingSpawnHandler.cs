@@ -25,7 +25,7 @@ namespace Code.Buildings
             _buildingPlace = buildingPlace;
             _folder = folder;
             
-            _questState.OnQuestDone += Build;
+            _questState.OnStateChange += Build;
         }
 
         //public IHit BuildingEnter => _buildingTransform.GetComponentInChildren<IHit>();
@@ -45,24 +45,28 @@ namespace Code.Buildings
             return position;
         }
 
-        private void Build(int i)
+        private void Build(QuestState state)
         {
-            var prefab = _buildingConfig.Prefab[Random.Range(0, _buildingConfig.Prefab.Length)];
-            _buildingTransform = Object.Instantiate(prefab, _buildingPlace.position, _buildingPlace.rotation);
-            _buildingTransform.SetParent(_folder);
-
-            foreach (Transform child in _buildingTransform)
+            if (state == QuestState.Done)
             {
-                //Debug.Log(child.gameObject.name);
-                child.TryGetComponent<IHit>(out var hit);
-                if (hit != null)
+                var prefab = _buildingConfig.Prefab[Random.Range(0, _buildingConfig.Prefab.Length)];
+                _buildingTransform = Object.Instantiate(prefab, _buildingPlace.position, _buildingPlace.rotation);
+                _buildingTransform.SetParent(_folder);
+
+                foreach (Transform child in _buildingTransform)
                 {
-                    // Debug.Log(hit);
-                    // Debug.Log(child.position);
+                    //Debug.Log(child.gameObject.name);
+                    child.TryGetComponent<IHit>(out var hit);
+                    if (hit != null)
+                    {
+                        // Debug.Log(hit);
+                        // Debug.Log(child.position);
+                    }
                 }
+
+                //BuildingIsDone?.Invoke();
+                _questState.OnStateChange -= Build;
             }
-            //BuildingIsDone?.Invoke();
-            _questState.OnQuestDone -= Build;
         }
     }
 }

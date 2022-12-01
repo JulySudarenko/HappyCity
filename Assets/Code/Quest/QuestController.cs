@@ -6,6 +6,9 @@ using Code.ResourcesC;
 using Code.ResourcesSpawn;
 using Code.View;
 using Code.ViewHandlers;
+using ExitGames.Client.Photon;
+using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 
 
@@ -27,16 +30,17 @@ namespace Code.Quest
         private readonly HappyLineController _happyLineController;
         private readonly int _characterID;
         private readonly int _npcID;
+        public Vector3 QuestNumber { get; }
 
         private QuestState _state;
         private string _message;
         private bool _isAccepted;
-        private bool _isBuild;
+
 
         public QuestController(NpcSpawnHandler npcController, int characterID,
             ResourcesCheckUnionController resourcesCheckUnionController, QuestNpcConfig questConfig,
             LineElementView messagePanelView, Canvas canvas, IKeeper npcHappiness,
-            HappyLineController happyLineController)
+            HappyLineController happyLineController, Vector3 questNumber)
         {
             _npc = npcController;
             _npcID = _npc.NpcId;
@@ -45,6 +49,7 @@ namespace Code.Quest
             _questConfig = questConfig;
             _npcHappiness = npcHappiness;
             _happyLineController = happyLineController;
+            QuestNumber = questNumber;
             _messagePanelViewHandler = new MessagePanelViewHandler(messagePanelView, canvas);
             _buildingConfig = _questConfig.BuildingConfig;
 
@@ -76,7 +81,6 @@ namespace Code.Quest
                 {
                     case QuestState.None:
                         _messagePanelViewHandler.ActivationPanel(false);
-                        //тут можно показывать сообщение, что кто-то другой уже работает над задачей.
                         break;
                     case QuestState.Start:
                         _messagePanelViewHandler.AcceptButton.onClick.AddListener(() => AcceptTask(ID, selfID));
@@ -101,6 +105,9 @@ namespace Code.Quest
                         break;
                     case QuestState.Done:
                         _messagePanelViewHandler.ShowMessage(_questConfig.DoneMessage);
+                        break;
+                    case QuestState.Busy:
+                        _messagePanelViewHandler.ShowMessage("This quest is already taken");
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -138,6 +145,9 @@ namespace Code.Quest
             _npcHappiness.Add(_questConfig.BonusHappiness);
             _happyLineController.ChangeHappiness(_questConfig.StartHappiness, _questConfig.BonusHappiness);
             _state = QuestState.Done;
+            PhotonNetwork.RaiseEvent(123, QuestNumber,
+                new RaiseEventOptions() {Receivers = ReceiverGroup.Others},
+                new SendOptions() {Reliability = true});
             OnStateChange?.Invoke(_state);
             OnQuestDone?.Invoke(_npcID);
             StartDialog(ID, selfID);
@@ -159,6 +169,10 @@ namespace Code.Quest
                 _state = QuestState.Check;
                 _isAccepted = true;
 
+                PhotonNetwork.RaiseEvent(122, QuestNumber,
+                    new RaiseEventOptions() {Receivers = ReceiverGroup.Others},
+                    new SendOptions() {Reliability = true});
+                
                 _messagePanelViewHandler.AcceptButton.onClick.AddListener(() => Build(ID, selfID));
                 _messagePanelViewHandler.ChangeTextOnButton(_questConfig.BuildButtonText);
                 _message =
@@ -168,6 +182,25 @@ namespace Code.Quest
                 OnStateChange?.Invoke(_state);
                 _npc.OnDialog(false);
                 StartDialog(ID, selfID);
+            }
+        }
+
+        public void OnSomebodyChangeQuest(QuestState state)
+        {
+            if (state == QuestState.Busy)
+            {
+                var message = "My task is already taken";
+                ChangeMessage(message, _questConfig.BuildButtonText, false);
+                _messagePanelViewHandler.AcceptButton.onClick.RemoveAllListeners();
+                _state = QuestState.Busy;
+            }
+
+            if (state == QuestState.Done)
+            {
+                _npcHappiness.Add(_questConfig.BonusHappiness);
+                _happyLineController.ChangeHappiness(_questConfig.StartHappiness, _questConfig.BonusHappiness);
+                _state = QuestState.Done;
+                OnStateChange?.Invoke(QuestState.Done);
             }
         }
 

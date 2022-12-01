@@ -6,6 +6,7 @@
         Start = 1,
         Wait = 2,
         Check = 3,
-        Done = 4
+        Done = 4,
+        Busy = 5
     }
 }

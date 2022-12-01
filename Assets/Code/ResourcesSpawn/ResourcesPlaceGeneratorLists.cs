@@ -9,11 +9,11 @@ namespace Code.ResourcesSpawn
 {
     internal class ResourcesPlaceGeneratorLists
     {
-        private List<Vector3> _allWoodPlaces = new List<Vector3>();
+        private readonly List<Vector3> _allWoodPlaces = new List<Vector3>();
 
-        private List<Vector3> _allStonePlaces = new List<Vector3>();
+        private readonly List<Vector3> _allStonePlaces = new List<Vector3>();
 
-        private List<Vector3> _allFoodPlaces = new List<Vector3>();
+        private readonly List<Vector3> _allFoodPlaces = new List<Vector3>();
 
         public ResourcesPlaceGeneratorLists(SpawnPlacesView resourcesSpawnPlaces,
             UnionResourcesConfigParser unionResourcesConfigParser)
@@ -47,28 +47,4 @@ namespace Code.ResourcesSpawn
         }
     }
 
-    internal class QuestQueueGeneratorList
-    {
-        private readonly List<QuestNpcConfig> _questConfigs;
-        private QuestJsonLine _questJsonLine;
-        private readonly List<Vector3> _buildingPlaces = new List<Vector3>();
-
-        public QuestQueueGeneratorList(UnionConfig unionConfig)
-        {
-            _questConfigs = unionConfig.AllQuestNpcConfigs.ToList();
-        }
-    }
-
-    internal class QuestJsonLine
-    {
-        public Vector3 Position;
-        public string ConfigName;
-        public int Queue;
-    }
-
-    internal class HappyPointsJsonLine
-    {
-        public int PlayerID;
-        public int Points;
-    }
 }

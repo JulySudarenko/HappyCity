@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: SmallStoreQuestNpcConfig
   m_EditorClassIdentifier: 
   _questName: Store
-  _questInfo: We need the store
+  _questInfo: We need a store
   _startMessage: We need the to take a food amd other goods somethere. can you build
     a store?
   _waitingMessage: That is not enough. When you get wood, stone and food? You can
     get it in the forest not far from here. I'm waiting...
-  _getResMessage: Now you can build a store!
+  _getResMessage: Now you can build a store
   _doneMessage: I'm so happy! Thank you!
   _acceptTaskButtonText: Accept task
   _buildButtonText: Build
