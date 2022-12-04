@@ -21,8 +21,8 @@ MonoBehaviour:
   BuildingType: 2
   _numberOfBuildings: 1
   _woodCost: 10
-  _foodCost: 25
+  _foodCost: 30
   _stoneCost: 15
-  _goldCost: 10
+  _goldCost: 0
   _population: 3
-  _goldReward: 3
+  _goldReward: 10

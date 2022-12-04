@@ -39,4 +39,4 @@ MonoBehaviour:
   _stoneCost: 10
   _goldCost: 0
   _population: 3
-  _goldReward: 50
+  _goldReward: 5

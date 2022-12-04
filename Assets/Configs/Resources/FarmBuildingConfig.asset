@@ -21,9 +21,9 @@ MonoBehaviour:
   - {fileID: 223012959074776249, guid: acff49521baf4864aa79bb507906c2be, type: 3}
   BuildingType: 1
   _numberOfBuildings: 3
-  _woodCost: 100
+  _woodCost: 50
   _foodCost: 25
-  _stoneCost: 20
+  _stoneCost: 10
   _goldCost: 0
   _population: 10
-  _goldReward: 100
+  _goldReward: 30

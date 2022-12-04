@@ -42,6 +42,14 @@ namespace Code.View
                 _slider.value = value/100;
             }
         }
+        
+        public void SetSliderAreaValue(float maxValue, float value)
+        {
+            if (_slider != null)
+            {
+                _slider.value = value/maxValue;
+            }
+        }
 
         public void ActivateQuestion(bool value)
         {

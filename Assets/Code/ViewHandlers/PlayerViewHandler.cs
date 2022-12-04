@@ -26,7 +26,9 @@ namespace Code.ViewHandlers
             //view.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
             _characterView = view.gameObject.GetOrAddComponent<CharacterView>();
             _characterView.Init(canvas);
-
+            //_characterView.SendMessage("SetText", characterModel.PhotonView.photonView.Owner.NickName, SendMessageOptions.RequireReceiver);
+            // _characterView.gameObject.GetOrAddComponent<PhotonView>();
+            // _characterView.gameObject.GetOrAddComponent<PhotonTransformView>();
             _targetTransform = characterModel.Transform;
             _targetRenderer = characterModel.Renderer;
             _characterHeight = config.Height;

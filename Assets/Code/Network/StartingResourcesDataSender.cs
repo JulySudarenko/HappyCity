@@ -28,7 +28,7 @@ namespace Code.Network
             for (int i = 0; i < _placeGeneratorLists.AllFoodPlaces.Length; i++)
             {
                 PhotonNetwork.RaiseEvent(111, _placeGeneratorLists.AllFoodPlaces[i],
-                    new RaiseEventOptions() {Receivers = ReceiverGroup.Others},
+                    new RaiseEventOptions() {Receivers = ReceiverGroup.All},
                     new SendOptions() {Reliability = true});
             }
 
@@ -36,7 +36,7 @@ namespace Code.Network
             {
                 PhotonNetwork.RaiseEvent(112,
                     _placeGeneratorLists.AllWoodPlaces[i],
-                    new RaiseEventOptions() {Receivers = ReceiverGroup.Others},
+                    new RaiseEventOptions() {Receivers = ReceiverGroup.All},
                     new SendOptions() {Reliability = true});
             }
 
@@ -44,7 +44,7 @@ namespace Code.Network
             {
                 PhotonNetwork.RaiseEvent(113,
                     _placeGeneratorLists.AllStonePlaces[i],
-                    new RaiseEventOptions() {Receivers = ReceiverGroup.Others},
+                    new RaiseEventOptions() {Receivers = ReceiverGroup.All},
                     new SendOptions() {Reliability = true});
             }
         }

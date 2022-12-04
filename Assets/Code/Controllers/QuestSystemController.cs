@@ -19,8 +19,7 @@ namespace Code.Controllers
     internal class QuestSystemController : IFixedExecute, IExecute, ILateExecute, ICleanup
     {
         public Action<IQuestState> QuestAdd;
-
-
+        
         private readonly Controllers _controllers = new Controllers();
         private readonly ResourcesCheckUnionController _resourceCheckUnionController;
         private readonly NetworkSynchronizationController _networkSynchronization;
@@ -36,14 +35,15 @@ namespace Code.Controllers
         private readonly Transform _player;
         private readonly Transform _characterFolder;
         private readonly Transform _buildingFolder;
-         private readonly int _characterID;
+        private readonly string _nickName;
+        private readonly int _characterID;
 
         private Vector3[] _questFirstQueue;
         private QuestState[] _questStateList;
         private int _questCounter = 0;
         private bool _isGamePlay;
 
-        public QuestSystemController(UnionConfig configs, int characterID,
+        public QuestSystemController(UnionConfig configs, int characterID, string nickName,
             ResourcesCheckUnionController resourceCheckUnionController, LineElementView messagePanelView, Canvas canvas,
             Camera camera, Transform player, NetworkSynchronizationController networkSynchronization)
         {
@@ -58,6 +58,7 @@ namespace Code.Controllers
             _player = player;
             _networkSynchronization = networkSynchronization;
             _characterID = characterID;
+            _nickName = nickName;
             _buildingPlaces.Add(new Vector3(0.0f, 0.0f, -85.0f));
             _buildingPlaces.Add(new Vector3(20.0f, 0.0f, -85.0f));
             _buildingPlaces.Add(new Vector3(40.0f, 0.0f, -85.0f));
@@ -77,7 +78,7 @@ namespace Code.Controllers
                 for (int i = 0; i < _networkSynchronization.QuestFirstQueue.Count; i++)
                 {
                     _questFirstQueue[(int)_networkSynchronization.QuestFirstQueue[i].x] = _networkSynchronization.QuestFirstQueue[i];
-                     _questStateList[i] = QuestState.None;
+                    _questStateList[i] = QuestState.None;
                 }
 
                 _isGamePlay = true;
@@ -137,7 +138,7 @@ namespace Code.Controllers
             npc.NpcTransform.SetParent(_characterFolder);
             var npcHappiness = new ResourcesKeeper(questConfig.StartHappiness, ResourcesType.Happiness);
             _happyLineController.ChangeCurrentPopulation(questConfig.StartHappiness);
-            var quest = new QuestController(npc, _characterID, _resourceCheckUnionController,
+            var quest = new QuestController(npc, _characterID, _nickName, _resourceCheckUnionController,
                 questConfig, _messagePanelView, _canvas, npcHappiness, _happyLineController, number);
             
             _questList.Add(quest);

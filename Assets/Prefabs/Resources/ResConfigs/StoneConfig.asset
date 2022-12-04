@@ -20,5 +20,5 @@ MonoBehaviour:
   _spawnCount: 5
   _radius: 12
   _distance: 2
-  _startValue: 150
-  _miningCount: 5
+  _startValue: 50
+  _miningCount: 3

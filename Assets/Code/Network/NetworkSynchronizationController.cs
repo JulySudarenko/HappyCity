@@ -15,6 +15,7 @@ namespace Code.Network
     {
         public Action<int> AllPointsReceived;
         public Action<Vector3, int> ChangeParameter;
+        public Action<string, int> AddScore;
         private PlayersList _playersList;
         private LoadingIndicatorView _loadingIndicator;
         public List<Vector3> AllWoodPlaces { get; } = new List<Vector3>();
@@ -87,7 +88,6 @@ namespace Code.Network
                     break;
                 case 121:
                     QuestFirstQueue.Add((Vector3) photonEvent.CustomData);
-                    _loadingIndicator.UpdateFeedbackText(photonEvent.CustomData.ToString());
                     if (QuestFirstQueue.Count == _questFirstQueueCount)
                     {
                         AllPointsReceived?.Invoke(photonEvent.Code);
@@ -99,10 +99,23 @@ namespace Code.Network
                 case 123:
                     ChangeParameter?.Invoke((Vector3) photonEvent.CustomData, photonEvent.Code);
                     break;
+                case 131:
+                    NetScoreTable message = JsonUtility.FromJson<NetScoreTable>((string) photonEvent.CustomData);
+                    AddScore?.Invoke(message.Name, message.Score);
+                    break;
                 default:
                     //_loadingIndicator.UpdateFeedbackText($"Default {photonEvent.Code.ToString()}");
                     break;
             }
         }
     }
+
+    public struct NetScoreTable
+    {
+        public string Name;
+        public int Score;
+    }
+    
+
+
 }

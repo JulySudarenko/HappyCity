@@ -9,6 +9,7 @@ namespace Code.ResourcesC
     internal class ResourceCounterController : ICleanup
     {
         public Action<int> ChangeCount;
+        public Action<int> Grand;
         private readonly IKeeper _resourcesKeeper;
         private readonly ResourcesConfig _config;
         private ResourcesSpawner _resourcesSpawner;
@@ -50,6 +51,7 @@ namespace Code.ResourcesC
         public void OnGrandResource(int count)
         {
             _resourcesKeeper.Add(count);
+            Grand?.Invoke(count);
             ChangeCount?.Invoke(_resourcesKeeper.ResourceCount());
         }
 

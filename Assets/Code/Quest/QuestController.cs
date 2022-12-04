@@ -1,9 +1,11 @@
 ﻿using System;
 using Code.Configs;
 using Code.Interfaces;
+using Code.Network;
 using Code.NPC;
 using Code.ResourcesC;
 using Code.ResourcesSpawn;
+using Code.Timer;
 using Code.View;
 using Code.ViewHandlers;
 using ExitGames.Client.Photon;
@@ -28,6 +30,7 @@ namespace Code.Quest
         private readonly MessagePanelViewHandler _messagePanelViewHandler;
         private readonly ResourcesCheckUnionController _resourcesCheckUnionController;
         private readonly HappyLineController _happyLineController;
+        private readonly string _nickName;
         private readonly int _characterID;
         private readonly int _npcID;
         public Vector3 QuestNumber { get; }
@@ -37,11 +40,12 @@ namespace Code.Quest
         private bool _isAccepted;
 
 
-        public QuestController(NpcSpawnHandler npcController, int characterID,
+        public QuestController(NpcSpawnHandler npcController, int characterID, string nickName,
             ResourcesCheckUnionController resourcesCheckUnionController, QuestNpcConfig questConfig,
             LineElementView messagePanelView, Canvas canvas, IKeeper npcHappiness,
             HappyLineController happyLineController, Vector3 questNumber)
         {
+            _nickName = nickName;
             _npc = npcController;
             _npcID = _npc.NpcId;
             _characterID = characterID;
@@ -83,7 +87,8 @@ namespace Code.Quest
                         _messagePanelViewHandler.ActivationPanel(false);
                         break;
                     case QuestState.Start:
-                        _messagePanelViewHandler.AcceptButton.onClick.AddListener(() => AcceptTask(ID, selfID));
+                        //_messagePanelViewHandler.AcceptButton.onClick.AddListener(() => AcceptTask(ID, selfID));
+                        _messagePanelViewHandler.AcceptButton.onClick.AddListener(AcceptTask);
                         _message =
                             $"{_questConfig.StartMessage} wood {_buildingConfig.WoodCost}, stone {_buildingConfig.FoodCost}, food {_buildingConfig.FoodCost}";
                         ChangeMessage(_message, _questConfig.AcceptTaskButtonText, true);
@@ -131,34 +136,42 @@ namespace Code.Quest
                    _resourcesCheckUnionController.CheckResources(ResourcesType.Gold, _buildingConfig.GoldCost);
         }
 
-        private void Build(int ID, int selfID)
+        //private void Build(int ID, int selfID)
+        private void Build()
         {
             _resourcesCheckUnionController.SpendResources(ResourcesType.Wood, _buildingConfig.WoodCost);
             _resourcesCheckUnionController.SpendResources(ResourcesType.Food, _buildingConfig.FoodCost);
             _resourcesCheckUnionController.SpendResources(ResourcesType.Stone, _buildingConfig.StoneCost);
             _resourcesCheckUnionController.GrandResources(ResourcesType.Gold, _buildingConfig.GoldReward);
-
-
+            
             _messagePanelViewHandler.AcceptButton.interactable = false;
             _messagePanelViewHandler.AcceptButton.gameObject.SetActive(false);
-            _messagePanelViewHandler.AcceptButton.onClick.RemoveListener(() => Build(ID, selfID));
+            _messagePanelViewHandler.AcceptButton.onClick.RemoveListener(Build);
+            //_messagePanelViewHandler.AcceptButton.onClick.RemoveListener(() => Build(ID, selfID));
             _npcHappiness.Add(_questConfig.BonusHappiness);
             _happyLineController.ChangeHappiness(_questConfig.StartHappiness, _questConfig.BonusHappiness);
             _state = QuestState.Done;
             PhotonNetwork.RaiseEvent(123, QuestNumber,
                 new RaiseEventOptions() {Receivers = ReceiverGroup.Others},
                 new SendOptions() {Reliability = true});
+            string message = JsonUtility.ToJson(new NetScoreTable () {Name = _nickName, Score = _questConfig.BonusHappiness});
+            PhotonNetwork.RaiseEvent(131, message,
+                new RaiseEventOptions() {Receivers = ReceiverGroup.All},
+                new SendOptions() {Reliability = true});
+            
             OnStateChange?.Invoke(_state);
             OnQuestDone?.Invoke(_npcID);
-            StartDialog(ID, selfID);
+            //StartDialog(ID, selfID);
         }
 
-        private void AcceptTask(int ID, int selfID)
+        //private void AcceptTask(int ID, int selfID)
+        private void AcceptTask()
         {
             if (!_isAccepted)
             {
                 _messagePanelViewHandler.AcceptButton.interactable = false;
-                _messagePanelViewHandler.AcceptButton.onClick.RemoveListener(() => AcceptTask(ID, selfID));
+                //_messagePanelViewHandler.AcceptButton.onClick.RemoveListener(() => AcceptTask(ID, selfID));
+                _messagePanelViewHandler.AcceptButton.onClick.RemoveListener(AcceptTask);
 
                 _messagePanelViewHandler.AcceptButton.gameObject.SetActive(false);
                 _messagePanelViewHandler.ActivationPanel(false);
@@ -173,7 +186,8 @@ namespace Code.Quest
                     new RaiseEventOptions() {Receivers = ReceiverGroup.Others},
                     new SendOptions() {Reliability = true});
                 
-                _messagePanelViewHandler.AcceptButton.onClick.AddListener(() => Build(ID, selfID));
+                _messagePanelViewHandler.AcceptButton.onClick.AddListener(Build);
+                //_messagePanelViewHandler.AcceptButton.onClick.AddListener(() => Build(ID, selfID));
                 _messagePanelViewHandler.ChangeTextOnButton(_questConfig.BuildButtonText);
                 _message =
                     $"{_questConfig.WaitingMessage}\nwood {_buildingConfig.WoodCost}\nstone {_buildingConfig.FoodCost}\nfood {_buildingConfig.FoodCost}";
@@ -181,7 +195,7 @@ namespace Code.Quest
 
                 OnStateChange?.Invoke(_state);
                 _npc.OnDialog(false);
-                StartDialog(ID, selfID);
+                //StartDialog(ID, selfID);
             }
         }
 

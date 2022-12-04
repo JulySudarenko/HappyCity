@@ -32,9 +32,6 @@ namespace Code.Factory
             CharacterID = character.GetInstanceID();
             PhotonView = character.GetOrAddComponent<CharacterPhotonView>();
             PhotonView.Init(networkSynchronizationController, this);
-
-            Debug.Log($"character ID {CharacterID}");
-            Debug.Log($"collider ID {ColliderID}");
         }
     }
 }
