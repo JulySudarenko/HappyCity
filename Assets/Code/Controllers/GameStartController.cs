@@ -35,11 +35,16 @@ namespace Code.Controllers
         [SerializeField] private LineElementView _tasksLineElement;
         [SerializeField] private LineElementView _messagePanelView;
 
+        [Header("Sounds")] [SerializeField] private MusicConfig _musicConfig;
+
+
         private Controllers _controllers;
 
 
         private void Awake()
         {
+            PhotonNetwork.AutomaticallySyncScene = true;
+            
             _controllers = new Controllers();
             var systemController = new SystemController();
             var camera = Camera.main;
@@ -84,7 +89,7 @@ namespace Code.Controllers
             var questSystemController = new QuestSystemController(_unionConfig, characterSpawner.Character.ColliderID,
                 characterSpawner.Character.PhotonView.photonView.Owner.NickName, resourceUnionController,
                 _messagePanelView, _canvas, camera, characterSpawner.Character.Transform,
-                networkSynchronizer);
+                networkSynchronizer, cameraController, characterSpawner.Character.AudioSource, _musicConfig);
 
             if (PhotonNetwork.IsMasterClient)
             {

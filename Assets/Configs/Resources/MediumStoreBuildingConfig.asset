@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MediumStoreBuildingConfig
   m_EditorClassIdentifier: 
   Prefab:
-  - {fileID: 7777211199468435875, guid: 3999e64c66268bb4da4b05287d19f864, type: 3}
+  - {fileID: 1580236418838040373, guid: 441520c26f275bf46b7731d3e2878491, type: 3}
   Places:
   - {fileID: 3529349757008712064, guid: f531a68f051409d45a536f2cd70a0c4d, type: 3}
   - {fileID: 6093956796339856992, guid: 415aae407e7ac66449a96cf7fad47cab, type: 3}

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SmallStoreBuildingConfig
   m_EditorClassIdentifier: 
   Prefab:
-  - {fileID: 4403596138038113583, guid: fac2824a533d6414ebb764d02509dae8, type: 3}
+  - {fileID: 7201889443832989228, guid: 27d0dd2084a0a1c4f8665c61d9868dcc, type: 3}
   Places:
   - {fileID: 492618443100021458, guid: 9afe12e73a885d345a71b956c262f1ec, type: 3}
   - {fileID: 8023643366394110362, guid: 1b9f65080f1edc149b92379d3b1aa90c, type: 3}

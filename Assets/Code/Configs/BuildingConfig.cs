@@ -6,20 +6,21 @@ namespace Code.Configs
     [CreateAssetMenu(fileName = "BuildingConfig", menuName = "Data/BuildingConfig", order = 0)]
     public sealed class BuildingConfig : ScriptableObject
     {
-        [Header("Building")] 
-        public Transform[] Prefab;
+        [Header("Building")] public Transform[] Prefab;
         public Transform[] Places;
         public BuildingType BuildingType;
         [SerializeField] private int _numberOfBuildings;
 
-        [Header("Required resources")] 
-        [SerializeField] private int _woodCost = 10;
+        [Header("Required resources")] [SerializeField]
+        private int _woodCost = 10;
+
         [SerializeField] private int _foodCost = 10;
         [SerializeField] private int _stoneCost = 10;
         [SerializeField] private int _goldCost = 10;
 
-        [Header("Build reward")] 
-        [SerializeField] private int _population = 3;
+        [Header("Build reward")] [SerializeField]
+        private int _population = 3;
+
         [SerializeField] private int _goldReward = 3;
 
         public int WoodCost => _woodCost;

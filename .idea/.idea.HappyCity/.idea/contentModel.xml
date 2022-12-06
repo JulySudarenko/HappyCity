@@ -29,6 +29,7 @@
             <e p="BuildingConfig.cs" t="Include" />
             <e p="BuildingPlacesConfig.cs" t="Include" />
             <e p="CameraConfig.cs" t="Include" />
+            <e p="MusicConfig.cs" t="Include" />
             <e p="NonPlayerCharacterConfig.cs" t="Include" />
             <e p="PlayerConfig.cs" t="Include" />
             <e p="PreferenceKeys.cs" t="Include" />

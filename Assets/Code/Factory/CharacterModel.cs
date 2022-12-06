@@ -12,13 +12,15 @@ namespace Code.Factory
         public Transform Transform { get; }
         public Rigidbody Rigidbody { get; }
         public HitHandler HitHandler { get; }
+        public TriggerHandler FeetCollider { get; }
         public Animator Animator { get; }
         public Renderer Renderer { get; }
+        public AudioSource AudioSource { get; }
         public int CharacterID { get; }
         public int ColliderID { get; }
 
         public CharacterModel(ICharacterFactory playerFactory,
-            NetworkSynchronizationController networkSynchronizationController)
+            NetworkSynchronizationController networkSynchronizationController, Transform feetPrefab)
         {
             var character = playerFactory.SpawnCharacter();
             Character = character;
@@ -32,6 +34,9 @@ namespace Code.Factory
             CharacterID = character.GetInstanceID();
             PhotonView = character.GetOrAddComponent<CharacterPhotonView>();
             PhotonView.Init(networkSynchronizationController, this);
+            AudioSource = character.GetOrAddComponent<AudioSource>();
+            var feet = Object.Instantiate(feetPrefab, Transform);
+            FeetCollider = feet.gameObject.GetOrAddComponent<TriggerHandler>();
         }
     }
 }

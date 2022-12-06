@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Code.Configs;
 using Code.Interfaces;
 using Code.Network;
@@ -22,7 +23,7 @@ namespace Code.Quest
         public event Action<string, string, int> OnQuestStart;
         public event Action<int> OnQuestDone;
         public event Action<bool> OnDialog;
-
+        private readonly List<Vector3> _startPointsList = new List<Vector3>();
         private readonly IKeeper _npcHappiness;
         private readonly NpcSpawnHandler _npc;
         private readonly QuestNpcConfig _questConfig;
@@ -34,12 +35,10 @@ namespace Code.Quest
         private readonly int _characterID;
         private readonly int _npcID;
         public Vector3 QuestNumber { get; }
-
         private QuestState _state;
         private string _message;
         private bool _isAccepted;
-
-
+        
         public QuestController(NpcSpawnHandler npcController, int characterID, string nickName,
             ResourcesCheckUnionController resourcesCheckUnionController, QuestNpcConfig questConfig,
             LineElementView messagePanelView, Canvas canvas, IKeeper npcHappiness,
@@ -56,6 +55,7 @@ namespace Code.Quest
             QuestNumber = questNumber;
             _messagePanelViewHandler = new MessagePanelViewHandler(messagePanelView, canvas);
             _buildingConfig = _questConfig.BuildingConfig;
+
 
             _state = QuestState.None;
             _state = QuestState.Start;

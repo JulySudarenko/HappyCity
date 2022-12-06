@@ -20,6 +20,8 @@ MonoBehaviour:
     type: 3}
   PlayerView: {fileID: 6017853097939473588, guid: a14464416558e5b4ba4019a946af7f8b,
     type: 3}
+  FeetCollider: {fileID: 534957983254019708, guid: f74b8fb03baf5e24da895a5f241c6c1f,
+    type: 3}
   _speed: 200
   _height: 1.7
-  _screenOffset: {x: 0, y: 30, z: 0}
+  _jumpHeight: 5

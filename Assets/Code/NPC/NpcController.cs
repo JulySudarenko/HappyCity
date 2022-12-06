@@ -1,9 +1,11 @@
-﻿using Code.Buildings;
+﻿using System.Collections.Generic;
+using Code.Buildings;
 using Code.Configs;
 using Code.Interfaces;
 using Code.Quest;
 using Code.Timer;
 using UnityEngine;
+
 
 namespace Code.NPC
 {
@@ -11,11 +13,13 @@ namespace Code.NPC
     {
         private static readonly int Walk = Animator.StringToHash("Walk");
         private static readonly int Stay = Animator.StringToHash("Stay");
+        private readonly List<Vector3> _startPointsList;
         private readonly NpcSpawnHandler _npc;
         private readonly NonPlayerCharacterConfig _config;
         private readonly Transform _player;
         private readonly IQuestState _state;
         private readonly BuildingSpawnHandler _buildingSpawnHandler;
+        private readonly Vector3 _startPoint;
         private readonly int _playerID;
         private ITimeRemaining _timeRemaining;
         private Vector3 _target;
@@ -35,7 +39,7 @@ namespace Code.NPC
         }
 
         public NpcController(NonPlayerCharacterConfig npcConfig, NpcSpawnHandler npc, Transform player, int playerID,
-            IQuestState state, BuildingSpawnHandler buildingSpawnHandler)
+            IQuestState state, BuildingSpawnHandler buildingSpawnHandler, Vector3 startPoint, List<Vector3> startPointsList)
         {
             _config = npcConfig;
             _npc = npc;
@@ -43,7 +47,9 @@ namespace Code.NPC
             _playerID = playerID;
             _state = state;
             _buildingSpawnHandler = buildingSpawnHandler;
-
+            _startPointsList = startPointsList;
+            _startPoint = startPoint;
+            
             //_buildingSpawnHandler.BuildingEnter.OnHitEnter += EnterInBuilding;
             _npc.HitHandler.OnHitEnter += LookAtPlayer;
             _state.OnStateChange += OnQuestDone;
@@ -59,8 +65,20 @@ namespace Code.NPC
             }
         }
 
-        public void OnGetTarget(Vector3 start, Vector3 target)
+        private void RemoveStartPoint(Vector3 point)
         {
+            for (int i = 0; i < _startPointsList.Count; i++)
+            {
+                if (point == _startPointsList[i])
+                {
+                    _startPointsList.Remove(_startPointsList[i]);
+                }
+            }
+        }
+
+        private void OnGetTarget(Vector3 start, Vector3 target)
+        {
+            _startPointsList.Add(_startPoint);
             _target = target;
             _npc.NpcTransform.position = start;
             _npc.NpcTransform.gameObject.SetActive(true);

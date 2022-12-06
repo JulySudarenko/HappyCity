@@ -4,22 +4,20 @@ using Code.Timer;
 using Code.View;
 using Photon.Pun;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 
 namespace Code.ViewHandlers
 {
     internal class GameEndControllerViewHandler
     {
-
         private readonly GameEndController _gameEndController;
         private readonly LineElementView _gameEndView;
         private readonly CharacterView _timeSlider;
         private readonly string _winMessage = "YOU WIN!";
         private readonly string _loseMessage = "YOU LOSE...";
-        private readonly float _gameSessionTime = 1000.0f;
+        private readonly float _gameSessionTime = 500.0f;
         private readonly float _deltaTime = 5.0f;
-        
+
         private ITimeRemaining _gametimer;
         private ITimeRemaining _gametimerProcess;
         private float _gameTimeLeft;
@@ -31,7 +29,7 @@ namespace Code.ViewHandlers
             _gameEndView = gameEndView;
             _timeSlider = gameTimeScale;
             _gameTimeLeft = _gameSessionTime;
-            
+
             _gameEndController.EndGame += ShowWinScreen;
             _gameEndController.StartGame += OnStartGame;
             _gameEndView.Button.onClick.AddListener(RestartLevel);
@@ -45,7 +43,7 @@ namespace Code.ViewHandlers
             _gametimerProcess.AddTimeRemaining();
             _timeSlider.SetSliderAreaValue(_gameSessionTime, _gameTimeLeft);
         }
-        
+
         private void UpdateTimeLine()
         {
             _gameTimeLeft -= _deltaTime;
@@ -80,8 +78,8 @@ namespace Code.ViewHandlers
         {
             _gameEndController.EndGame -= ShowWinScreen;
             _gameEndView.Button.onClick.RemoveListener(RestartLevel);
-            PhotonNetwork.LoadLevel(2);
-            //SceneManager.LoadScene(2);
+            PhotonNetwork.LoadLevel(1);
+            //SceneManager.LoadScene(1);
         }
     }
 }

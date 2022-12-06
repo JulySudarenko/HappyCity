@@ -22,5 +22,6 @@ namespace Code.Factory
                 _spawnPoint.GetChild(Mathf.Abs(number)).position, Quaternion.identity);
             return player;
         }
+
     }
 }

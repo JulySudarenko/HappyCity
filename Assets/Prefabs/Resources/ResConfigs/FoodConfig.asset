@@ -21,4 +21,4 @@ MonoBehaviour:
   _radius: 25
   _distance: 3
   _startValue: 50
-  _miningCount: 5
+  _miningCount: 10

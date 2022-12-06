@@ -1,5 +1,7 @@
-﻿using Code.Configs;
+﻿using Code.Assistance;
+using Code.Configs;
 using Code.Interfaces;
+using Code.Timer;
 using UnityEngine;
 
 
@@ -10,15 +12,19 @@ namespace Code.Controllers
         private readonly CameraConfig _config;
         private readonly Transform _target;
         private readonly Transform _cameraTransform;
-        private readonly bool _isFollowing;
+        public AudioSource AudioSource { get; }
+        private ITimeRemaining _timeRemaining;
         private Vector3 _cameraOffset = Vector3.zero;
+        private  Transform _newTarget;
+        private bool _isFollowing;
 
+        
         public CameraController(Transform camera, CameraConfig config, Transform target)
         {
             _cameraTransform = camera.transform;
             _config = config;
             _target = target;
-            
+            AudioSource = camera.gameObject.GetOrAddComponent<AudioSource>();
             _isFollowing = true;
             Cut();
         }
@@ -29,8 +35,12 @@ namespace Code.Controllers
             {
                 Follow();
             }
+            else
+            {
+                ShowNewTarget();
+            }
         }
-
+        
         private void Follow()
         {
             float currentAngle = _cameraTransform.eulerAngles.y;
@@ -44,6 +54,27 @@ namespace Code.Controllers
             _cameraTransform.LookAt(_target.transform);
         }
 
+        public void ChangeTarget(Transform newTarget)
+        {
+            _isFollowing = false;
+            _newTarget = newTarget;
+            _timeRemaining = new TimeRemaining(BackToTarget, 2.0f);
+            _timeRemaining.AddTimeRemaining();
+        }
+
+        private void BackToTarget()
+        {
+            _isFollowing = true;
+            _timeRemaining.RemoveTimeRemaining();
+        }
+
+        private void ShowNewTarget()
+        {
+            _cameraOffset.z = -_config.Distance;
+            _cameraOffset.y = _config.Height;
+            _cameraTransform.position = _target.position + _target.TransformVector(_cameraOffset);
+        }
+        
         private void Cut()
         {
             _cameraOffset.z = -_config.Distance;

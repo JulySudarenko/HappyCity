@@ -19,7 +19,7 @@ namespace Code.Controllers
     internal class QuestSystemController : IFixedExecute, IExecute, ILateExecute, ICleanup
     {
         public Action<IQuestState> QuestAdd;
-        
+
         private readonly Controllers _controllers = new Controllers();
         private readonly ResourcesCheckUnionController _resourceCheckUnionController;
         private readonly NetworkSynchronizationController _networkSynchronization;
@@ -32,6 +32,9 @@ namespace Code.Controllers
         private readonly LineElementView _messagePanelView;
         private readonly Canvas _canvas;
         private readonly Camera _camera;
+        private readonly CameraController _cameraController;
+        private readonly AudioSource _audioSource;
+        private readonly MusicConfig _musicConfig;
         private readonly Transform _player;
         private readonly Transform _characterFolder;
         private readonly Transform _buildingFolder;
@@ -45,24 +48,34 @@ namespace Code.Controllers
 
         public QuestSystemController(UnionConfig configs, int characterID, string nickName,
             ResourcesCheckUnionController resourceCheckUnionController, LineElementView messagePanelView, Canvas canvas,
-            Camera camera, Transform player, NetworkSynchronizationController networkSynchronization)
+            Camera camera, Transform player, NetworkSynchronizationController networkSynchronization,
+            CameraController cameraController, AudioSource audioSource, MusicConfig musicConfig)
         {
             _characterFolder = new GameObject("Characters").transform;
             _buildingFolder = new GameObject("Buildings").transform;
             _questConfigs = configs.AllQuestNpcConfigs.ToList();
             _placesConfigs = configs.AllBuildingPlacesConfigs[0];
+
+            foreach (Transform childPoint in configs.AllQuestNpcConfigs[0].NpcConfig.SpawnPoints)
+            {
+                _startPointsList.Add(childPoint.position);
+            }
+
             _resourceCheckUnionController = resourceCheckUnionController;
             _messagePanelView = messagePanelView;
             _canvas = canvas;
             _camera = camera;
             _player = player;
             _networkSynchronization = networkSynchronization;
+            _cameraController = cameraController;
+            _audioSource = audioSource;
+            _musicConfig = musicConfig;
             _characterID = characterID;
             _nickName = nickName;
             _buildingPlaces.Add(new Vector3(0.0f, 0.0f, -85.0f));
             _buildingPlaces.Add(new Vector3(20.0f, 0.0f, -85.0f));
             _buildingPlaces.Add(new Vector3(40.0f, 0.0f, -85.0f));
-            
+
             _controllers.Add(_happyLineController);
             _happyLineController.StartNewQuest += StartQuest;
             _networkSynchronization.AllPointsReceived += GetQuestQueue;
@@ -77,7 +90,8 @@ namespace Code.Controllers
                 _questFirstQueue = new Vector3[_networkSynchronization.QuestFirstQueue.Count];
                 for (int i = 0; i < _networkSynchronization.QuestFirstQueue.Count; i++)
                 {
-                    _questFirstQueue[(int)_networkSynchronization.QuestFirstQueue[i].x] = _networkSynchronization.QuestFirstQueue[i];
+                    _questFirstQueue[(int) _networkSynchronization.QuestFirstQueue[i].x] =
+                        _networkSynchronization.QuestFirstQueue[i];
                     _questStateList[i] = QuestState.None;
                 }
 
@@ -98,6 +112,7 @@ namespace Code.Controllers
                     }
                 }
             }
+
             if (code == 123)
             {
                 for (int i = 0; i < _questList.Count; i++)
@@ -109,45 +124,51 @@ namespace Code.Controllers
                 }
             }
         }
-        
+
         private void StartQuest(int count)
         {
-            if(_isGamePlay)
+            if (_isGamePlay)
             {
-                if (_questCounter < _questFirstQueue.Length)
+                if (_startPointsList.Count > 0)
                 {
-                    var quest = _questConfigs[(int) _questFirstQueue[_questCounter].y];
-                    var place = _placesConfigs.Places[(int) _questFirstQueue[_questCounter].z];
-                    InitQuest(quest, place, _questFirstQueue[_questCounter]);
-                    _questCounter++;
-                }
-                else
-                {
-                    Debug.Log("All of first stream quests in work");
-                    _isGamePlay = false;
-                    _happyLineController.StartNewQuest -= StartQuest;
+                    if (_questCounter < _questFirstQueue.Length)
+                    {
+                        var quest = _questConfigs[(int) _questFirstQueue[_questCounter].y];
+                        var place = _placesConfigs.Places[(int) _questFirstQueue[_questCounter].z];
+                        InitQuest(quest, place, _questFirstQueue[_questCounter]);
+                        _questCounter++;
+                    }
+                    else
+                    {
+                        Debug.Log("All of first stream quests in work");
+                        _isGamePlay = false;
+                        _happyLineController.StartNewQuest -= StartQuest;
+                    }
                 }
             }
         }
 
         private void InitQuest(QuestNpcConfig questConfig, Transform buildingPlace, Vector3 number)
         {
-            var startPosition = GenerateStartPoint(questConfig.NpcConfig);
-            
+            //var startPosition = GenerateStartPoint(questConfig.NpcConfig);
+            var startPosition = questConfig.NpcConfig.SpawnPoints
+                .GetChild(Random.Range(0, questConfig.NpcConfig.SpawnPoints.childCount)).position;
+
             var npc = new NpcSpawnHandler(questConfig.NpcConfig, startPosition);
             npc.NpcTransform.SetParent(_characterFolder);
             var npcHappiness = new ResourcesKeeper(questConfig.StartHappiness, ResourcesType.Happiness);
             _happyLineController.ChangeCurrentPopulation(questConfig.StartHappiness);
             var quest = new QuestController(npc, _characterID, _nickName, _resourceCheckUnionController,
                 questConfig, _messagePanelView, _canvas, npcHappiness, _happyLineController, number);
-            
+
             _questList.Add(quest);
-            
+
             var buildingSpawnHandler =
-                new BuildingSpawnHandler(questConfig.BuildingConfig, quest, buildingPlace, _buildingFolder);
+                new BuildingSpawnHandler(questConfig.BuildingConfig, quest, buildingPlace, _buildingFolder,
+                    _cameraController);
 
             var npcController = new NpcController(questConfig.NpcConfig, npc, _player, _characterID, quest,
-                buildingSpawnHandler);
+                buildingSpawnHandler, startPosition, _startPointsList);
 
             var npcView = new NpcViewHandler(npc, questConfig.NpcConfig, _canvas, quest, _camera, npcHappiness);
 
@@ -159,29 +180,31 @@ namespace Code.Controllers
 
         private Vector3 GenerateStartPoint(NonPlayerCharacterConfig config)
         {
+            //var num = Random.Range(0, config.SpawnPoints.childCount);
             var startPosition = config.SpawnPoints
                 .GetChild(Random.Range(0, config.SpawnPoints.childCount)).position;
 
-            if (!Check(startPosition))
-            {
-                _startPointsList.Add(startPosition);
-            }
-            else
-            {
-                startPosition.Set(startPosition.x + Random.Range(2, 5), startPosition.y,
-                    startPosition.z);
-                if (!Check(startPosition))
-                {
-                    _startPointsList.Add(startPosition);
-                }
-                else
-                {
-                    startPosition.Set(startPosition.x + Random.Range(2, 5), startPosition.y,
-                        startPosition.z + Random.Range(2, 5));
-                    _startPointsList.Add(startPosition);
-                }
-            }
-
+            //_startPointsList.Remove(_startPointsList[num]);
+            // if (!Check(startPosition))
+            // {
+            //     _startPointsList.Add(startPosition);
+            // }
+            // else
+            // {
+            //     startPosition.Set(startPosition.x + Random.Range(2, 5), startPosition.y,
+            //         startPosition.z);
+            //     if (!Check(startPosition))
+            //     {
+            //         _startPointsList.Add(startPosition);
+            //     }
+            //     else
+            //     {
+            //         startPosition.Set(startPosition.x + Random.Range(2, 5), startPosition.y,
+            //             startPosition.z + Random.Range(2, 5));
+            //         _startPointsList.Add(startPosition);
+            //     }
+            // }
+            //
             return startPosition;
         }
 
@@ -221,5 +244,4 @@ namespace Code.Controllers
             _networkSynchronization.AllPointsReceived -= GetQuestQueue;
         }
     }
-
 }

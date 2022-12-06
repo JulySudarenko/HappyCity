@@ -37,7 +37,7 @@ namespace Code.Factory
             }
 
             _factory = new CharacterFactory(_selectedCharacter, _playerConfig.SpawnPoints);
-            Character = new CharacterModel(_factory, networkSynchronizationController);
+            Character = new CharacterModel(_factory, networkSynchronizationController, _playerConfig.FeetCollider);
         }
     }
 }
