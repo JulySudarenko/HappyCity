@@ -18,6 +18,7 @@ namespace Code.Controllers
         private readonly List<IQuestState> _questList = new List<IQuestState>();
         private readonly Dictionary<string, int> _scoreTable = new Dictionary<string, int>();
         private readonly CharacterGrandGoldController _grandGoldController;
+
         private readonly string _nickName;
         private readonly int _winGold = 50;
         private int _myScore = 0;

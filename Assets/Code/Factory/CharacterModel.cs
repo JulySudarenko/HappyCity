@@ -35,6 +35,7 @@ namespace Code.Factory
             PhotonView = character.GetOrAddComponent<CharacterPhotonView>();
             PhotonView.Init(networkSynchronizationController, this);
             AudioSource = character.GetOrAddComponent<AudioSource>();
+            AudioSource.volume = 0.2f;
             var feet = Object.Instantiate(feetPrefab, Transform);
             FeetCollider = feet.gameObject.GetOrAddComponent<TriggerHandler>();
         }

@@ -9,6 +9,7 @@ using Code.View;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
+
 namespace Code.ViewHandlers
 {
     internal class NpcViewHandler : IExecute, ILateExecute, ICleanup
@@ -24,7 +25,8 @@ namespace Code.ViewHandlers
         private readonly float _characterHeight;
 
 
-        public NpcViewHandler(NpcSpawnHandler npc, NonPlayerCharacterConfig config, Canvas canvas, IQuestState state, Camera camera, IKeeper happiness)
+        public NpcViewHandler(NpcSpawnHandler npc, NonPlayerCharacterConfig config, Canvas canvas, IQuestState state,
+            Camera camera, IKeeper happiness)
         {
             _questState = state;
             _camera = camera;
@@ -83,6 +85,9 @@ namespace Code.ViewHandlers
                     break;
                 case QuestState.Check:
                     _characterView.ActivateQuestion(true);
+                    break;
+                case QuestState.Busy:
+                    _characterView.ChangeQuestionColor();
                     break;
                 case QuestState.Done:
                     _characterView.ActivateQuestion(false);

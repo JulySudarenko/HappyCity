@@ -1,4 +1,5 @@
 ﻿using System;
+using Code.Configs;
 using Code.View;
 using PlayFab;
 using PlayFab.ClientModels;
@@ -27,6 +28,7 @@ namespace Code.PlayFabLogin
             _authorizationMenu = authorizationMenu;
             _loadingIndicatorView = loadingIndicatorView;
             ActivateMenu();
+            _authorizationMenu.SubscribeButtonsOnSound();
             _authorizationMenu.AuthorizationButton.onClick.AddListener(SignIn);
             _authorizationMenu.RegistrationButton.onClick.AddListener(CreateAccount);
         }
@@ -84,12 +86,12 @@ namespace Code.PlayFabLogin
                     _loadingIndicatorView.ShowLoadingStatusInformation(ConnectionState.Success,
                         $"Success: {_authorizationMenu.UserName}");
                     _guid = PlayerPrefs.GetString(AuthKey, Guid.NewGuid().ToString());
-                    
+
                     _name = _authorizationMenu.UserName;
                     _password = _authorizationMenu.UserPassword;
                     PlayerPrefs.SetString(AuthKeyName, _name);
                     PlayerPrefs.SetString(AuthKeyPassword, _password);
-                    
+
                     SceneManager.LoadScene(1);
                 },
                 error =>
@@ -124,6 +126,7 @@ namespace Code.PlayFabLogin
         public void Dispose()
         {
             _authorizationMenu.Dispose(_isIdExist);
+            _authorizationMenu.DisposeSound();
             //_authorizationMenu.DeleteAccountButton.onClick.RemoveListener(DeleteAccount);
             _authorizationMenu.AuthorizationButton.onClick.RemoveListener(SignIn);
             _authorizationMenu.RegistrationButton.onClick.RemoveListener(CreateAccount);

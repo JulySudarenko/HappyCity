@@ -15,12 +15,13 @@ using UnityEngine;
 
 namespace Code.Controllers
 {
-    public class GameStartController : MonoBehaviour
+    public class GameStartController : MonoBehaviourPunCallbacks
     {
         [SerializeField] private LoadingIndicatorView _loadingIndicator;
         [SerializeField] private Canvas _canvas;
         [SerializeField] private LineElementView _gameEndWindow;
         [SerializeField] private CharacterView _gameTimeScale;
+        [SerializeField] private ImageLineElement _volume;
 
         [Header("Configs")] [SerializeField] private InputConfig _inputConfig;
         [SerializeField] private PlayerConfig _playerConfig;
@@ -36,15 +37,14 @@ namespace Code.Controllers
         [SerializeField] private LineElementView _messagePanelView;
 
         [Header("Sounds")] [SerializeField] private MusicConfig _musicConfig;
-
-
+        
         private Controllers _controllers;
 
 
         private void Awake()
         {
             PhotonNetwork.AutomaticallySyncScene = true;
-            
+
             _controllers = new Controllers();
             var systemController = new SystemController();
             var camera = Camera.main;
@@ -73,18 +73,22 @@ namespace Code.Controllers
             var playerView = new PlayerViewHandler(characterSpawner.Character, _playerConfig, _canvas, camera);
 
             var woodCounter = new ResourceCounterController(unionResourcesParser.WoodConfig, characterSpawner.Character,
-                ResourcesType.Wood);
+                ResourcesType.Wood, characterSpawner.Character.AudioSource, _musicConfig.PickUpSound);
             var foodCounter = new ResourceCounterController(unionResourcesParser.FoodConfig, characterSpawner.Character,
-                ResourcesType.Food);
+                ResourcesType.Food, characterSpawner.Character.AudioSource, _musicConfig.PickUpSound);
             var stoneCounter = new ResourceCounterController(unionResourcesParser.StoneConfig,
-                characterSpawner.Character, ResourcesType.Stone);
+                characterSpawner.Character, ResourcesType.Stone, characterSpawner.Character.AudioSource,
+                _musicConfig.PickUpSound);
             var goldCounter = new ResourceCounterController(unionResourcesParser.GoldConfig, characterSpawner.Character,
-                ResourcesType.Gold);
+                ResourcesType.Gold, characterSpawner.Character.AudioSource, _musicConfig.PickUpSound);
+            var happyCounter = new ResourceCounterController(unionResourcesParser.HappyPointsConfig,
+                characterSpawner.Character,
+                ResourcesType.Happiness, characterSpawner.Character.AudioSource, _musicConfig.PickUpSound);
 
             var rewardController = new CharacterGrandGoldController(goldCounter);
 
             var resourceUnionController = new ResourcesCheckUnionController(woodCounter, foodCounter,
-                stoneCounter, goldCounter);
+                stoneCounter, goldCounter, happyCounter);
 
             var questSystemController = new QuestSystemController(_unionConfig, characterSpawner.Character.ColliderID,
                 characterSpawner.Character.PhotonView.photonView.Owner.NickName, resourceUnionController,
@@ -126,6 +130,8 @@ namespace Code.Controllers
             // else
             // {
             //     _loadingIndicator.UpdateFeedbackText($"NOT MASTER");
+            var  masterClientChanger = new MasterClientChanger(photonConnectionController, networkSynchronizer);
+            
             var resourcesSpawner =
                 new ResourcesSpawnController(unionResourcesParser, characterSpawner, networkSynchronizer,
                     woodCounter, foodCounter, stoneCounter);
@@ -138,19 +144,23 @@ namespace Code.Controllers
             var gameEndController = new GameEndController(questSystemController, networkSynchronizer, rewardController,
                 characterSpawner.Character.PhotonView.photonView.Owner.NickName);
 
-            var veiwEndGame = new GameEndControllerViewHandler(gameEndController, _gameEndWindow, _gameTimeScale);
+            var veiwEndGame = new GameEndControllerViewHandler(gameEndController, _gameEndWindow, _gameTimeScale,
+                cameraController, _musicConfig, characterSpawner.Character.AudioSource, photonConnectionController);
+
             var viewController = new ViewController(_unionConfig, _resourcesPanelView, _resourceLineElement,
-                _tasksPanelView, _tasksLineElement, woodCounter, foodCounter, stoneCounter, goldCounter,
-                questSystemController);
+                _tasksPanelView, _tasksLineElement, resourceUnionController, questSystemController,
+                characterSpawner.Character.AudioSource, _musicConfig, cameraController.AudioSource, _volume);
 
 
             _controllers.Add(playerController);
             _controllers.Add(cameraController);
             _controllers.Add(playerView);
+            _controllers.Add(masterClientChanger);
 
             _controllers.Add(questSystemController);
 
             _controllers.Add(goldCounter);
+            _controllers.Add(happyCounter);
             _controllers.Add(rewardController);
             _controllers.Add(new TimeRemainingController());
             _controllers.Add(inputController);

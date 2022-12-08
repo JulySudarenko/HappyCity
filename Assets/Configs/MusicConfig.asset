@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83539471db474b0fb08f364e38217af5, type: 3}
+  m_Name: MusicConfig
+  m_EditorClassIdentifier: 
+  ButtonsSound: {fileID: 8300000, guid: 4a1a826a9f571ec4597625ea6df1157e, type: 3}
+  QuestStartSound: {fileID: 8300000, guid: 7d9d13672a3ac5e478b8994c3d171565, type: 3}
+  QuestListSound: {fileID: 8300000, guid: 948458e0daf834241a90d38e9d4f0b78, type: 3}
+  QuestdoneSound: {fileID: 8300000, guid: 8f7f0c4b2a353f240b2029e9ee7f3adf, type: 3}
+  WinGameSound: {fileID: 8300000, guid: 7a05d54a2d55a534dac7763936297859, type: 3}
+  LoseGameSound: {fileID: 8300000, guid: eb0956cb4ea50124194634535261dd89, type: 3}
+  MainThemeSound: {fileID: 8300000, guid: c3488882b06b2d04e8cae83884d46be4, type: 3}
+  PickUpSound: {fileID: 8300000, guid: d22393732187c384f8a7a06849c721d6, type: 3}
+  GETRewardSound: {fileID: 8300000, guid: 62c7647ea8a77974e9bb8db01152c31d, type: 3}
+  BuldSound: {fileID: 8300000, guid: ef5302f6dafd6a54ba58a24b98678ef9, type: 3}
+  _volume: 0.1

@@ -1,6 +1,7 @@
 ﻿using System;
 using Code.ResourcesSpawn;
 
+
 namespace Code.ResourcesC
 {
     internal class ResourcesCheckUnionController
@@ -9,20 +10,23 @@ namespace Code.ResourcesC
         private readonly ResourceCounterController _foodCounter;
         private readonly ResourceCounterController _stoneCounter;
         private readonly ResourceCounterController _goldCounter;
+        private readonly ResourceCounterController _happyCounter;
 
         public ResourcesCheckUnionController(ResourceCounterController woodCounter, ResourceCounterController foodCounter,
-            ResourceCounterController stoneCounter, ResourceCounterController goldCounter)
+            ResourceCounterController stoneCounter, ResourceCounterController goldCounter, ResourceCounterController happyCounter)
         {
             _woodCounter = woodCounter;
             _foodCounter = foodCounter;
             _stoneCounter = stoneCounter;
             _goldCounter = goldCounter;
+            _happyCounter = happyCounter;
         }
 
         public ResourceCounterController WoodCounter => _woodCounter;
         public ResourceCounterController FoodCounter => _foodCounter;
         public ResourceCounterController StoneCounter => _stoneCounter;
         public ResourceCounterController GoldCounter => _goldCounter;
+        public ResourceCounterController HappyCounter => _happyCounter ;
         
         
         public bool CheckResources(ResourcesType type, int count)
@@ -42,6 +46,9 @@ namespace Code.ResourcesC
                     break;
                 case ResourcesType.Gold:
                     flag = Check(_woodCounter, count);
+                    break;                
+                case ResourcesType.Happiness:
+                    flag = Check(_happyCounter, count);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
@@ -75,6 +82,9 @@ namespace Code.ResourcesC
                     break;
                 case ResourcesType.Gold:
                     _goldCounter.OnGrandResource(count);
+                    break;                
+                case ResourcesType.Happiness:
+                    _happyCounter.OnGrandResource(count);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
@@ -96,6 +106,9 @@ namespace Code.ResourcesC
                     break;
                 case ResourcesType.Gold:
                     _goldCounter.OnSpendResource(count);
+                    break;                
+                case ResourcesType.Happiness:
+                    _happyCounter.OnSpendResource(count);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);

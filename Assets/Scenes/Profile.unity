@@ -2253,6 +2253,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameRoomView: {fileID: 1223985833}
   _loadingIndicator: {fileID: 145715199}
+  _musicConfig: {fileID: 11400000, guid: 8ee4bac4880ee28479c5f2b9cd80324e, type: 2}
 --- !u!4 &889238513
 Transform:
   m_ObjectHideFlags: 0
@@ -5720,6 +5721,7 @@ MonoBehaviour:
   _lineElement: {fileID: 691579353}
   _gold: {fileID: 1888802599}
   _experience: {fileID: 1695613057}
+  _musicConfig: {fileID: 11400000, guid: 8ee4bac4880ee28479c5f2b9cd80324e, type: 2}
 --- !u!1 &2029956461
 GameObject:
   m_ObjectHideFlags: 0

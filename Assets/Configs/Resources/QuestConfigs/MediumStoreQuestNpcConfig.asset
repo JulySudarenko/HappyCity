@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _questName: Store
   _questInfo: We need a store
-  _startMessage: There is no place to live. Can you help to build a house for me?
+  _startMessage: There is no place to buy something. Can you help to build a store?
   _waitingMessage: That is not enough. When you get wood, stone and food? You can
     get it in the forest not far from here. I'm waiting...
   _getResMessage: Now you can build a store!

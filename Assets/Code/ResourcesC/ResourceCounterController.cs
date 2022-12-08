@@ -3,6 +3,7 @@ using Code.Configs;
 using Code.Factory;
 using Code.Interfaces;
 using Code.ResourcesSpawn;
+using UnityEngine;
 
 namespace Code.ResourcesC
 {
@@ -12,14 +13,18 @@ namespace Code.ResourcesC
         public Action<int> Grand;
         private readonly IKeeper _resourcesKeeper;
         private readonly ResourcesConfig _config;
+        private readonly AudioSource _audioSource;
+        private readonly AudioClip _clip;
         private ResourcesSpawner _resourcesSpawner;
         private readonly CharacterModel _character;
         private int[] _resList;
 
-        public ResourceCounterController(ResourcesConfig config, CharacterModel character, ResourcesType type)
+        public ResourceCounterController(ResourcesConfig config, CharacterModel character, ResourcesType type, AudioSource audioSource, AudioClip clip)
         {
             _config = config;
             _character = character;
+            _audioSource = audioSource;
+            _clip = clip;
             _resourcesKeeper = new ResourcesKeeper(_config.StartValue, type);
         }
 
@@ -42,6 +47,8 @@ namespace Code.ResourcesC
                     if (_resList[i] == resID)
                     {
                         _resourcesKeeper.Add(_config.MiningCount);
+                        _audioSource.clip = _clip;
+                        _audioSource.Play();
                         ChangeCount?.Invoke(_resourcesKeeper.ResourceCount());
                     }
                 }

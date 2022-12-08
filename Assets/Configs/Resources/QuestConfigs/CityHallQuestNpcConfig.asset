@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _questName: City hall
   _questInfo: Now we need a city hall
-  _startMessage: There is no place to live. Can you help to build a house for me?
+  _startMessage: We need a cityhall. Can you help to build it?
   _waitingMessage: That is not enough. When you get wood, stone and food? You can
     get it in the forest not far from here. I'm waiting...
   _getResMessage: Now you can build

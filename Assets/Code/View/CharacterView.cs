@@ -11,6 +11,7 @@ namespace Code.View
         [SerializeField] private Slider _slider;
         [SerializeField] private Image _image;
         [SerializeField] private CanvasGroup _canvasGroup;
+        [SerializeField] private Color _color;
 
         public void Init(Canvas canvas)
         {
@@ -54,6 +55,11 @@ namespace Code.View
         public void ActivateQuestion(bool value)
         {
             _image.gameObject.SetActive(value);
+        }
+
+        public void ChangeQuestionColor()
+        {
+            _image.color = _color;
         }
 
         public void ActivateText(bool value)

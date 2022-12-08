@@ -17,25 +17,24 @@ namespace Code.Buildings
         private readonly BuildingConfig _buildingConfig;
         private readonly Transform _buildingPlace;
         private readonly CameraController _cameraController;
+        private readonly AudioSource _audioSource;
+        private readonly AudioClip _audioClip;
         private ITimeRemaining _timeRemaining;
         private Transform _buildingTransform;
         private readonly Transform _folder;
 
         public BuildingSpawnHandler(BuildingConfig config, IQuestState questState, Transform buildingPlace,
-            Transform folder, CameraController cameraController)
+            Transform folder, CameraController cameraController, AudioSource audioSource, AudioClip audioClip)
         {
             _buildingConfig = config;
             _questState = questState;
             _buildingPlace = buildingPlace;
             _folder = folder;
             _cameraController = cameraController;
-
+            _audioSource = audioSource;
+            _audioClip = audioClip;
             _questState.OnStateChange += StartConstruction;
         }
-
-        //public IHit BuildingEnter => _buildingTransform.GetComponentInChildren<IHit>();
-
-        //public Vector3 BuildingEnterPosition => _buildingTransform.position;
         
         public Vector3 BuildingEnterPosition()
         {
@@ -54,8 +53,7 @@ namespace Code.Buildings
         {
             if (state == QuestState.Done)
             {
-                _cameraController.ChangeTarget(_buildingPlace);
-                
+                _cameraController.ChangeTarget(2.0f);
                 _timeRemaining = new TimeRemaining(Build, 1.0f);
                 _timeRemaining.AddTimeRemaining();
                 _questState.OnStateChange -= StartConstruction;
@@ -64,22 +62,21 @@ namespace Code.Buildings
 
         private void Build()
         {
+
             var prefab = _buildingConfig.Prefab[Random.Range(0, _buildingConfig.Prefab.Length)];
             _buildingTransform = Object.Instantiate(prefab, _buildingPlace.position, _buildingPlace.rotation);
             _buildingTransform.SetParent(_folder);
-
+            _audioSource.clip = _audioClip;
+            _audioSource.Play();
             foreach (Transform child in _buildingTransform)
             {
-                //Debug.Log(child.gameObject.name);
                 child.TryGetComponent<IHit>(out var hit);
                 if (hit != null)
                 {
-                    // Debug.Log(hit);
-                    // Debug.Log(child.position);
+                    BuildingIsDone?.Invoke(hit, child.position);
                 }
             }
             _timeRemaining.RemoveTimeRemaining();
-            //BuildingIsDone?.Invoke();
         }
     }
 }

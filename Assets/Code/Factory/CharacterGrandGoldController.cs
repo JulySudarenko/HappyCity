@@ -30,13 +30,6 @@ namespace Code.Factory
                     PlayFabClientAPI.GetUserInventory(new GetUserInventoryRequest(),
                         success =>
                         {
-                            foreach (KeyValuePair<string, int> currency in success.VirtualCurrency)
-                            {
-                                if (currency.Key == "GD")
-                                {
-                                    Debug.Log($"Total: {currency.Value}");
-                                }
-                            }
                         },
                         error => { Debug.LogError($"Get User Inventory Failed: {error}"); });
                 }, 

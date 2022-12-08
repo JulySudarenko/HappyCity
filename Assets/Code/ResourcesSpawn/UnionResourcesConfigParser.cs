@@ -10,6 +10,7 @@ namespace Code.ResourcesSpawn
         public ResourcesConfig StoneConfig { get; private set; }
         public ResourcesConfig FoodConfig { get; private set; }
         public ResourcesConfig GoldConfig { get; private set; }
+        public ResourcesConfig HappyPointsConfig { get; private set; }
         public int WoodTotalCount { get; private set; }
         public int FoodTotalCount { get; private set; }
         public int StoneTotalCount { get; private set; }
@@ -43,6 +44,9 @@ namespace Code.ResourcesSpawn
                         break;
                     case ResourcesType.Gold:
                         GoldConfig = config;
+                        break;                    
+                    case ResourcesType.Happiness:
+                        HappyPointsConfig = config;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

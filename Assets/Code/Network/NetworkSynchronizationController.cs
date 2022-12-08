@@ -75,6 +75,7 @@ namespace Code.Network
                     {
                         AllPointsReceived?.Invoke(photonEvent.Code);
                     }
+
                     break;
                 case 114:
                     ChangeParameter?.Invoke((Vector3) photonEvent.CustomData, photonEvent.Code);
@@ -84,7 +85,6 @@ namespace Code.Network
                     break;
                 case 120:
                     _questFirstQueueCount = (int) photonEvent.CustomData;
-                    _loadingIndicator.UpdateFeedbackText($"Quest count {photonEvent.CustomData}");
                     break;
                 case 121:
                     QuestFirstQueue.Add((Vector3) photonEvent.CustomData);
@@ -92,6 +92,7 @@ namespace Code.Network
                     {
                         AllPointsReceived?.Invoke(photonEvent.Code);
                     }
+
                     break;
                 case 122:
                     ChangeParameter?.Invoke((Vector3) photonEvent.CustomData, photonEvent.Code);
@@ -115,7 +116,4 @@ namespace Code.Network
         public string Name;
         public int Score;
     }
-    
-
-
 }

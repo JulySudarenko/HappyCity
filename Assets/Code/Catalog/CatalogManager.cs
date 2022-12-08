@@ -11,11 +11,12 @@ namespace Code.Catalog
         private readonly Dictionary<string, CatalogItem> _catalog = new Dictionary<string, CatalogItem>();
         private readonly CharacterLobby _characterLobby;
 
+
         public CatalogManager(Transform characterPanel, Transform otherPanel, PlayerNamePanelView enterNamePanel, TextElementView gold, TextElementView experience,
-            LineElementView lineElement, LineElementView characterAllInfo)
+            LineElementView lineElement, LineElementView characterAllInfo, AudioSource audio)
         {
             var inventoryLobby = new InventoryLobby(gold, experience);
-            _characterLobby = new CharacterLobby(enterNamePanel, characterPanel, lineElement, _catalog, inventoryLobby, otherPanel, characterAllInfo);
+            _characterLobby = new CharacterLobby(enterNamePanel, characterPanel, lineElement, _catalog, inventoryLobby, otherPanel, characterAllInfo, audio);
             PlayFabClientAPI.GetCatalogItems(new GetCatalogItemsRequest(), OnGetCatalogSuccess, OnFailure);
         }
         

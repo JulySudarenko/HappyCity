@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CityHallBuildingConfig
   m_EditorClassIdentifier: 
   Prefab:
-  - {fileID: 8744195195169872193, guid: f30558e4064389543b6b4bd879846c8e, type: 3}
+  - {fileID: 2360853591071165825, guid: 2a7541c8e2387334ea381a39482e9e2b, type: 3}
   Places:
   - {fileID: 8744195195169872193, guid: f30558e4064389543b6b4bd879846c8e, type: 3}
   BuildingType: 5

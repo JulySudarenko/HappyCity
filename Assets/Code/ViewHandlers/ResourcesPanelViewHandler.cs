@@ -19,22 +19,24 @@ namespace Code.ViewHandlers
         private ResourceCounterViewHandler _foodHandler;
         private ResourceCounterViewHandler _stoneHandler;
         private ResourceCounterViewHandler _goldHandler;
+        private ResourceCounterViewHandler _happyHandler;
         private readonly ResourceCounterController _woodCounter;
         private readonly ResourceCounterController _foodCounter;
         private readonly ResourceCounterController _stoneCounter;
         private readonly ResourceCounterController _goldCounter;
+        private readonly ResourceCounterController _happyCounter;
 
         public ResourcesPanelViewHandler(UnionConfig unionConfig, Transform resourcesPanelView,
-            ImageLineElement resourceLineElement,ResourceCounterController woodCounter, ResourceCounterController foodCounter,
-            ResourceCounterController stoneCounter, ResourceCounterController goldCounter)
+            ImageLineElement resourceLineElement, ResourcesCheckUnionController resourceUnionController)
         {
             _unionConfig = unionConfig;
             _resourcesPanelView = resourcesPanelView;
             _resourceLineElement = resourceLineElement;
-            _woodCounter = woodCounter;
-            _foodCounter = foodCounter;
-            _stoneCounter = stoneCounter;
-            _goldCounter = goldCounter;
+            _woodCounter = resourceUnionController.WoodCounter;
+            _foodCounter = resourceUnionController.FoodCounter;
+            _stoneCounter = resourceUnionController.StoneCounter;
+            _goldCounter = resourceUnionController.GoldCounter;
+            _happyCounter = resourceUnionController.HappyCounter;
         }
 
         public void Initialize()
@@ -60,6 +62,10 @@ namespace Code.ViewHandlers
                     case ResourcesType.Gold:
                         _goldHandler = CreateNewlineElement(config);
                         _goldCounter.ChangeCount += _goldHandler.ChangeCount;
+                        break;                    
+                    case ResourcesType.Happiness:
+                        _happyHandler = CreateNewlineElement(config);
+                        _happyCounter.ChangeCount += _happyHandler.ChangeCount;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

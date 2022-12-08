@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 96beff7702b148c7b218ae95a14849b9, type: 3}
-  m_Name: GoldConfig
+  m_Name: 2HappyPointsConfig
   m_EditorClassIdentifier: 
   Resource: {fileID: 0}
-  Icon: {fileID: 21300000, guid: 8fdc43758baa11742b010d051feab66a, type: 3}
-  Type: 3
+  Icon: {fileID: 21300000, guid: 0c3fd2bd6545daf4cbcc6ea3df4b558a, type: 3}
+  Type: 5
   _miningTime: 3
   _spawnCount: 10
   _radius: 25
   _distance: 3
   _startValue: 0
-  _miningCount: 0
+  _miningCount: 5

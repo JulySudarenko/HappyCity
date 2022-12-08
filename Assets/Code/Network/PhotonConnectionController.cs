@@ -2,13 +2,15 @@
 using Code.View;
 using Photon.Pun;
 using Photon.Realtime;
-using UnityEngine.SceneManagement;
+using UnityEngine;
+
 
 namespace Code.Network
 {
     internal class PhotonConnectionController : MonoBehaviourPunCallbacks
     {
         public Action NewPlayerConnection;
+        public Action NewMasterConnection;
         private LoadingIndicatorView _loadingIndicator;
 
         public void Init(LoadingIndicatorView loadingIndicatorView)
@@ -24,15 +26,39 @@ namespace Code.Network
 
         public override void OnLeftRoom()
         {
-            SceneManager.LoadScene("Profile");
+            Debug.Log("Load scene");
+            PhotonNetwork.LoadLevel(1);
         }
 
-        public void LeaveRoom() => PhotonNetwork.LeaveRoom();
+        public void LeaveRoom()
+        {
+            // if (PhotonNetwork.InRoom)
+            // {
+            //     PhotonNetwork.LeaveRoom();
+            //     Debug.Log("in room..........");
+            // }
+            // else
+            // {
+            //     Debug.Log("NOT in room..........");
+            //     PhotonNetwork.LoadLevel(1);
+            // }
+            //
+            // Debug.Log("Leave room finish");
+            PhotonNetwork.LoadLevel(1);
+        }
 
         public override void OnPlayerLeftRoom(Player otherPlayer)
         {
             _loadingIndicator.UpdateFeedbackText($"Player {otherPlayer.NickName} says goodbye");
+        }
 
+        public override void OnMasterClientSwitched(Player newMasterClient)
+        {
+            if (newMasterClient.NickName == PhotonNetwork.LocalPlayer.NickName)
+            {
+                Debug.Log(newMasterClient.NickName);
+                NewMasterConnection?.Invoke();
+            }
         }
     }
 }

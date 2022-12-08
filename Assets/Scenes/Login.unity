@@ -898,6 +898,7 @@ MonoBehaviour:
   _userPasswordAuthorization: {fileID: 1885477978}
   _authorizationButton: {fileID: 1885477977}
   _newAccountButton: {fileID: 1885477976}
+  _musicConfig: {fileID: 11400000, guid: 8ee4bac4880ee28479c5f2b9cd80324e, type: 2}
 --- !u!224 &1885477988 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7741140679875188581, guid: 9314a10d938dd164d8fbab5aea3dabb0,
@@ -1233,6 +1234,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: AdminButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 1138920534525224129, guid: 8378da24049b91c44bb55d5636d1b812,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6353367808153840947, guid: 8378da24049b91c44bb55d5636d1b812,
         type: 3}

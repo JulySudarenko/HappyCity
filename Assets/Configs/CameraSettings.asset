@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e12c34867f564fcaae231b4c2a77b922, type: 3}
   m_Name: CameraSettings
   m_EditorClassIdentifier: 
+  MainView: {fileID: 5415385219275063341, guid: 30b812c91a2cb334aaf99cbe4bd594db,
+    type: 3}
   _distance: 10
   _height: 20
   _smoothSpeed: 0.5

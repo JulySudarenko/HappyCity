@@ -2,6 +2,7 @@
 using Code.Configs;
 using Code.Hit;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Code.NPC
 {
@@ -12,8 +13,9 @@ namespace Code.NPC
         public Rigidbody NpcRigidbody { get; }
         public Animator NpcAnimator { get; }
         public Renderer Renderer { get; }
+        public NavMeshAgent NavMeshAgent { get; }
         public int NpcId { get; }
-
+        public int NpcColliderID { get; }
         public bool IsTalking { get; private set; }
 
         public NpcSpawnHandler(NonPlayerCharacterConfig config, Vector3 startPosition)
@@ -24,6 +26,8 @@ namespace Code.NPC
             HitHandler = NpcTransform.gameObject.GetOrAddComponent<TriggerHandler>();
             Renderer = NpcTransform.GetComponent<Renderer>();
             NpcId = NpcTransform.gameObject.GetInstanceID();
+            NavMeshAgent = NpcTransform.gameObject.GetOrAddComponent<NavMeshAgent>();
+            NpcColliderID = NpcTransform.gameObject.GetComponent<Collider>().GetInstanceID();
             IsTalking = false;
         }
 

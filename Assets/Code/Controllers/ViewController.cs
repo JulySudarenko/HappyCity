@@ -15,18 +15,22 @@ namespace Code.Controllers
         private readonly List<IQuestState> _questList = new List<IQuestState>();
         private readonly TasksPanelViewHandler _tasksPanelViewHandler;
         private readonly QuestSystemController _questControllers;
+        private readonly VolumeViewHandler _volumeViewHandler;
+
 
         public ViewController(UnionConfig unionConfig, Transform resourcesPanelView,
             ImageLineElement resourceLineElement, Transform tasksPanelView, LineElementView tasksLineElement,
-            ResourceCounterController woodCounter, ResourceCounterController foodCounter,
-            ResourceCounterController stoneCounter, ResourceCounterController goldCounter, QuestSystemController questControllers)
+            ResourcesCheckUnionController resourceUnionController,
+            QuestSystemController questControllers, AudioSource audioSource,
+            MusicConfig config, AudioSource cameraAudio, ImageLineElement volume)
         {
             _questControllers = questControllers;
             _resourcesPanelViewHandler =
                 new ResourcesPanelViewHandler(unionConfig, resourcesPanelView, resourceLineElement,
-                    woodCounter, foodCounter, stoneCounter, goldCounter);
+                    resourceUnionController);
 
-            _tasksPanelViewHandler = new TasksPanelViewHandler(tasksPanelView, tasksLineElement);
+            _tasksPanelViewHandler = new TasksPanelViewHandler(tasksPanelView, tasksLineElement, audioSource, config);
+            _volumeViewHandler = new VolumeViewHandler(cameraAudio, audioSource, volume);
         }
 
         public void Initialize()
@@ -34,14 +38,9 @@ namespace Code.Controllers
             _resourcesPanelViewHandler.Initialize();
             _tasksPanelViewHandler.Initialize();
             _questControllers.QuestAdd += AddNewQuest;
-            // for (int i = 0; i < _questControllers.QuestList.Count; i++)
-            // {
-            //     _questControllers.QuestList[i].OnQuestStart += _tasksPanelViewHandler.OnTaskAdd;
-            //     _questControllers.QuestList[i].OnQuestDone += _tasksPanelViewHandler.OnTaskRemove;
-            // }
         }
 
-        public void AddNewQuest(IQuestState state)
+        private void AddNewQuest(IQuestState state)
         {
             _questList.Add(state);
             state.OnQuestStart += _tasksPanelViewHandler.OnTaskAdd;
@@ -55,7 +54,9 @@ namespace Code.Controllers
                 _questList[i].OnQuestStart -= _tasksPanelViewHandler.OnTaskAdd;
                 _questList[i].OnQuestDone -= _tasksPanelViewHandler.OnTaskRemove;
             }
+
             _questControllers.QuestAdd -= AddNewQuest;
+            _volumeViewHandler.Cleanup();
         }
     }
 }

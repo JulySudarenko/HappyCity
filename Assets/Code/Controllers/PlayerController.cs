@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Code.Controllers
 {
-    internal class PlayerController : IInitialization, IExecute, IFixedExecute, ICleanup
+    internal class PlayerController : IInitialization, IExecute , ICleanup, IFixedExecute
     {
         private readonly CharacterMoveController _moveController;
         private readonly CharacterAnimatorController _animatorController;
@@ -32,6 +32,7 @@ namespace Code.Controllers
         public void Execute(float deltaTime)
         {
             _animatorController.Execute(deltaTime);
+            _moveController.Execute(deltaTime);
         }
 
         public void Cleanup()

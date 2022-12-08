@@ -74,6 +74,7 @@
             <e p="ILateExecute.cs" t="Include" />
           </e>
           <e p="Network" t="Include">
+            <e p="MasterClientChanger.cs" t="Include" />
             <e p="NetworkSynchronizationController.cs" t="Include" />
             <e p="PhotonConnectionController.cs" t="Include" />
             <e p="StartingQuestQueueDataSender.cs" t="Include" />
@@ -149,6 +150,7 @@
             <e p="ResourceCounterViewHandler.cs" t="Include" />
             <e p="ResourcesPanelViewHandler.cs" t="Include" />
             <e p="TasksPanelViewHandler.cs" t="Include" />
+            <e p="VolumeViewHandler.cs" t="Include" />
           </e>
         </e>
         <e p="CustomAssets" t="Include">

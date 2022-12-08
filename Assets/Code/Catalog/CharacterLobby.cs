@@ -24,6 +24,7 @@ namespace Code.Catalog
         private readonly LineElementView _lineElement;
         private readonly LineElementView _characterAllInfo;
         private readonly InventoryLobby _inventoryLobby;
+        private readonly AudioSource _audio;
         private StoreItem _storeItem;
         private string _characterName;
         private readonly Color _color = new Color(0.0f, 0.34f, 0.46f, 1.0f);
@@ -31,20 +32,28 @@ namespace Code.Catalog
 
         public CharacterLobby(PlayerNamePanelView enterNamePanel, Transform charactersPanel,
             LineElementView lineElement, Dictionary<string, CatalogItem> catalog, InventoryLobby inventoryLobby,
-            Transform panel, LineElementView characterAllInfo)
+            Transform panel, LineElementView characterAllInfo, AudioSource audio)
         {
             _enterNamePanel = enterNamePanel;
             _charactersPanel = charactersPanel;
             _lineElement = lineElement;
             _panel = panel;
             _characterAllInfo = characterAllInfo;
+            _audio = audio;
             _catalog = catalog;
             _inventoryLobby = inventoryLobby;
             _enterNamePanel.NameInput.onEndEdit.AddListener(SetCharacterName);
             _enterNamePanel.AcceptNameButton.onClick.AddListener(CreateNewCharacter);
+            _enterNamePanel.AcceptNameButton.onClick.AddListener(PlaySound);
             _enterNamePanel.CancelButton.onClick.AddListener(() => _enterNamePanel.OpenClosePanel(false));
+            _enterNamePanel.CancelButton.onClick.AddListener(PlaySound);
         }
 
+        private void PlaySound()
+        {
+            _audio.Play();
+        }
+        
         public void LoadCharacters()
         {
             ShowAllUserCharacters();
@@ -89,6 +98,7 @@ namespace Code.Catalog
                         _elements.Add(characterLine);
                         characterLine.Button.onClick.AddListener(() =>
                             OnCharacterButtonClick(characterLine.GetInstanceID()));
+                        characterLine.Button.onClick.AddListener(PlaySound);
 
                         if (!_isInfo)
                         {
@@ -115,6 +125,7 @@ namespace Code.Catalog
                 newAddButton.TextUp.text = $"{_catalog[storeItem.Key].DisplayName} {_catalog[storeItem.Key].ItemId}";
                 newAddButton.TextDown.text = $"{storeItem.Value.VirtualCurrencyPrices[Gold]} {Gold}";
                 newAddButton.Button.onClick.AddListener(() => CreateCharacterPanel(storeItem.Value));
+                newAddButton.Button.onClick.AddListener(PlaySound);
                 _elements.Add(newAddButton);
             }
         }
@@ -259,8 +270,8 @@ namespace Code.Catalog
         public void Dispose()
         {
             _enterNamePanel.NameInput.onEndEdit.RemoveListener(SetCharacterName);
-            _enterNamePanel.AcceptNameButton.onClick.RemoveListener(CreateNewCharacter);
-            _enterNamePanel.CancelButton.onClick.RemoveListener(() => _enterNamePanel.OpenClosePanel(false));
+            _enterNamePanel.AcceptNameButton.onClick.RemoveAllListeners();
+            _enterNamePanel.CancelButton.onClick.RemoveAllListeners();
             foreach (var element in _elements)
             {
                 element.Button.onClick.RemoveAllListeners();

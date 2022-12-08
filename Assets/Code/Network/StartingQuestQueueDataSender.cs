@@ -34,8 +34,6 @@ namespace Code.Network
                     new RaiseEventOptions() {Receivers = ReceiverGroup.All},
                     new SendOptions() {Reliability = true});
             }
-            
-            Debug.Log($"Send quest queue");
         }
 
         public void Cleanup()

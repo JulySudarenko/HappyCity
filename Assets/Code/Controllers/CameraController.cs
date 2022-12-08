@@ -15,10 +15,10 @@ namespace Code.Controllers
         public AudioSource AudioSource { get; }
         private ITimeRemaining _timeRemaining;
         private Vector3 _cameraOffset = Vector3.zero;
-        private  Transform _newTarget;
+        private Transform _newTarget;
         private bool _isFollowing;
 
-        
+
         public CameraController(Transform camera, CameraConfig config, Transform target)
         {
             _cameraTransform = camera.transform;
@@ -35,12 +35,8 @@ namespace Code.Controllers
             {
                 Follow();
             }
-            else
-            {
-                ShowNewTarget();
-            }
         }
-        
+
         private void Follow()
         {
             float currentAngle = _cameraTransform.eulerAngles.y;
@@ -54,11 +50,12 @@ namespace Code.Controllers
             _cameraTransform.LookAt(_target.transform);
         }
 
-        public void ChangeTarget(Transform newTarget)
+        public void ChangeTarget(float time)
         {
             _isFollowing = false;
-            _newTarget = newTarget;
-            _timeRemaining = new TimeRemaining(BackToTarget, 2.0f);
+            _cameraTransform.position = _config.MainView.position;
+            _cameraTransform.rotation = _config.MainView.rotation;
+            _timeRemaining = new TimeRemaining(BackToTarget, time);
             _timeRemaining.AddTimeRemaining();
         }
 
@@ -68,13 +65,6 @@ namespace Code.Controllers
             _timeRemaining.RemoveTimeRemaining();
         }
 
-        private void ShowNewTarget()
-        {
-            _cameraOffset.z = -_config.Distance;
-            _cameraOffset.y = _config.Height;
-            _cameraTransform.position = _target.position + _target.TransformVector(_cameraOffset);
-        }
-        
         private void Cut()
         {
             _cameraOffset.z = -_config.Distance;

@@ -140,7 +140,6 @@ namespace Code.Controllers
                     }
                     else
                     {
-                        Debug.Log("All of first stream quests in work");
                         _isGamePlay = false;
                         _happyLineController.StartNewQuest -= StartQuest;
                     }
@@ -150,9 +149,8 @@ namespace Code.Controllers
 
         private void InitQuest(QuestNpcConfig questConfig, Transform buildingPlace, Vector3 number)
         {
-            //var startPosition = GenerateStartPoint(questConfig.NpcConfig);
-            var startPosition = questConfig.NpcConfig.SpawnPoints
-                .GetChild(Random.Range(0, questConfig.NpcConfig.SpawnPoints.childCount)).position;
+            var num = Random.Range(0, _startPointsList.Count);
+            var startPosition = _startPointsList[num];
 
             var npc = new NpcSpawnHandler(questConfig.NpcConfig, startPosition);
             npc.NpcTransform.SetParent(_characterFolder);
@@ -165,7 +163,7 @@ namespace Code.Controllers
 
             var buildingSpawnHandler =
                 new BuildingSpawnHandler(questConfig.BuildingConfig, quest, buildingPlace, _buildingFolder,
-                    _cameraController);
+                    _cameraController, _audioSource, _musicConfig.BuldSound);
 
             var npcController = new NpcController(questConfig.NpcConfig, npc, _player, _characterID, quest,
                 buildingSpawnHandler, startPosition, _startPointsList);
@@ -176,50 +174,6 @@ namespace Code.Controllers
             _controllers.Add(npcController);
             _controllers.Add(npcView);
             QuestAdd?.Invoke(quest);
-        }
-
-        private Vector3 GenerateStartPoint(NonPlayerCharacterConfig config)
-        {
-            //var num = Random.Range(0, config.SpawnPoints.childCount);
-            var startPosition = config.SpawnPoints
-                .GetChild(Random.Range(0, config.SpawnPoints.childCount)).position;
-
-            //_startPointsList.Remove(_startPointsList[num]);
-            // if (!Check(startPosition))
-            // {
-            //     _startPointsList.Add(startPosition);
-            // }
-            // else
-            // {
-            //     startPosition.Set(startPosition.x + Random.Range(2, 5), startPosition.y,
-            //         startPosition.z);
-            //     if (!Check(startPosition))
-            //     {
-            //         _startPointsList.Add(startPosition);
-            //     }
-            //     else
-            //     {
-            //         startPosition.Set(startPosition.x + Random.Range(2, 5), startPosition.y,
-            //             startPosition.z + Random.Range(2, 5));
-            //         _startPointsList.Add(startPosition);
-            //     }
-            // }
-            //
-            return startPosition;
-        }
-
-        private bool Check(Vector3 vector)
-        {
-            bool flag = false;
-            for (int i = 0; i < _startPointsList.Count; i++)
-            {
-                if (_startPointsList[i] == vector)
-                {
-                    flag = true;
-                }
-            }
-
-            return flag;
         }
 
         public void FixedExecute(float deltaTime)
