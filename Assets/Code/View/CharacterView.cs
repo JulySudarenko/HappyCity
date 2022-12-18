@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using Code.Quest;
+using UnityEngine;
 using UnityEngine.UI;
 
 
@@ -11,7 +13,9 @@ namespace Code.View
         [SerializeField] private Slider _slider;
         [SerializeField] private Image _image;
         [SerializeField] private CanvasGroup _canvasGroup;
-        [SerializeField] private Color _color;
+        [SerializeField] private Color _colorStart;
+        [SerializeField] private Color _colorBusy;
+        [SerializeField] private Color _colorInWork;
 
         public void Init(Canvas canvas)
         {
@@ -40,15 +44,15 @@ namespace Code.View
         {
             if (_slider != null)
             {
-                _slider.value = value/100;
+                _slider.value = value / 100;
             }
         }
-        
+
         public void SetSliderAreaValue(float maxValue, float value)
         {
             if (_slider != null)
             {
-                _slider.value = value/maxValue;
+                _slider.value = value / maxValue;
             }
         }
 
@@ -57,9 +61,31 @@ namespace Code.View
             _image.gameObject.SetActive(value);
         }
 
-        public void ChangeQuestionColor()
+        public void ChangeQuestionColor(QuestState state)
         {
-            _image.color = _color;
+            switch (state)
+            {
+                case QuestState.None:
+                    _image.color = _colorStart;
+                    break;
+                case QuestState.Start:
+                    _image.color = _colorStart;
+                    break;
+                case QuestState.Wait:
+                    _image.color = _colorInWork;
+                    break;
+                case QuestState.Check:
+                    _image.color = _colorInWork;
+                    break;
+                case QuestState.Busy:
+                    _image.color = _colorBusy;
+                    break;
+                case QuestState.Done:
+                    _image.color = _colorBusy;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(state), state, null);
+            }
         }
 
         public void ActivateText(bool value)

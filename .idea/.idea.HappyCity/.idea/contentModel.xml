@@ -133,7 +133,9 @@
           </e>
           <e p="View" t="Include">
             <e p="AuthorizationMenuView.cs" t="Include" />
+            <e p="CharacterNameView.cs" t="Include" />
             <e p="CharacterView.cs" t="Include" />
+            <e p="DialogPanelView.cs" t="Include" />
             <e p="GameRoomView.cs" t="Include" />
             <e p="ImageLineElement.cs" t="Include" />
             <e p="LineElementView.cs" t="Include" />
@@ -141,8 +143,10 @@
             <e p="PlayerNamePanelView.cs" t="Include" />
             <e p="SpawnPlacesView.cs" t="Include" />
             <e p="TextElementView.cs" t="Include" />
+            <e p="TextNameView.cs" t="Include" />
           </e>
           <e p="ViewHandlers" t="Include">
+            <e p="DialogPanelViewHandler.cs" t="Include" />
             <e p="GameEndControllerViewHandler.cs" t="Include" />
             <e p="MessagePanelViewHandler.cs" t="Include" />
             <e p="NpcViewHandler.cs" t="Include" />

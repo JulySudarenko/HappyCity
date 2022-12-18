@@ -11,6 +11,7 @@ using Code.View;
 using Code.ViewHandlers;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 namespace Code.Controllers
@@ -22,6 +23,7 @@ namespace Code.Controllers
         [SerializeField] private LineElementView _gameEndWindow;
         [SerializeField] private CharacterView _gameTimeScale;
         [SerializeField] private ImageLineElement _volume;
+        [SerializeField] private Button _exitButton;
 
         [Header("Configs")] [SerializeField] private InputConfig _inputConfig;
         [SerializeField] private PlayerConfig _playerConfig;
@@ -34,10 +36,10 @@ namespace Code.Controllers
 
         [Header("Tasks")] [SerializeField] private Transform _tasksPanelView;
         [SerializeField] private LineElementView _tasksLineElement;
-        [SerializeField] private LineElementView _messagePanelView;
+        [SerializeField] private DialogPanelView _dialogPanelView;
 
         [Header("Sounds")] [SerializeField] private MusicConfig _musicConfig;
-        
+
         private Controllers _controllers;
 
 
@@ -46,14 +48,13 @@ namespace Code.Controllers
             PhotonNetwork.AutomaticallySyncScene = true;
 
             _controllers = new Controllers();
-            var systemController = new SystemController();
             var camera = Camera.main;
 
             var unionResourcesParser = new UnionResourcesConfigParser(_unionConfig,
                 _resourcesSpawnPlaces.ForestPlaces.Length, _resourcesSpawnPlaces.StonePlaces.Length);
 
             var photonConnectionController = gameObject.GetOrAddComponent<PhotonConnectionController>();
-            photonConnectionController.Init(_loadingIndicator);
+            photonConnectionController.Init(_loadingIndicator, _exitButton);
 
             var networkSynchronizer =
                 gameObject.GetOrAddComponent<NetworkSynchronizationController>();
@@ -70,7 +71,7 @@ namespace Code.Controllers
             var cameraController = new CameraController(camera.transform, _cameraConfig,
                 characterSpawner.Character.Transform);
 
-            var playerView = new PlayerViewHandler(characterSpawner.Character, _playerConfig, _canvas, camera);
+            //var playerView = new PlayerViewHandler(characterSpawner.Character, _playerConfig, _canvas, camera);
 
             var woodCounter = new ResourceCounterController(unionResourcesParser.WoodConfig, characterSpawner.Character,
                 ResourcesType.Wood, characterSpawner.Character.AudioSource, _musicConfig.PickUpSound);
@@ -91,20 +92,22 @@ namespace Code.Controllers
                 stoneCounter, goldCounter, happyCounter);
 
             var questSystemController = new QuestSystemController(_unionConfig, characterSpawner.Character.ColliderID,
-                characterSpawner.Character.PhotonView.photonView.Owner.NickName, resourceUnionController,
-                _messagePanelView, _canvas, camera, characterSpawner.Character.Transform,
-                networkSynchronizer, cameraController, characterSpawner.Character.AudioSource, _musicConfig);
+                characterSpawner.Character.PhotonView.photonView.Owner.NickName, resourceUnionController, _canvas,
+                camera, characterSpawner.Character.Transform, networkSynchronizer, cameraController,
+                characterSpawner.Character.AudioSource, _musicConfig, _dialogPanelView, photonConnectionController);
 
             if (PhotonNetwork.IsMasterClient)
             {
                 _loadingIndicator.UpdateFeedbackText("MASTER");
                 var placeGeneratorLists = new ResourcesPlaceGeneratorLists(_resourcesSpawnPlaces, unionResourcesParser);
                 var questQueueGeneratorList = new QuestQueueGeneratorList(_unionConfig);
-
+                networkSynchronizer.CreateQuestQueue(questQueueGeneratorList.QuestQueueList);
+                
                 var resourcesDataSender =
                     new StartingResourcesDataSender(placeGeneratorLists, photonConnectionController);
-                var questDataSender = new StartingQuestQueueDataSender(questQueueGeneratorList.QuestQueueList,
-                    photonConnectionController);
+                
+                var questDataSender = new StartingQuestQueueDataSender(photonConnectionController, networkSynchronizer);
+
                 _controllers.Add(resourcesDataSender);
                 _controllers.Add(questDataSender);
 
@@ -130,8 +133,8 @@ namespace Code.Controllers
             // else
             // {
             //     _loadingIndicator.UpdateFeedbackText($"NOT MASTER");
-            var  masterClientChanger = new MasterClientChanger(photonConnectionController, networkSynchronizer);
-            
+            var masterClientChanger = new MasterClientChanger(photonConnectionController, networkSynchronizer);
+
             var resourcesSpawner =
                 new ResourcesSpawnController(unionResourcesParser, characterSpawner, networkSynchronizer,
                     woodCounter, foodCounter, stoneCounter);
@@ -141,11 +144,12 @@ namespace Code.Controllers
             _controllers.Add(resourcesSpawner.StoneController);
             //}
 
-            var gameEndController = new GameEndController(questSystemController, networkSynchronizer, rewardController,
+            var gameEndController = new GameEndController(questSystemController, networkSynchronizer, goldCounter,
                 characterSpawner.Character.PhotonView.photonView.Owner.NickName);
 
             var veiwEndGame = new GameEndControllerViewHandler(gameEndController, _gameEndWindow, _gameTimeScale,
-                cameraController, _musicConfig, characterSpawner.Character.AudioSource, photonConnectionController);
+                cameraController, _musicConfig, characterSpawner.Character.AudioSource, photonConnectionController,
+                networkSynchronizer);
 
             var viewController = new ViewController(_unionConfig, _resourcesPanelView, _resourceLineElement,
                 _tasksPanelView, _tasksLineElement, resourceUnionController, questSystemController,
@@ -154,11 +158,9 @@ namespace Code.Controllers
 
             _controllers.Add(playerController);
             _controllers.Add(cameraController);
-            _controllers.Add(playerView);
+            //_controllers.Add(playerView);
             _controllers.Add(masterClientChanger);
-
             _controllers.Add(questSystemController);
-
             _controllers.Add(goldCounter);
             _controllers.Add(happyCounter);
             _controllers.Add(rewardController);

@@ -6,31 +6,33 @@ using UnityEngine;
 
 namespace Code.Network
 {
-    internal class StartingQuestQueueDataSender : IInitialization, ICleanup
+    internal class StartingQuestQueueDataSender : ICleanup
     {
-        private readonly Vector3[] _questQueue;
         private readonly PhotonConnectionController _connectionController;
+        private readonly NetworkSynchronizationController _networkSynchronizationController;
 
-        public StartingQuestQueueDataSender(Vector3[] questQueue, PhotonConnectionController connectionController)
+        public StartingQuestQueueDataSender(PhotonConnectionController connectionController,
+            NetworkSynchronizationController networkSynchronizationController)
         {
-            _questQueue = questQueue;
             _connectionController = connectionController;
-        }
-
-        public void Initialize()
-        {
+            _networkSynchronizationController = networkSynchronizationController;
             _connectionController.NewPlayerConnection += SendQuestQueue;
         }
 
         private void SendQuestQueue()
         {
-            PhotonNetwork.RaiseEvent(120, _questQueue.Length,
+            PhotonNetwork.RaiseEvent(120, _networkSynchronizationController.AllQuestsInfos.Count,
                 new RaiseEventOptions() {Receivers = ReceiverGroup.All},
                 new SendOptions() {Reliability = true});
-            
-            for (int i = 0; i < _questQueue.Length; i++)
+
+            for (int i = 0; i < _networkSynchronizationController.AllQuestsInfos.Count; i++)
             {
-                PhotonNetwork.RaiseEvent(121, _questQueue[i],
+                string questData = JsonUtility.ToJson(new NetQuestsInfo(
+                    _networkSynchronizationController.AllQuestsInfos[i].Quest,
+                    _networkSynchronizationController.AllQuestsInfos[i].State));
+
+
+                PhotonNetwork.RaiseEvent(125, questData,
                     new RaiseEventOptions() {Receivers = ReceiverGroup.All},
                     new SendOptions() {Reliability = true});
             }

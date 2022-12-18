@@ -1,7 +1,7 @@
 ﻿using Code.Interfaces;
 using Code.ResourcesSpawn;
 using Photon.Pun;
-using UnityEngine;
+
 
 namespace Code.Network
 {
@@ -12,7 +12,8 @@ namespace Code.Network
         private StartingResourcesDataSender _startingResourcesDataSender;
         private StartingQuestQueueDataSender _questQueueDataSender;
 
-        public MasterClientChanger(PhotonConnectionController connectionController, NetworkSynchronizationController networkSynchronizationController)
+        public MasterClientChanger(PhotonConnectionController connectionController,
+            NetworkSynchronizationController networkSynchronizationController)
         {
             _connectionController = connectionController;
             _networkSynchronizationController = networkSynchronizationController;
@@ -22,24 +23,22 @@ namespace Code.Network
 
         private void OnChangeMaster()
         {
-            Debug.Log("Change");
             if (PhotonNetwork.IsMasterClient)
             {
-                Debug.Log("New master changes");
                 var generator = new ResourcesPlaceGeneratorLists(_networkSynchronizationController);
-                _startingResourcesDataSender =  new StartingResourcesDataSender(generator, _connectionController);
-                _questQueueDataSender = new StartingQuestQueueDataSender(_networkSynchronizationController.QuestFirstQueue.ToArray(), _connectionController);
+                _startingResourcesDataSender = new StartingResourcesDataSender(generator, _connectionController);
+                _questQueueDataSender = new StartingQuestQueueDataSender(_connectionController,
+                    _networkSynchronizationController);
                 _startingResourcesDataSender.Initialize();
-                _questQueueDataSender.Initialize();
             }
         }
 
         public void Cleanup()
         {
-            _connectionController.NewMasterConnection -= OnChangeMaster;
-            _startingResourcesDataSender.Cleanup();
-            _questQueueDataSender.Cleanup();
-            
+            if (_connectionController.NewMasterConnection != null)
+                _connectionController.NewMasterConnection -= OnChangeMaster;
+            if (_startingResourcesDataSender != null) _startingResourcesDataSender.Cleanup();
+            if (_questQueueDataSender != null) _questQueueDataSender.Cleanup();
         }
     }
 }

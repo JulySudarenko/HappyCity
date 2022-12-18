@@ -15,7 +15,6 @@ namespace Code.Controllers
         public AudioSource AudioSource { get; }
         private ITimeRemaining _timeRemaining;
         private Vector3 _cameraOffset = Vector3.zero;
-        private Transform _newTarget;
         private bool _isFollowing;
 
 
@@ -31,9 +30,12 @@ namespace Code.Controllers
 
         public void LateExecute(float deltaTime)
         {
-            if (_isFollowing)
+            if(_target != null)
             {
-                Follow();
+                if (_isFollowing)
+                {
+                    Follow();
+                }
             }
         }
 

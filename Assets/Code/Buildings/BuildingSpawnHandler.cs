@@ -36,6 +36,18 @@ namespace Code.Buildings
             _questState.OnStateChange += StartConstruction;
         }
         
+        public BuildingSpawnHandler(BuildingConfig config, Transform buildingPlace,
+            Transform folder)
+        {
+            _buildingConfig = config;
+            _buildingPlace = buildingPlace;
+            _folder = folder;
+            
+            var prefab = _buildingConfig.Prefab[Random.Range(0, _buildingConfig.Prefab.Length)];
+            _buildingTransform = Object.Instantiate(prefab, _buildingPlace.position, _buildingPlace.rotation);
+            _buildingTransform.SetParent(_folder);
+        }
+        
         public Vector3 BuildingEnterPosition()
         {
             Vector3 position = Vector3.zero;

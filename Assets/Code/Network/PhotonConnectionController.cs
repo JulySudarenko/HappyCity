@@ -2,7 +2,7 @@
 using Code.View;
 using Photon.Pun;
 using Photon.Realtime;
-using UnityEngine;
+using UnityEngine.UI;
 
 
 namespace Code.Network
@@ -11,11 +11,20 @@ namespace Code.Network
     {
         public Action NewPlayerConnection;
         public Action NewMasterConnection;
+        public Action LeaveGame;
         private LoadingIndicatorView _loadingIndicator;
+        private Button _exitButton;
 
-        public void Init(LoadingIndicatorView loadingIndicatorView)
+        public PhotonConnectionController(Action leaveGame)
+        {
+            LeaveGame = leaveGame;
+        }
+
+        public void Init(LoadingIndicatorView loadingIndicatorView, Button exitButton)
         {
             _loadingIndicator = loadingIndicatorView;
+            _exitButton = exitButton;
+            _exitButton.onClick.AddListener(LeaveRoom);
         }
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -26,25 +35,13 @@ namespace Code.Network
 
         public override void OnLeftRoom()
         {
-            Debug.Log("Load scene");
             PhotonNetwork.LoadLevel(1);
         }
 
         public void LeaveRoom()
         {
-            // if (PhotonNetwork.InRoom)
-            // {
-            //     PhotonNetwork.LeaveRoom();
-            //     Debug.Log("in room..........");
-            // }
-            // else
-            // {
-            //     Debug.Log("NOT in room..........");
-            //     PhotonNetwork.LoadLevel(1);
-            // }
-            //
-            // Debug.Log("Leave room finish");
-            PhotonNetwork.LoadLevel(1);
+            LeaveGame?.Invoke();
+            PhotonNetwork.LeaveRoom();
         }
 
         public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -56,8 +53,8 @@ namespace Code.Network
         {
             if (newMasterClient.NickName == PhotonNetwork.LocalPlayer.NickName)
             {
-                Debug.Log(newMasterClient.NickName);
                 NewMasterConnection?.Invoke();
+                _loadingIndicator.UpdateFeedbackText($"Player {newMasterClient.NickName} is master now");
             }
         }
     }

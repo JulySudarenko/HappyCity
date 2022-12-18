@@ -45,20 +45,26 @@ namespace Code.Character
 
         public void FixedExecute(float deltaTime)
         {
-            if (_character.PhotonView.CheckIsMine())
+            if (_character.PhotonView != null)
             {
-                ProcessInputs();
+                if (_character.PhotonView.CheckIsMine())
+                {
+                    ProcessInputs();
+                }
             }
         }
 
         public void Execute(float deltaTime)
         {
-            if (_character.PhotonView.CheckIsMine())
+            if (_character.PhotonView != null)
             {
-                if (IsJump && _isGrounded)
+                if (_character.PhotonView.CheckIsMine())
                 {
-                    _character.Rigidbody.velocity = new Vector3(0, _config.JumpHeight, 0);
-                    _isGrounded = false;
+                    if (IsJump && _isGrounded)
+                    {
+                        _character.Rigidbody.velocity = new Vector3(0, _config.JumpHeight, 0);
+                        _isGrounded = false;
+                    }
                 }
             }
         }

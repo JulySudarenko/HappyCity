@@ -23,58 +23,38 @@
       <change beforePath="$PROJECT_DIR$/.idea/.idea.HappyCity/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.HappyCity/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.HappyCity/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.HappyCity/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Code/Buildings/BuildingSpawnHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Buildings/BuildingSpawnHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Catalog/CatalogManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Catalog/CatalogManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Catalog/CharacterLobby.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Catalog/CharacterLobby.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Catalog/ProfileLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Catalog/ProfileLoader.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Character/CharacterAnimatorController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Character/CharacterAnimatorController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Code/Character/CharacterMoveController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Character/CharacterMoveController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Configs/CameraConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Configs/CameraConfig.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Code/Controllers/CameraController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Controllers/CameraController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Code/Controllers/GameEndController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Controllers/GameEndController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Code/Controllers/GameStartController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Controllers/GameStartController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Controllers/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Controllers/PlayerController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Code/Controllers/QuestSystemController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Controllers/QuestSystemController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Controllers/ViewController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Controllers/ViewController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Factory/CharacterGrandGoldController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Factory/CharacterGrandGoldController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Code/Factory/CharacterModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Factory/CharacterModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Factory/CharacterPhotonView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Factory/CharacterPhotonView.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Code/NPC/NpcController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/NPC/NpcController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/NPC/NpcSpawnHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/NPC/NpcSpawnHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Network/MasterClientChanger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Network/MasterClientChanger.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Code/Network/NetworkSynchronizationController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Network/NetworkSynchronizationController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Code/Network/PhotonConnectionController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Network/PhotonConnectionController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/Network/StartingQuestQueueDataSender.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Network/StartingQuestQueueDataSender.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Network/StartingQuestQueueDataSender.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Network/StartingQuestQueueDataSender.cs.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Code/PhotonLogin/PhotonLogin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/PhotonLogin/PhotonLogin.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/PlayFabLogin/LoginManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/PlayFabLogin/LoginManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/PlayFabLogin/PlayFabLogin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/PlayFabLogin/PlayFabLogin.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Quest/IQuestState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Quest/IQuestState.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Code/Quest/QuestController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Quest/QuestController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/ResourcesC/ResourceCounterController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/ResourcesC/ResourceCounterController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/ResourcesC/ResourcesCheckUnionController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/ResourcesC/ResourcesCheckUnionController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/Quest/QuestState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/Quest/QuestState.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Code/ResourcesSpawn/ResourcesPlaceGeneratorLists.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/ResourcesSpawn/ResourcesPlaceGeneratorLists.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/ResourcesSpawn/UnionResourcesConfigParser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/ResourcesSpawn/UnionResourcesConfigParser.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/View/AuthorizationMenuView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/View/AuthorizationMenuView.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Code/View/CharacterView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/View/CharacterView.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Code/View/LineElementView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/View/LineElementView.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Code/ViewHandlers/GameEndControllerViewHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/ViewHandlers/GameEndControllerViewHandler.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Code/ViewHandlers/NpcViewHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/ViewHandlers/NpcViewHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/ViewHandlers/PlayerViewHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/ViewHandlers/PlayerViewHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/ViewHandlers/ResourcesPanelViewHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/ViewHandlers/ResourcesPanelViewHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Code/ViewHandlers/TasksPanelViewHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Code/ViewHandlers/TasksPanelViewHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Configs/CameraSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Configs/CameraSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Configs/Resources/CityHallBuildingConfig.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Configs/Resources/CityHallBuildingConfig.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Configs/Resources/PlacesConfigs/FirstBuildingPlacesConfig.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Configs/Resources/PlacesConfigs/FirstBuildingPlacesConfig.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Configs/Resources/QuestConfigs/CityHallQuestNpcConfig.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Configs/Resources/QuestConfigs/CityHallQuestNpcConfig.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Configs/Resources/QuestConfigs/MediumStoreQuestNpcConfig.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Configs/Resources/QuestConfigs/MediumStoreQuestNpcConfig.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Configs/Resources/QuestConfigs/SmallStoreQuestNpcConfig.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Configs/Resources/QuestConfigs/SmallStoreQuestNpcConfig.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Resources/Buildings/BigStore.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Resources/Buildings/BigStore.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Resources/Buildings/FarmHouse.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Resources/Buildings/FarmHouse.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Resources/Buildings/MediumStore.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Resources/Buildings/MediumStore.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Resources/Buildings/SmallStore.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Resources/Buildings/SmallStore.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Resources/Male_B.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Resources/Male_B.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Resources/ResConfigs/GoldConfig.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Resources/ResConfigs/GoldConfig.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Resources/ResConfigs/StoneConfig.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Resources/ResConfigs/StoneConfig.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Configs/Resources/NonPlayerCharacterConfig.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Configs/Resources/NonPlayerCharacterConfig.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Resources/Female.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Resources/Female.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Resources/Male_A.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Resources/Male_A.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Resources/ResConfigs/FoodConfig.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Resources/ResConfigs/FoodConfig.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefabs/UI/CharacterView.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/UI/CharacterView.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/UI/CharacterViewOld.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/UI/CharacterViewOld.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Login.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Login.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Profile.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Profile.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/StartVillage.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/StartVillage.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,26 +80,12 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Assets/Code/Configs/UnionConfig.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/ResourcesC/ResourcesSpawnController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/ResourcesSpawn/ResourceHandler.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/Quest/QuestQueueGeneratorList.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/Quest/HappyLineController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/Quest/QuestState.cs" />
-        <option value="$PROJECT_DIR$/Assets/PlayFabSDK/Client/PlayFabClientModels.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/Network/StartingResourcesDataSender.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/UserInput/ButtonInput.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/Factory/CharacterFactory.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/Factory/ICharacterFactory.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/Factory/CharacterSpawnHandler.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/Configs/PlayerConfig.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/Configs/BuildingConfig.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/Configs/MusicConfig.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/Factory/CharacterGrandGoldController.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/Controllers/PlayerController.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/Configs/CameraConfig.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/Controllers/GameEndController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/Controllers/CameraController.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/ResourcesC/ResourceCounterController.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/ViewHandlers/TasksPanelViewHandler.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/PlayFabLogin/LoginManager.cs" />
@@ -128,29 +94,43 @@
         <option value="$PROJECT_DIR$/Assets/Code/Catalog/ProfileLoader.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/Catalog/CatalogManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/Catalog/CharacterLobby.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/Factory/CharacterModel.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/View/CharacterView.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/ResourcesSpawn/UnionResourcesConfigParser.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/ResourcesC/ResourcesCheckUnionController.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/ViewHandlers/VolumeViewHandler.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/Character/CharacterMoveController.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/ViewHandlers/ResourcesPanelViewHandler.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/Controllers/ViewController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/ViewHandlers/NpcViewHandler.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/Network/NetworkSynchronizationController.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/ViewHandlers/PlayerViewHandler.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/Buildings/BuildingSpawnHandler.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/Quest/QuestController.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/NPC/NpcSpawnHandler.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/Network/StartingQuestQueueDataSender.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/Controllers/QuestSystemController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/NPC/NpcController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/ViewHandlers/GameEndControllerViewHandler.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/Controllers/GameStartController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/ResourcesSpawn/ResourcesPlaceGeneratorLists.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/Network/MasterClientChanger.cs" />
-        <option value="$PROJECT_DIR$/Assets/Code/Network/PhotonConnectionController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/Factory/CharacterNameView.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/Factory/TextNameView.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/View/LineElementView.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/Buildings/BuildingSpawnHandler.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/View/DialogPanelView.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/ViewHandlers/MessagePanelViewHandler.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/ViewHandlers/DialogPanelViewHandler.cs" />
         <option value="$PROJECT_DIR$/Assets/Code/PhotonLogin/PhotonLogin.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/View/CharacterNameView.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/Factory/CharacterModel.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/NPC/NpcController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/View/TextNameView.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/Factory/CharacterPhotonView.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/ViewHandlers/NpcViewHandler.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/Quest/IQuestState.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/View/CharacterView.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/Network/PhotonConnectionController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/ResourcesSpawn/ResourcesPlaceGeneratorLists.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/Character/CharacterMoveController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/Character/CharacterAnimatorController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/ViewHandlers/GameEndControllerViewHandler.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/Controllers/CameraController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/Controllers/GameEndController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/Network/ProcessQuestQueueDataSender.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/Network/MasterClientChanger.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/Controllers/GameStartController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/Controllers/QuestSystemController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/Network/NetworkSynchronizationController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/Network/StartingQuestQueueDataSender.cs" />
+        <option value="$PROJECT_DIR$/Assets/Code/Quest/QuestController.cs" />
       </list>
     </option>
   </component>
@@ -315,9 +295,9 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="92" y="92" width="1736" height="856" key="VCS.FileHistoryDialog/1920.-154.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1670270629746" />
-    <state x="539" y="191" width="840" height="848" key="search.everywhere.popup" timestamp="1669897789655">
+    <state x="539" y="191" width="840" height="848" key="search.everywhere.popup" timestamp="1671027268964">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="539" y="191" width="840" height="848" key="search.everywhere.popup/1920.-154.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1669897789655" />
+    <state x="539" y="191" width="840" height="848" key="search.everywhere.popup/1920.-154.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1671027268964" />
   </component>
 </project>

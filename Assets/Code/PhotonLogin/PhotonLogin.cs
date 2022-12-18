@@ -6,6 +6,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 
+
 namespace Code.PhotonLogin
 {
     public class PhotonLogin : MonoBehaviourPunCallbacks
@@ -23,23 +24,9 @@ namespace Code.PhotonLogin
             if (PhotonNetwork.InRoom)
             {
                 PhotonNetwork.LeaveRoom();
-                Debug.Log($"In room... {PhotonNetwork.InRoom}");
-                PhotonNetwork.Disconnect();
-                Debug.Log($"Lobby {PhotonNetwork.InLobby}");
-                Debug.Log($"Connected {PhotonNetwork.IsConnected}");
-                Debug.Log($"Master {PhotonNetwork.MasterClient}");
-                Debug.Log($"SynchScene {PhotonNetwork.AutomaticallySyncScene}");
-
-                // if (PhotonNetwork.IsMasterClient)
-                // {
-                //     _gameRoomView.PlayButton.onClick.AddListener(CreateNewRoom);
-                // }
             }
 
-            // else
-            // {
-                _gameRoomView.PlayButton.onClick.AddListener(Connect);
-            //}
+            _gameRoomView.PlayButton.onClick.AddListener(Connect);
             PhotonNetwork.AutomaticallySyncScene = true;
             _audio = gameObject.GetOrAddComponent<AudioSource>();
             _audio.clip = _musicConfig.ButtonsSound;
@@ -54,13 +41,6 @@ namespace Code.PhotonLogin
             _audio.Play();
         }
 
-        // private void CreateNewRoom()
-        // {
-        //     _isConnecting = true;
-        //     PhotonNetwork.CreateRoom(null, new RoomOptions());
-        //     Debug.Log("CreateNEW");
-        // }
-        
         private void Connect()
         {
             _loadingIndicator.ShowLoadingStatusInformation(ConnectionState.Waiting, "Waiting for connection...");
@@ -68,13 +48,11 @@ namespace Code.PhotonLogin
             _isConnecting = true;
             if (PhotonNetwork.IsConnected)
             {
-                Debug.Log("Join");
                 _loadingIndicator.UpdateFeedbackText("Joining Room...");
                 PhotonNetwork.JoinRandomRoom();
             }
             else
             {
-                Debug.Log("Connecting...");
                 _loadingIndicator.UpdateFeedbackText("Connecting...");
                 PhotonNetwork.ConnectUsingSettings();
                 PhotonNetwork.GameVersion = GameVersion;
@@ -83,10 +61,8 @@ namespace Code.PhotonLogin
 
         public override void OnConnectedToMaster()
         {
-            Debug.Log("connected to master");
             if (_isConnecting)
             {
-                Debug.Log("Is connected");
                 _loadingIndicator.UpdateFeedbackText("Connecting...");
                 PhotonNetwork.JoinRandomRoom();
             }
@@ -95,7 +71,6 @@ namespace Code.PhotonLogin
         public override void OnJoinRandomFailed(short returnCode, string message)
         {
             _loadingIndicator.UpdateFeedbackText("OnJoinRandomFailed: Next -> Create a new Room");
-            Debug.Log("Create...");
             PhotonNetwork.CreateRoom(null);
         }
 

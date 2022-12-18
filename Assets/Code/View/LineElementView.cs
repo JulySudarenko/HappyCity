@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+
 namespace Code.View
 {
     public sealed class LineElementView : MonoBehaviour

@@ -21,17 +21,20 @@ namespace Code.Character
 
         public void Execute(float deltaTime)
         {
-            if(_character.PhotonView.photonView.IsMine)
+            if (_character.PhotonView != null)
             {
-                AnimatorStateInfo stateInfo = _character.Animator.GetCurrentAnimatorStateInfo(0);
+                if (_character.PhotonView.photonView.IsMine)
+                {
+                    AnimatorStateInfo stateInfo = _character.Animator.GetCurrentAnimatorStateInfo(0);
 
-                if (_moveController.IsWalk)
-                {
-                    _character.Animator.SetTrigger(Walk);
-                }
-                else
-                {
-                    _character.Animator.SetTrigger(Stay);
+                    if (_moveController.IsWalk)
+                    {
+                        _character.Animator.SetTrigger(Walk);
+                    }
+                    else
+                    {
+                        _character.Animator.SetTrigger(Stay);
+                    }
                 }
             }
         }

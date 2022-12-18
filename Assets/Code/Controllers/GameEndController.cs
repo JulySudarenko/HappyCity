@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Code.Factory;
 using Code.Interfaces;
 using Code.Network;
 using Code.Quest;
+using Code.ResourcesC;
 
 
 namespace Code.Controllers
@@ -12,12 +12,12 @@ namespace Code.Controllers
     {
         public Action<Dictionary<string, int>, string> EndGame;
         public Action StartGame;
-        
+
         private readonly QuestSystemController _questSystemController;
         private readonly NetworkSynchronizationController _networkSynchronizationController;
         private readonly List<IQuestState> _questList = new List<IQuestState>();
         private readonly Dictionary<string, int> _scoreTable = new Dictionary<string, int>();
-        private readonly CharacterGrandGoldController _grandGoldController;
+        private readonly ResourceCounterController _grandGoldController;
 
         private readonly string _nickName;
         private readonly int _winGold = 50;
@@ -26,7 +26,7 @@ namespace Code.Controllers
 
         public GameEndController(QuestSystemController questSystemController,
             NetworkSynchronizationController networkSynchronizationController,
-            CharacterGrandGoldController grandGoldController, string nickName)
+            ResourceCounterController grandGoldController, string nickName)
         {
             _questSystemController = questSystemController;
             _networkSynchronizationController = networkSynchronizationController;
@@ -56,9 +56,9 @@ namespace Code.Controllers
 
         private void FirstQuestQueueReceive(int code)
         {
-            if (code == 121)
+            if (code == 125)
             {
-                _buildCounter = _networkSynchronizationController.QuestFirstQueue.Count;
+                _buildCounter = _networkSynchronizationController.AllQuestsInfos.Count;
                 StartGame?.Invoke();
             }
         }
@@ -76,13 +76,6 @@ namespace Code.Controllers
                 _buildCounter--;
                 if (_buildCounter == 0)
                 {
-                    for (int i = 0; i < _questList.Count; i++)
-                    {
-                        _questList[i].OnStateChange -= OnQuestDone;
-                    }
-
-                    _questSystemController.QuestAdd -= OnQuestAdd;
-
                     var winner = String.Empty;
                     var score = 0;
 
@@ -102,14 +95,21 @@ namespace Code.Controllers
                         }
                     }
 
-                    EndGame?.Invoke(_scoreTable, winner);
+                    _grandGoldController.OnGrandResource(_winGold);
 
-                    _grandGoldController.GetWinReward(_winGold);
-                    
                     if (_myScore == score)
                     {
-                        _grandGoldController.GetWinReward(_winGold);
+                        _grandGoldController.OnGrandResource(_winGold);
                     }
+
+                    EndGame?.Invoke(_scoreTable, winner);
+
+                    for (int i = 0; i < _questList.Count; i++)
+                    {
+                        _questList[i].OnStateChange -= OnQuestDone;
+                    }
+
+                    _questSystemController.QuestAdd -= OnQuestAdd;
                 }
             }
         }

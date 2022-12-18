@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Code.Configs;
 using Code.Interfaces;
 using Code.Network;
@@ -21,11 +22,13 @@ namespace Code.Quest
         public event Action<string, string, int> OnQuestStart;
         public event Action<int> OnQuestDone;
         public event Action<bool> OnDialog;
+        private readonly List<Vector3> _questsInWork;
+        private readonly NetworkSynchronizationController _networkSynchronization;
         private readonly IKeeper _npcHappiness;
         private readonly NpcSpawnHandler _npc;
         private readonly QuestNpcConfig _questConfig;
         private readonly BuildingConfig _buildingConfig;
-        private readonly MessagePanelViewHandler _messagePanelViewHandler;
+        private readonly DialogPanelViewHandler _dialogPanelViewHandler;
         private readonly ResourcesCheckUnionController _resourcesCheckUnionController;
         private readonly HappyLineController _happyLineController;
         private readonly string _nickName;
@@ -35,11 +38,12 @@ namespace Code.Quest
         private QuestState _state;
         private string _message;
         private bool _isAccepted;
-        
+
         public QuestController(NpcSpawnHandler npcController, int characterID, string nickName,
             ResourcesCheckUnionController resourcesCheckUnionController, QuestNpcConfig questConfig,
-            LineElementView messagePanelView, Canvas canvas, IKeeper npcHappiness,
-            HappyLineController happyLineController, Vector3 questNumber)
+            Canvas canvas, IKeeper npcHappiness, HappyLineController happyLineController, Vector3 questNumber,
+            DialogPanelView dialogPanelView, List<Vector3> questsInWork,
+            NetworkSynchronizationController networkSynchronization)
         {
             _nickName = nickName;
             _npc = npcController;
@@ -50,9 +54,10 @@ namespace Code.Quest
             _npcHappiness = npcHappiness;
             _happyLineController = happyLineController;
             QuestNumber = questNumber;
-            _messagePanelViewHandler = new MessagePanelViewHandler(messagePanelView, canvas);
+            _questsInWork = questsInWork;
+            _networkSynchronization = networkSynchronization;
+            _dialogPanelViewHandler = new DialogPanelViewHandler(dialogPanelView, canvas);
             _buildingConfig = _questConfig.BuildingConfig;
-
 
             _state = QuestState.None;
             _state = QuestState.Start;
@@ -64,7 +69,7 @@ namespace Code.Quest
         {
             if (ID == _characterID && _npc.IsTalking)
             {
-                _messagePanelViewHandler.ActivationPanel(false);
+                _dialogPanelViewHandler.ActivationPanel(false);
                 _npc.OnDialog(false);
                 OnDialog?.Invoke(false);
             }
@@ -74,20 +79,21 @@ namespace Code.Quest
         {
             if (ID == _characterID && !_npc.IsTalking)
             {
-                _messagePanelViewHandler.ActivationPanel(true);
+                _dialogPanelViewHandler.ActivationPanel(true);
                 OnDialog?.Invoke(true);
                 _npc.OnDialog(true);
 
                 switch (_state)
                 {
                     case QuestState.None:
-                        _messagePanelViewHandler.ActivationPanel(false);
+                        _dialogPanelViewHandler.ActivationPanel(false);
                         break;
                     case QuestState.Start:
-                        _messagePanelViewHandler.AcceptButton.onClick.AddListener(() => AcceptTask(ID, selfID));
+                        _dialogPanelViewHandler.AcceptButton.onClick.AddListener(() => AcceptTask(ID, selfID));
                         _message =
                             $"{_questConfig.StartMessage} wood {_buildingConfig.WoodCost}, stone {_buildingConfig.StoneCost}, food {_buildingConfig.FoodCost}";
-                        ChangeMessage(_message, _questConfig.AcceptTaskButtonText, true);
+                        _dialogPanelViewHandler.ShowMessage(_message);
+                        _dialogPanelViewHandler.AcceptButton.gameObject.SetActive(true);
                         _state = QuestState.Wait;
                         break;
                     case QuestState.Wait:
@@ -96,32 +102,26 @@ namespace Code.Quest
                     case QuestState.Check:
                         if (Check())
                         {
-                            ChangeMessage(_questConfig.GETResMessage, _questConfig.BuildButtonText, true);
+                            _dialogPanelViewHandler.ShowMessage(_questConfig.GETResMessage);
+                            _dialogPanelViewHandler.BuildButton.gameObject.SetActive(true);
                         }
                         else
                         {
-                            ChangeMessage(_message, _questConfig.BuildButtonText, false);
+                            _dialogPanelViewHandler.ShowMessage(_message);
+                            _dialogPanelViewHandler.BuildButton.gameObject.SetActive(false);
                         }
 
                         break;
                     case QuestState.Done:
-                        _messagePanelViewHandler.ShowMessage(_questConfig.DoneMessage);
+                        _dialogPanelViewHandler.ShowMessage(_questConfig.DoneMessage);
                         break;
                     case QuestState.Busy:
-                        _messagePanelViewHandler.ShowMessage("This quest is already taken");
+                        _dialogPanelViewHandler.ShowMessage("This quest is already taken");
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
             }
-        }
-
-        private void ChangeMessage(string message, string buttonName, bool value)
-        {
-            _messagePanelViewHandler.ChangeTextOnButton(buttonName);
-            _messagePanelViewHandler.AcceptButton.gameObject.SetActive(value);
-            _messagePanelViewHandler.AcceptButton.interactable = value;
-            _messagePanelViewHandler.ShowMessage(message);
         }
 
         private bool Check()
@@ -140,21 +140,32 @@ namespace Code.Quest
             _resourcesCheckUnionController.GrandResources(ResourcesType.Gold, _buildingConfig.GoldReward);
             _resourcesCheckUnionController.GrandResources(ResourcesType.Happiness, _questConfig.BonusHappiness);
 
-            _messagePanelViewHandler.AcceptButton.interactable = false;
-            _messagePanelViewHandler.AcceptButton.onClick.RemoveListener(() => Build(ID, selfID));
-            _messagePanelViewHandler.AcceptButton.gameObject.SetActive(false);
+            _dialogPanelViewHandler.BuildButton.gameObject.SetActive(false);
+            _dialogPanelViewHandler.BuildButton.onClick.RemoveListener(() => Build(ID, selfID));
 
             _npcHappiness.Add(_questConfig.BonusHappiness);
             _happyLineController.ChangeHappiness(_questConfig.StartHappiness, _questConfig.BonusHappiness);
             _state = QuestState.Done;
-            
+
             PhotonNetwork.RaiseEvent(123, QuestNumber,
                 new RaiseEventOptions() {Receivers = ReceiverGroup.Others},
                 new SendOptions() {Reliability = true});
-            string message = JsonUtility.ToJson(new NetScoreTable () {Name = _nickName, Score = _questConfig.BonusHappiness});
+            _networkSynchronization.ChangeQuestState(QuestNumber, QuestState.Done);
+
+            string message = JsonUtility.ToJson(new NetScoreTable()
+                {Name = _nickName, Score = _questConfig.BonusHappiness});
+
             PhotonNetwork.RaiseEvent(131, message,
                 new RaiseEventOptions() {Receivers = ReceiverGroup.All},
                 new SendOptions() {Reliability = true});
+
+            for (int i = 0; i < _questsInWork.Count; i++)
+            {
+                if (_questsInWork[i] == QuestNumber)
+                {
+                    _questsInWork.Remove(_questsInWork[i]);
+                }
+            }
             
             OnStateChange?.Invoke(_state);
             OnQuestDone?.Invoke(_npcID);
@@ -167,10 +178,9 @@ namespace Code.Quest
         {
             if (!_isAccepted)
             {
-                _messagePanelViewHandler.AcceptButton.interactable = false;
-                _messagePanelViewHandler.AcceptButton.onClick.RemoveListener(() => AcceptTask(ID, selfID));
-                _messagePanelViewHandler.AcceptButton.gameObject.SetActive(false);
-                _messagePanelViewHandler.ActivationPanel(false);
+                _dialogPanelViewHandler.AcceptButton.gameObject.SetActive(false);
+                _dialogPanelViewHandler.AcceptButton.onClick.RemoveListener(() => AcceptTask(ID, selfID));
+
                 var questMessage =
                     $"{_questConfig.QuestInfo}\nwood {_buildingConfig.WoodCost}\nstone {_buildingConfig.StoneCost}\nfood {_buildingConfig.FoodCost}";
                 OnQuestStart?.Invoke(_questConfig.QuestName, questMessage, _npcID);
@@ -181,12 +191,14 @@ namespace Code.Quest
                 PhotonNetwork.RaiseEvent(122, QuestNumber,
                     new RaiseEventOptions() {Receivers = ReceiverGroup.Others},
                     new SendOptions() {Reliability = true});
-                
-                _messagePanelViewHandler.AcceptButton.onClick.AddListener(() => Build(ID, selfID));
-                _messagePanelViewHandler.ChangeTextOnButton(_questConfig.BuildButtonText);
+                _networkSynchronization.ChangeQuestState(QuestNumber, QuestState.Busy);
+
                 _message =
                     $"{_questConfig.WaitingMessage}, wood {_buildingConfig.WoodCost}, stone {_buildingConfig.StoneCost}, food {_buildingConfig.FoodCost}";
-                _messagePanelViewHandler.AcceptButton.gameObject.SetActive(false);
+
+                _dialogPanelViewHandler.BuildButton.gameObject.SetActive(false);
+                _dialogPanelViewHandler.BuildButton.onClick.AddListener(() => Build(ID, selfID));
+                _questsInWork.Add(QuestNumber);
 
                 OnStateChange?.Invoke(_state);
                 _npc.OnDialog(false);
@@ -196,11 +208,18 @@ namespace Code.Quest
 
         public void OnSomebodyChangeQuest(QuestState state)
         {
+            if (state == QuestState.Start)
+            {
+                _state = QuestState.Start;
+                OnStateChange?.Invoke(_state);
+            }
+
             if (state == QuestState.Busy)
             {
                 var message = "My task is already taken";
-                ChangeMessage(message, _questConfig.BuildButtonText, false);
-                _messagePanelViewHandler.AcceptButton.onClick.RemoveAllListeners();
+                _dialogPanelViewHandler.ShowMessage(_message);
+                _dialogPanelViewHandler.AcceptButton.gameObject.SetActive(false);
+                _dialogPanelViewHandler.AcceptButton.onClick.RemoveAllListeners();
                 _state = QuestState.Busy;
                 OnStateChange?.Invoke(_state);
             }
@@ -210,6 +229,15 @@ namespace Code.Quest
                 _npcHappiness.Add(_questConfig.BonusHappiness);
                 _happyLineController.ChangeHappiness(_questConfig.StartHappiness, _questConfig.BonusHappiness);
                 _state = QuestState.Done;
+
+                for (int i = 0; i < _questsInWork.Count; i++)
+                {
+                    if (_questsInWork[i] == QuestNumber)
+                    {
+                        _questsInWork.Remove(_questsInWork[i]);
+                    }
+                }
+
                 OnStateChange?.Invoke(QuestState.Done);
             }
         }

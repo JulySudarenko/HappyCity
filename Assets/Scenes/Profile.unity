@@ -2254,6 +2254,7 @@ MonoBehaviour:
   _gameRoomView: {fileID: 1223985833}
   _loadingIndicator: {fileID: 145715199}
   _musicConfig: {fileID: 11400000, guid: 8ee4bac4880ee28479c5f2b9cd80324e, type: 2}
+  _exitButton: {fileID: 1305455071}
 --- !u!4 &889238513
 Transform:
   m_ObjectHideFlags: 0
@@ -5713,7 +5714,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a163f72c8a1d4071b321aea4257a9953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _exitButton: {fileID: 847159519}
+  _exitButton: {fileID: 1305455071}
   _enterNamePanel: {fileID: 1115999396}
   _charactersPanel: {fileID: 1287020273}
   _infoPanel: {fileID: 1022244016}

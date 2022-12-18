@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Code.Configs;
 using Code.Network;
 using Code.View;
@@ -27,9 +26,6 @@ namespace Code.ResourcesSpawn
             _allWoodPlaces = networkSynchronizationController.AllWoodPlaces;
             _allStonePlaces = networkSynchronizationController.AllStonePlaces;
             _allFoodPlaces = networkSynchronizationController.AllFoodPlaces;
-            Debug.Log(_allFoodPlaces.Count);
-            Debug.Log(_allStonePlaces.Count);
-            Debug.Log(_allFoodPlaces.Count);
         }
 
         public Vector3[] AllFoodPlaces => _allFoodPlaces.ToArray();

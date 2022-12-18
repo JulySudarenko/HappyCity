@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: NonPlayerCharacterConfig
   m_EditorClassIdentifier: 
   Prefab: {fileID: 3646314970643125653, guid: b7669cf45d624094e8a96a808e5307bb, type: 3}
-  SpawnPoints: {fileID: 7811579656850190798, guid: 0cf303245038e134f860bdd03bcdc601,
+  SpawnPoints: {fileID: 1179255052095890791, guid: 675e8b0d6b28c654e8de11b0207c4dcc,
     type: 3}
   NpcView: {fileID: 6017853097939473588, guid: a14464416558e5b4ba4019a946af7f8b, type: 3}
   _happiness: 100

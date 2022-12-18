@@ -1,6 +1,6 @@
 ﻿namespace Code.Quest
 {
-    internal enum QuestState
+    public enum QuestState
     {
         None = 0,
         Start = 1,

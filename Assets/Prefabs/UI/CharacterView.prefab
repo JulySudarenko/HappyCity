@@ -222,7 +222,9 @@ MonoBehaviour:
   _slider: {fileID: 5941242715570555681}
   _image: {fileID: 8481872800415724234}
   _canvasGroup: {fileID: 510580251355804561}
-  _color: {r: 0.47450984, g: 0, b: 0.83921576, a: 1}
+  _colorStart: {r: 1, g: 0.9766377, b: 0.11792451, a: 1}
+  _colorBusy: {r: 0.47450984, g: 0, b: 0.83921576, a: 1}
+  _colorInWork: {r: 0, g: 0.8040824, b: 1, a: 1}
 --- !u!225 &510580251355804561
 CanvasGroup:
   m_ObjectHideFlags: 0

@@ -79,15 +79,18 @@ namespace Code.ViewHandlers
                     break;
                 case QuestState.Start:
                     _characterView.ActivateQuestion(true);
+                    _characterView.ChangeQuestionColor(QuestState.Start);
                     break;
                 case QuestState.Wait:
                     _characterView.ActivateQuestion(true);
+                    _characterView.ChangeQuestionColor(QuestState.Wait);
                     break;
                 case QuestState.Check:
                     _characterView.ActivateQuestion(true);
+                    _characterView.ChangeQuestionColor(QuestState.Check);
                     break;
                 case QuestState.Busy:
-                    _characterView.ChangeQuestionColor();
+                    _characterView.ChangeQuestionColor(QuestState.Busy);
                     break;
                 case QuestState.Done:
                     _characterView.ActivateQuestion(false);

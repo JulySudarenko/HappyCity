@@ -75,7 +75,6 @@ namespace Code.NPC
                 if (point == _startPointsList[i])
                 {
                     _startPointsList.Remove(_startPointsList[i]);
-
                 }
             }
         }
@@ -86,7 +85,7 @@ namespace Code.NPC
             _target = target;
             _npc.NpcTransform.position = _startPoint;
             _npc.NpcTransform.gameObject.SetActive(true);
-            _timeRemaining = new TimeRemaining(WaitAfterActivation, 5.0f);
+            _timeRemaining = new TimeRemaining(WaitAfterActivation, 2.0f);
             _timeRemaining.AddTimeRemaining();
             //_hitBuilding.OnHitEnter += EnterInBuilding;
             _buildingSpawnHandler.BuildingIsDone -= OnGetTarget;
@@ -121,7 +120,7 @@ namespace Code.NPC
             {
                 _npc.NpcAnimator.SetTrigger(Stay);
             }
-            
+
             if (_hasTarget)
             {
                 GoToTarget();
@@ -139,7 +138,7 @@ namespace Code.NPC
         private void GoToTarget()
         {
             _npc.NavMeshAgent.SetDestination(_target);
-            
+
             // var direction = (_target - _npc.NpcTransform.position).normalized;
             //
             // _horizontal = direction.x;
@@ -162,7 +161,7 @@ namespace Code.NPC
                 _timeRemaining.AddTimeRemaining();
                 _hasTarget = false;
             }
-            
+
             _npc.HitHandler.OnHitEnter -= LookAtPlayer;
         }
 
@@ -176,7 +175,8 @@ namespace Code.NPC
 
         private void Deactivate()
         {
-            _npc.NpcTransform.gameObject.SetActive(false);
+            if (_npc.NpcTransform != null)
+                _npc.NpcTransform.gameObject.SetActive(false);
             _timeRemaining.RemoveTimeRemaining();
         }
 

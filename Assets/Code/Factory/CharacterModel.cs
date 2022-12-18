@@ -33,7 +33,7 @@ namespace Code.Factory
             ColliderID = collider.GetInstanceID();
             CharacterID = character.GetInstanceID();
             PhotonView = character.GetOrAddComponent<CharacterPhotonView>();
-            PhotonView.Init(networkSynchronizationController, this);
+            //PhotonView.Init(networkSynchronizationController, this);
             AudioSource = character.GetOrAddComponent<AudioSource>();
             AudioSource.volume = 0.2f;
             var feet = Object.Instantiate(feetPrefab, Transform);

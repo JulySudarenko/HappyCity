@@ -1,5 +1,6 @@
 ﻿using System;
 
+
 namespace Code.Quest
 {
     internal interface IQuestState
